@@ -1,27 +1,29 @@
 //require nessecssary stuff
 var mongoose = require('mongoose');
 var express = require('express');
-var routes = require('routes');
+var routes = require('./routes');
 var morgan = require('morgan');
+var config = require('./config');
+
+// load database info based on NODE_ENV
+config.db = config.db.get(process.env.NODE_ENV);
 
 var app = express();
-
-var host = 'http://127.0.0.1';
-var port = process.env.PORT || 3000; 
+var port = process.env.PORT || 3000;
 
 //connect to the database
-mongoose.connect('mongodb://127.0.0.1/videoCloud', function(err){
-  if(err){
-    console.log('Error connecting to the database')
+mongoose.connect(config.db.database, function(err) {
+  if (err) {
+    console.log('Error connecting to the database');
     throw err;
   }
   routes(app);
-  app.listen(port, host, function(err){
-    if(err){
+  app.listen(port, function(err) {
+    if (err) {
       console.log('Error connecting to the server');
       throw err;
     }
-    console.log('server listening on http//%/%', host, port);
+    console.log('server listening on: ', port);
   });
 });
 
