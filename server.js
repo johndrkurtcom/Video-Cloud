@@ -1,12 +1,12 @@
 //require nessecssary stuff
 var mongoose = require('mongoose');
-var express = require('express');
+var app = require('express').createServer();
+var io = require('socket.io')(app);
 var routes = require('./routes');
 var morgan = require('morgan');
 // load database info based on NODE_ENV
 var config = require('./config/config.js').get(process.env.NODE_ENV);
 
-var app = express();
 var port = process.env.PORT || 3000;
 
 //connect to the database
@@ -17,6 +17,7 @@ mongoose.connect(config.database, function(err) {
     throw err;
   }
   routes(app);
+  sockets(io);
   app.listen(port, function(err) {
     if (err) {
       console.log('Error connecting to the server');
