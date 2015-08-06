@@ -4,14 +4,23 @@ angular.module('app.video', [])
 
   var socket = io.connect("http://127.0.0.1:3000/"); // dev: route must change for deployment
 
-  var submitComment = function(){
+  $scope.submitComment = function(){
+    console.log('Test----> inside submitComment');
     socket.emit('cs-comment', {videoId: 'nS68JH9lFEs'}); //dev: videoId will be variable
     
   }
-  /******TEST******/
-  socket.on('sc-comment', function(data){
+
+  socket.on('sc-init', function(data){
     console.log("SocketIO is a success! data = ", data);
+    
   }); //SCcomment
+
+
+  /******TEST******/
+
+  // socket.on('sc-comment', function(data){
+  //   console.log("SocketIO is a success! data = ", data);
+  // }); //SCcomment
 
   /******TEST*******/
 });
