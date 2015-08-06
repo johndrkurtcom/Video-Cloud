@@ -3,16 +3,15 @@ var mongoose = require('mongoose');
 var express = require('express');
 var routes = require('./routes');
 var morgan = require('morgan');
-var config = require('./config');
-
 // load database info based on NODE_ENV
-config.db = config.db.get(process.env.NODE_ENV);
+var config = require('./config/config.js').get(process.env.NODE_ENV);
 
 var app = express();
 var port = process.env.PORT || 3000;
 
 //connect to the database
-mongoose.connect(config.db.database, function(err) {
+// 'mongodb://127.0.0.1:27017' instead config.database don't worry about this line I need it for my environment to work properly - Ian
+mongoose.connect(config.database, function(err) {
   if (err) {
     console.log('Error connecting to the database');
     throw err;
