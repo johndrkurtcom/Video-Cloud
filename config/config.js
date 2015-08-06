@@ -1,6 +1,6 @@
 var config = {
   production: {
-    database: ''
+    database: '',
     facebook: {
       appid: '',
       appsecret: '',
