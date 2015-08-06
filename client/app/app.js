@@ -1,4 +1,4 @@
-angular.module('app', [app.home, app.video])
+angular.module('app', ['app.home', 'app.video', 'ngRoute'])
 .config(function($routeProvider, $httpProvider) {
   $routeProvider
     // .when('/signin', {
@@ -10,11 +10,11 @@ angular.module('app', [app.home, app.video])
     //   controller: 'AuthController'
     // })
     .when('/', {
-      templateUrl: 'views/home.html',
+      templateUrl: 'app/views/home.html',
       controller: 'homeController'
     })
     .when('/video', {
-      templateUrl: 'views/video.html',
+      templateUrl: 'app/views/video.html',
       controller: 'videoController'
     })
     // .when('/signout', {
