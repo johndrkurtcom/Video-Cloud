@@ -1,7 +1,11 @@
 //require nessecssary stuff
 var mongoose = require('mongoose');
-var app = require('express').createServer();
-var io = require('socket.io')(app);
+var express = require('express');
+var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+var sockets = require('./sockets');
+var path = require('path');
 var routes = require('./routes');
 var morgan = require('morgan');
 // load database info based on NODE_ENV
@@ -16,9 +20,10 @@ mongoose.connect(config.database, function(err) {
     console.log('Error connecting to the database');
     throw err;
   }
+  app.use("/", express.static(path.join(__dirname, 'client')));
   routes(app);
   sockets(io);
-  app.listen(port, function(err) {
+  server.listen(port, function(err) {
     if (err) {
       console.log('Error connecting to the server');
       throw err;
