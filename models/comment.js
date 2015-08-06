@@ -14,7 +14,8 @@ var commentSchema = mongoose.Schema({
   votes: {
     type: Number,
     default: 0
-  }
+  },
+  timestamp: Date
 })
 
 commentSchema.plugin(findOrCreate);
