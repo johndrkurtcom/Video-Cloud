@@ -1,4 +1,4 @@
-angular.module('app', ['app.home', 'app.video', 'ngRoute'])
+angular.module('app', ['app.home', 'app.video', 'app.auth' 'ngRoute'])
 .config(function($routeProvider, $httpProvider) {
   $routeProvider
     // .when('/signin', {
