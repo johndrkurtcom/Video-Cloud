@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var findOrCreate = require('mongoose-findorcreate');
 
 var commentSchema = mongoose.Schema({
   person: {
@@ -15,5 +16,7 @@ var commentSchema = mongoose.Schema({
     default: 0
   }
 })
+
+commentSchema.plugin(findOrCreate);
 
 module.exports = mongoose.model('Comment', commentSchema);
