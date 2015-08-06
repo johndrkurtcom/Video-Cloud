@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var findOrCreate = require('mongoose-findorcreate');
 
 var videoSchema = mongoose.Schema({
   videoprovider: String,
@@ -10,5 +11,7 @@ var videoSchema = mongoose.Schema({
   }],
   commentCount: Number
 });
+
+videoSchema.plugin(findOrCreate);
 
 module.exports = mongoose.model('Video', videoSchema);
