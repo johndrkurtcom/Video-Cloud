@@ -35,5 +35,11 @@ module.exports = function(io) {
     socket.on('disconnect', function() {
       io.emit('user disconnected');
     });
+
+    socket.on('cs-comment', function(data) { //listen to new comments
+      // todo: add comment to database
+      console.log("TEST ----> inside cs-comment. Data=", data);
+      // io.emit('user disconnected');
+    });
   })
 }
