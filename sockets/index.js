@@ -1,5 +1,6 @@
 var fakedata = require('./fakedata').data;
 module.exports = function(io) {
+  console.log(fakedata);
   // io.connection
   // listen to socket event 'cs-init':
   // // contains: video id, user objectID or empty
@@ -12,12 +13,12 @@ module.exports = function(io) {
   // listening to socket event 'cs-comment'
   // // contain: video id, user objectID, text, timestamp ... 
 
-  io.connection(function(socket) {
+  io.on('connection', function(socket) {
     // listen to init event from client
     socket.on('cs-init', function(data) {
       console.log(data);
       // data contains video id info which represents the namespace the socket needs to join
-      var channel = data.videoid;
+      var channel = data.videoId;
       // socket should leave all other namespaces / rooms
       if (socket.lastChannel) {
         socket.leave(socket.lastChannel);
@@ -27,7 +28,9 @@ module.exports = function(io) {
       socket.join(channel);
       socket.lastChannel = channel;
       // we emit a server-client event to the socket 
-      socket.emit('sc-init', fakedata)
+      socket.emit('sc-init', {
+        comments: fakedata
+      })
     });
     socket.on('disconnect', function() {
       io.emit('user disconnected');
