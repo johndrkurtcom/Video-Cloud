@@ -1,6 +1,6 @@
 var fakedata = require('./fakedata').data;
 module.exports = function(io) {
-  console.log(fakedata);
+  // console.log(fakedata);
   // io.connection
   // listen to socket event 'cs-init':
   // // contains: video id, user objectID or empty
@@ -14,6 +14,7 @@ module.exports = function(io) {
   // // contain: video id, user objectID, text, timestamp ... 
 
   io.on('connection', function(socket) {
+    console.log('connected');
     // listen to init event from client
     socket.on('cs-init', function(data) {
       console.log(data);
