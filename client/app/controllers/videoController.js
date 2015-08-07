@@ -59,9 +59,11 @@ angular.module('app.video', [])
         }else if(e===0){ //ended
 
         }else if(e===1){ //playing: re-establish setTimouts(comments)
+          console.log("TEST: PLAY EVENT");
           var currentTime = $window.player.getCurrentTime();
           $scope.promises = scrollerHelper.makePromises(testData.comments, currentTime);
         }else if(e===2){ //paused: cancel all setTimouts(comments)
+          console.log("TEST: PAUSE EVENT");
           scrollerHelper.killPromises($scope.promises);
         }else if(e===3){ //buffering
 
@@ -84,14 +86,17 @@ angular.module('app.video', [])
         var timestamp = comment.timestamp; 
         var delay = timestamp-currentTime;
         if(delay>0){
-          var promise = $timeout(function(){
-            console.log("MESSAGE:"+text);
-          }, delay*1000);
+          var promise = $timeout(function(text){
+            return function(){
+              console.log("MESSAGE:"+text);
+            }
+          }(text), delay*1000);
 
           promises.push(promise);
         } //if
       } //for(comments)
       console.log("Promises = ", promises);
+      // killPromises(promises);
       return promises;
     } //makePromises()
 
