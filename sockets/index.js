@@ -13,34 +13,39 @@ module.exports = function(io) {
   // listening to socket event 'cs-comment'
   // // contain: video id, user objectID, text, timestamp ... 
 
+  var setVideoChannel = function(socket, data) {
+    // data contains video id info which represents the namespace the socket needs to join
+    var channel = data.videoId;
+    // socket should leave all other namespaces / rooms
+    if (socket.lastChannel) {
+      socket.leave(socket.lastChannel);
+      socket.lastChannel = null;
+    }
+    // socket needs to join the namespace of the video id
+    socket.join(channel);
+    socket.lastChannel = channel;
+  }
+
   io.on('connection', function(socket) {
     console.log('connected');
     // listen to init event from client
     socket.on('cs-init', function(data) {
       console.log(data);
-      // data contains video id info which represents the namespace the socket needs to join
-      var channel = data.videoId;
-      // socket should leave all other namespaces / rooms
-      if (socket.lastChannel) {
-        socket.leave(socket.lastChannel);
-        socket.lastChannel = null;
-      }
-      // socket needs to join the namespace of the video id
-      socket.join(channel);
-      socket.lastChannel = channel;
+      setVideoChannel(socket, data);
       // we emit a server-client event to the socket 
       socket.emit('sc-init', {
         comments: fakedata
       })
-    });
-    socket.on('disconnect', function() {
-      io.emit('user disconnected');
     });
 
     socket.on('cs-comment', function(data) { //listen to new comments
       // todo: add comment to database
       console.log("TEST ----> inside cs-comment. Data=", data);
       // io.emit('user disconnected');
+    });
+
+    socket.on('disconnect', function() {
+      io.emit('user disconnected');
     });
   })
 }
