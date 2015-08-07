@@ -1,2 +1,13 @@
-<h3> Home </h3>
-{{test}}
+<h3> Search </h3>
+
+<div id='searchForm'>
+  <form name='videoSearchForm' ng-submit='search()' novalidate>
+    <!-- <label>Video Search</label> -->
+
+    <input name='videoSearch' type='url' ng-model='home.vidoeUrl' />
+    <button ng-disabled='videoSearchForm.videoSearch.$invalid'>Submit</button>
+
+    <p ng-show="videoSearchForm.videoSearch.$error.url">Not a valid video url</p>
+
+  </form>
+</div>

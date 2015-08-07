@@ -1,5 +1,8 @@
 angular.module('app.home', [])
   .controller('homeController', function($scope) {
-    $scope.test = 'Home says: Hello world!';
+    $scope.home = {};
 
+    $scope.submit = function(){
+      //request the vidoe and comments from the server
+    }
   });
