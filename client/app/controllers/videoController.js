@@ -5,7 +5,6 @@ angular.module('app.video', [])
     var socket = io.connect("http://127.0.0.1:3000/"); // dev: route must change for deployment
 
     $scope.submitComment = function() {
-        console.log('Test----> inside submitComment');
         socket.emit('cs-comment', {
           username: 'Matthias',
           videoId: 'nS68JH9lFEs',
@@ -15,6 +14,7 @@ angular.module('app.video', [])
 
       } //submitComment
 
+    // socket emits init event to tell server the video selected
     socket.emit('cs-init', {
       videoId: 'nS68JH9lFEs'
     }); //dev: videoId will be variable
@@ -22,19 +22,21 @@ angular.module('app.video', [])
     // server responds to cs-init with sc-init containing video data
     socket.on('sc-init', function(video) {
       console.log("SocketIO is a success! data = ", video);
-    }); //SCcomment 
+    });
+
+    // if server saves a submitted comment correctly, server broadcasts the new comment to entire namespace
+    socket.on('sc-comment new', function(comment) {
+      // todo: add new comment to scrolling output?
+      console.log('new comment received', comment);
+    });
+
+    // error handling in case the submitted comment could not be handled by server
+    socket.on('sc-comment error', function(error) {
+      console.log('something went wrong, the comment could not be saved', error);
+    });
 
     $timeout(function() {
-
       $window.videoPlayer.playVideo();
     }, 1500);
 
-
-    /******TEST******/
-
-    // socket.on('sc-comment', function(data){
-    //   console.log("SocketIO is a success! data = ", data);
-    // }); //SCcomment
-
-    /******TEST*******/
   });
