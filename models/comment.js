@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 var findOrCreate = require('mongoose-findorcreate');
+var Schema = mongoose.Schema;
 
-var commentSchema = mongoose.Schema({
+var commentSchema = new Schema({
   person: {
     type: Schema.Types.ObjectId,
     ref: 'Person'

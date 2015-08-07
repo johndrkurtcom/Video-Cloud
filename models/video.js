@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 var findOrCreate = require('mongoose-findorcreate');
+var Schema = mongoose.Schema;
 
-var videoSchema = mongoose.Schema({
+var videoSchema = new Schema({
   videoprovider: String,
   videoid: String,
   videourl: String,

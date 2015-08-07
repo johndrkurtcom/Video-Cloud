@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 var findOrCreate = require('mongoose-findorcreate');
+var Schema = mongoose.Schema;
 
-var userSchema = mongoose.Schema({
+var userSchema = new Schema({
   profile: {
     provider: String,
     id: String,
