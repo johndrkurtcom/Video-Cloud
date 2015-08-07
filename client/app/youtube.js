@@ -21,16 +21,15 @@
   // autoplay video
   function onPlayerReady(event) {
     console.log("inside onPlayerReady");
-  
+    
     window.videoPlayer = event.target; 
     // window.player = event.target
   } // onPlayerReady()
 
   // when video ends
   function onPlayerStateChange(event) {        
-  //     if(event.data === 0) {            
-  //         alert('done');
-  //     }
+    
+
   } // onPlayerStateChange()
 // setTimeout(function(){
 
