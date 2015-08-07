@@ -1,4 +1,7 @@
 var fakedata = require('./fakedata').data;
+var Video = require('../models').Video;
+var addComment = require('../controllers/commentController.js').addComment;
+
 module.exports = function(io) {
   // console.log(fakedata);
   // io.connection
@@ -13,34 +16,61 @@ module.exports = function(io) {
   // listening to socket event 'cs-comment'
   // // contain: video id, user objectID, text, timestamp ... 
 
+  var setVideoChannel = function(socket, data) {
+    // data contains video id info which represents the namespace the socket needs to join
+    var channel = data.videoId;
+    // socket should leave all other namespaces / rooms
+    if (socket.lastChannel) {
+      socket.leave(socket.lastChannel);
+      socket.lastChannel = null;
+    }
+    // socket needs to join the namespace of the video id
+    socket.join(channel);
+    socket.lastChannel = channel;
+  }
+
   io.on('connection', function(socket) {
     console.log('connected');
+
     // listen to init event from client
     socket.on('cs-init', function(data) {
       console.log(data);
-      // data contains video id info which represents the namespace the socket needs to join
-      var channel = data.videoId;
-      // socket should leave all other namespaces / rooms
-      if (socket.lastChannel) {
-        socket.leave(socket.lastChannel);
-        socket.lastChannel = null;
-      }
-      // socket needs to join the namespace of the video id
-      socket.join(channel);
-      socket.lastChannel = channel;
-      // we emit a server-client event to the socket 
-      socket.emit('sc-init', {
-        comments: fakedata
+      setVideoChannel(socket, data);
+
+      Video.findOne({
+        videoId: data.videoId
+      }, function(err, video) {
+        if (err) throw err;
+        // we emit a server-client event to the socket 
+        socket.emit('sc-init', {
+          video: video
+        })
+
       })
-    });
-    socket.on('disconnect', function() {
-      io.emit('user disconnected');
+
+
     });
 
-    socket.on('cs-comment', function(data) { //listen to new comments
-      // todo: add comment to database
-      console.log("TEST ----> inside cs-comment. Data=", data);
-      // io.emit('user disconnected');
+    // listen to new comments from socket
+    socket.on('cs-comment', function(data) {
+      // add comment to video 
+      addComment(data, function(err, data) {
+        if (err) {
+          // if something went wrong, communicate the error to client
+          socket.emit('sc-comment error', {
+            error: err
+          });
+        } else {
+          // if comment successfully added to video, return entire video object to client
+          socket.emit('sc-comment success', {
+            success: data
+          });
+        }
+      })
+    });
+
+    socket.on('disconnect', function() {
+      io.emit('user disconnected');
     });
   })
 }
