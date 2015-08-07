@@ -15,7 +15,7 @@ var commentSchema = mongoose.Schema({
     type: Number,
     default: 0
   },
-  timestamp: Date
+  timestamp: Number // seconds
 })
 
 commentSchema.plugin(findOrCreate);
