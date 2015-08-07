@@ -1,0 +1,34 @@
+.navigation {
+  width: 100%;
+  height: 40px;
+  background-color: #eee;
+}
+
+.navigation ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navigation li {
+  float: left;
+}
+
+.navigation li a {
+  width: 100px;
+  /*height: 20px;*/
+  height:100%;
+  line-height: 20px;
+  padding: 10px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}
+
+.navigation li a:hover {
+  background-color: #ddd;
+}
+
+.navigation li a.selected {
+  background-color: #ccc;
+}

@@ -9,7 +9,9 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
     <script src="http://www.youtube.com/player_api"></script>
+    
     <script src="/socket.io/socket.io.js"></script>
+    <script src="app/youtube.js"></script>
 
 
   </head>
@@ -17,7 +19,15 @@
   <body>
     <h1>Video Cloud</h1>
     
-
+    <div class='navigation'>
+        <ul>
+          <li><a href='/' class='index'>Home</a></li>
+          <li><a href='#/video' class='create'>Video</a></li>
+          <!-- <li><a href='#/signin' class='logout'>Logout</a></li> -->
+        </ul>
+    </div> <!-- navigation -->
+    
+    <div ng-show='true' id='player'></div>
     <!-- the ng-view directive is where our templates will be loaded into when naviagted to -->
     <div ng-view>
         

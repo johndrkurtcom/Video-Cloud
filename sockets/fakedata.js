@@ -5,7 +5,7 @@ exports.data = [{
   video: {},
   text: 'Lipsum 1',
   votes: 3,
-  timestamp: new Date('August 06, 2015 00:01:03')
+  timestamp: 2
 }, {
   person: {
     displayname: 'Name 2'
@@ -13,7 +13,7 @@ exports.data = [{
   video: {},
   text: 'Lipsum 2',
   votes: 0,
-  timestamp: new Date('August 06, 2015 00:01:13')
+  timestamp: 4
 }, {
   person: {
     displayname: 'Name 3'
@@ -21,7 +21,7 @@ exports.data = [{
   video: {},
   text: 'Lipsum 3',
   votes: 18,
-  timestamp: new Date('August 06, 2015 00:00:25')
+  timestamp: 10
 }, {
   person: {
     displayname: 'Name 4'
@@ -29,7 +29,7 @@ exports.data = [{
   video: {},
   text: 'Lipsum 4',
   votes: -3,
-  timestamp: new Date('August 06, 2015 00:02:22')
+  timestamp: 60
 }, {
   person: {
     displayname: 'Name 5'
@@ -37,5 +37,5 @@ exports.data = [{
   video: {},
   text: 'Lipsum 5',
   votes: 26,
-  timestamp: new Date('August 06, 2015 00:00:03')
+  timestamp: 34
 }];
