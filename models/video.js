@@ -3,14 +3,17 @@ var findOrCreate = require('mongoose-findorcreate');
 var Schema = mongoose.Schema;
 
 var videoSchema = new Schema({
-  videoprovider: String,
-  videoid: String,
-  videourl: String,
+  // videoprovider: String,
+  videoId: String,
+  // videourl: String,
   comments: [{
     type: Schema.Types.ObjectId,
     ref: 'Comment'
   }],
-  commentCount: Number
+  commentCount: {
+    type: Number,
+    default: 0
+  }
 });
 
 videoSchema.plugin(findOrCreate);

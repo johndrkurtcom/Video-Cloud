@@ -1,4 +1,7 @@
 var fakedata = require('./fakedata').data;
+var Video = require('../models').Video;
+var addComment = require('../controllers/commentController.js').addComment;
+
 module.exports = function(io) {
   // console.log(fakedata);
   // io.connection
@@ -28,20 +31,42 @@ module.exports = function(io) {
 
   io.on('connection', function(socket) {
     console.log('connected');
+
     // listen to init event from client
     socket.on('cs-init', function(data) {
       console.log(data);
       setVideoChannel(socket, data);
-      // we emit a server-client event to the socket 
-      socket.emit('sc-init', {
-        comments: fakedata
+
+      Video.findOne({
+        videoId: data.videoId
+      }, function(err, video) {
+        if (err) throw err;
+        // we emit a server-client event to the socket 
+        socket.emit('sc-init', {
+          video: video
+        })
+
       })
+
+
     });
 
-    socket.on('cs-comment', function(data) { //listen to new comments
-      // todo: add comment to database
-      console.log("TEST ----> inside cs-comment. Data=", data);
-      // io.emit('user disconnected');
+    // listen to new comments from socket
+    socket.on('cs-comment', function(data) {
+      // add comment to video 
+      addComment(data, function(err, data) {
+        if (err) {
+          // if something went wrong, communicate the error to client
+          socket.emit('sc-comment error', {
+            error: err
+          });
+        } else {
+          // if comment successfully added to video, return entire video object to client
+          socket.emit('sc-comment success', {
+            success: data
+          });
+        }
+      })
     });
 
     socket.on('disconnect', function() {
