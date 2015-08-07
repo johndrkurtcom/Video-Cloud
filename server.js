@@ -18,7 +18,6 @@ require('./config/passport.js')(passport);
 var port = process.env.PORT || 3000;
 
 //connect to the database
-// 'mongodb://127.0.0.1:27017' instead config.database don't worry about this line I need it for my environment to work properly - Ian
 mongoose.connect(config.database, function(err) {
   if (err) {
     console.log('Error connecting to the database');
