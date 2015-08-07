@@ -1,15 +1,11 @@
-angular.module('app', ['app.home', 'app.video', 'ngRoute'])
+angular.module('app', ['app.home', 'app.video', 'app.userName', 'ngRoute'])
 .config(function($routeProvider, $httpProvider) {
   $routeProvider
-    // .when('/signin', {
-    //   templateUrl: 'app/auth/signin.html',
-    //   controller: 'AuthController'
-    // })
-    // .when('/signup', {
-    //   templateUrl: 'app/auth/signup.html',
-    //   controller: 'AuthController'
-    // })
     .when('/', {
+      templateUrl: 'app/views/userNamePage.html',
+      controller: 'UserNameController'
+    })
+    .when('/home', {
       templateUrl: 'app/views/home.html',
       controller: 'homeController'
     })
@@ -17,6 +13,10 @@ angular.module('app', ['app.home', 'app.video', 'ngRoute'])
       templateUrl: 'app/views/video.html',
       controller: 'videoController'
     })
+    // .when('/signup', {
+    //   templateUrl: 'app/auth/signup.html',
+    //   controller: 'AuthController'
+    // })
     // .when('/signout', {
     //   templateUrl: 'app/shorten/1.html',
     //   controller: 'LinksController'
