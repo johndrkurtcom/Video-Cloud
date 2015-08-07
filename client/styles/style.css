@@ -34,7 +34,28 @@
 }
 
 #commentContainer{
-  margin: 15px;
+  /*margin: 15px;*/
   float: left;
-  width
+  width: 280px;
+  /*display: inline-block;*/
+}
+
+#scrollerContainer{
+  /*margin: 15px;*/
+  float: left;
+  width: 360px;
+  height: 300px;
+  background-color:black;
+  opacity: 0.8;
+  
+  text-align:center;
+  color:white;
+
+  /*display: inline-block;*/
+}
+
+.textBubble{
+  color: green;
+  position:absolute;
+  
 }

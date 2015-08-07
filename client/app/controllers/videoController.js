@@ -16,12 +16,15 @@ angular.module('app.video', [])
     }); //dev: videoId will be variable
 
     // server responds to cs-init with sc-init containing video data
-    socket.on('sc-init', function(video) {
-      console.log("SocketIO is a success! data = ", video);
+    socket.on('sc-init', function(videoData) {
+      console.log("SocketIO is a success! data = ", videoData);
+      $scope.comments = videoData.video.comments;
+
     });
 
     /*********CONTROLLERS*********/
     $scope.submitComment = function() {
+      console.log('submitComment');
       /*****TEST ****///func: get current video time
       var currentTime = $window.player.getCurrentTime();
       var comment = $scope.comment; 
@@ -57,15 +60,17 @@ angular.module('app.video', [])
         if(e===-1){ //unstarted
 
         }else if(e===0){ //ended
+          console.log("TEST: VIDEO ENDED");
 
         }else if(e===1){ //playing: re-establish setTimouts(comments)
-          console.log("TEST: PLAY EVENT");
+          console.log("TEST: VIDEO PLAYING");
           var currentTime = $window.player.getCurrentTime();
-          $scope.promises = scrollerHelper.makePromises(testData.comments, currentTime);
+          $scope.promises = scrollerHelper.makePromises($scope.comments, currentTime);
         }else if(e===2){ //paused: cancel all setTimouts(comments)
-          console.log("TEST: PAUSE EVENT");
+          console.log("TEST: VIDEO PAUSED");
           scrollerHelper.killPromises($scope.promises);
         }else if(e===3){ //buffering
+          console.log("TEST: VIDEO BUFFERING");
 
         }else if(e===5){ //video cued
 
@@ -73,33 +78,34 @@ angular.module('app.video', [])
       }); //addEvenListener
 
 
-    }, 2000); //$timeout
+    }, 1500); //$timeout
 
   }).factory('scrollerHelper', function($timeout){ //
+    // func: create setTimeouts to display comments in the future
     var makePromises = function(comments, currentTime){ 
-      console.log('inside makePromises. comments=',comments);
-      var promises = [];
+      var promises = []; //array which holds the handles for setTimeouts 
       
       for(var i=0; i<comments.length; i++){
         var comment = comments[i];
-        var text = comment.text;
-        var timestamp = comment.timestamp; 
-        var delay = timestamp-currentTime;
+        var timestamp = comment.timestamp; //relative time position of comment
+        var delay = timestamp-currentTime; //time between comment time and current time in video
+
+        //func: play video only if the timestamp occurs after the current position in the video
         if(delay>0){
-          var promise = $timeout(function(text){
-            return function(){
-              console.log("MESSAGE:"+text);
+          var promise = $timeout(function(comment){ //decorator function creates custom closure for text variable
+            return function(){ //display comment!
+              displayComment(comment);
             }
-          }(text), delay*1000);
+          }(comment), delay*1000);
 
           promises.push(promise);
         } //if
       } //for(comments)
-      console.log("Promises = ", promises);
-      // killPromises(promises);
+
       return promises;
     } //makePromises()
 
+    // func: cancels setTimeouts which have been previously set. 
     var killPromises = function(promises){
       console.log('inside killPromises. promises=', promises);
       for(var i=0; i<promises.length; i++){
@@ -107,9 +113,18 @@ angular.module('app.video', [])
       } //for(promises)
     } //killPromises()
 
+    var displayComment = function(comment){
+      var username = comment.username || "Anonymouse";
+      var content = username+": "+comment.text; 
+      $("#scrollerContainer").append("<div class='textBubble'>"+content+"</div>");;
+    } //displayComment
+
+    // var clearContent = function()
+
     return {
       makePromises: makePromises,
-      killPromises: killPromises
+      killPromises: killPromises, 
+      displayComment: displayComment
     };
   }).factory('testData', function(){
     return {

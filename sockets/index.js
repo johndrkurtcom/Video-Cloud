@@ -1,4 +1,6 @@
 var Video = require('../models').Video;
+// var Comment = require('../comment').Comment;
+
 var addComment = require('../controllers/commentController.js').add;
 
 var setVideoChannel = function(socket, data) {
@@ -23,7 +25,9 @@ module.exports = function(io) {
       setVideoChannel(socket, data);
       Video.findOne({
         videoId: data.videoId
-      }, function(err, video) {
+      })
+      .populate('comments') //populates comments ref with comment data
+      .exec(function(err, video) {
         if (err) throw err;
         // we emit a server-client event to the socket 
         socket.emit('sc-init', {
