@@ -1,8 +1,12 @@
 <div id='userName'>
 
-  <form name='username' ng-submit='continue()'>
-    <input type='text' ng-model='user.username'>
-    <button>continue</button>
+  <form name='usernameForm' ng-submit='continue(usernameForm.$valid)' novalidate>
+    <label>User Name:</label>
+    <input type='text' name='username' ng-model='user.username' ng-minlength='3' ng-maxlength='25'>
+    <button ng-disabled='username.$error'>continue</button>
+
+    <p ng-show='usernameForm.username.$error.minlength'>Username is too short</p>
+    <p ng-show='usernameForm.username.$error.maxlength'>Username is too long</p>
   </form>
 
 </div>
