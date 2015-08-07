@@ -4,7 +4,8 @@ angular.module('app.userName', [])
   $scope.user = {};
 
   $scope.continue = function(){
-    $window.localStorage.setItem('username', $scope.user.username);
+    // for dev purposes this is commented out
+    // $window.localStorage.setItem('username', $scope.user.username);
     $location.path('/home');
   };
 
