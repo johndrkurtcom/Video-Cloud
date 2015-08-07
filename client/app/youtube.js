@@ -1,4 +1,9 @@
   var player;
+
+  // var tag = document.createElement('script');
+  // tag.src = "https://www.youtube.com/iframe_api";
+
+
   function onYouTubePlayerAPIReady() {
       player = new YT.Player('player', {
         height: '500',

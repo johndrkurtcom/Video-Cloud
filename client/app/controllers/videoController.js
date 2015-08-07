@@ -1,6 +1,7 @@
 angular.module('app.video', [])
   .controller('videoController', function($scope, $window, $timeout) {
     $scope.test = 'Video says: Hello world!';
+    $('#videoContainer').show(); //test
 
     var socket = io.connect("http://127.0.0.1:3000/"); // dev: route must change for deployment
 
@@ -39,4 +40,12 @@ angular.module('app.video', [])
       $window.videoPlayer.playVideo();
     }, 1500);
 
+    $scope.$on("$destroy", function(){
+    
+    });
+      // $('#videoContainer').hide(); //test
+
+    $scope.$on('$viewContentLoaded', function(event) {
+
+    }); //on viewContentLoaded
   });

@@ -32,3 +32,8 @@
 .navigation li a.selected {
   background-color: #ccc;
 }
+
+form{
+  margin: 15px;
+
+}
