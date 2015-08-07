@@ -28,5 +28,9 @@ angular.module('app', ['app.home', 'app.video', 'app.userName', 'ngRoute'])
     // $httpProvider.interceptors.push('AttachTokens');
 }) //factory.roomHelper()
 .run(function ($rootScope, $location) {
-    
+    var url = $location.url();
+
+    // if(url==='/video'){
+      
+    // }
 });
