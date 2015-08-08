@@ -67,6 +67,7 @@ angular.module('app.video', [])
         }else if(e===2){ //paused: cancel all setTimouts(comments)
           console.log("TEST: VIDEO PAUSED");
           scrollerHelper.killPromises($scope.promises);
+
         }else if(e===3){ //buffering
           console.log("TEST: VIDEO BUFFERING");
 
@@ -99,7 +100,6 @@ angular.module('app.video', [])
           promises.push(promise);
         } //if
       } //for(comments)
-
       return promises;
     } //makePromises()
 
