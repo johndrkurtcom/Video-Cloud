@@ -8,7 +8,7 @@ angular.module('app.video', [])
     /*********INIT*********/
     $('#videoContainer').show(); 
 
-    var socket = io.connect("http://127.0.0.1:3000/"); // dev: route must change for deployment
+    // var socket = io.connect("http://127.0.0.1:3000/"); // dev: route must change for deployment
 
     // socket emits init event to tell server the video selected
     socket.emit('cs-init', {
@@ -53,15 +53,13 @@ angular.module('app.video', [])
     //NOTE: delayed to wait for page load
 
     $timeout(function() {
-      // $window.videoPlayer.playVideo();
-      //fund: detect state change of video
+      //func: detect state change of video
       $window.player.addEventListener('onStateChange', function(event){
         var e = event.data;
         if(e===-1){ //unstarted
 
         }else if(e===0){ //ended
           console.log("TEST: VIDEO ENDED");
-
         }else if(e===1){ //playing: re-establish setTimouts(comments)
           console.log("TEST: VIDEO PLAYING");
           var currentTime = $window.player.getCurrentTime();
@@ -108,6 +106,7 @@ angular.module('app.video', [])
     // func: cancels setTimeouts which have been previously set. 
     var killPromises = function(promises){
       console.log('inside killPromises. promises=', promises);
+      $("#scrollerContainer").html('');
       for(var i=0; i<promises.length; i++){
         $timeout.cancel(promises[i]); //cancel all promises
       } //for(promises)

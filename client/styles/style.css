@@ -56,6 +56,16 @@
 
 .textBubble{
   color: green;
-  position:absolute;
-  
+  /*position:absolute;*/
+
+}
+
+.container{
+  text-align:center;
+  padding:20px;
+}
+
+#searchContainer input{
+  width: 400px;
+  text-align: center;
 }

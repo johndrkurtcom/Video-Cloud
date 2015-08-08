@@ -1,10 +1,11 @@
-<h3> Search </h3>
 
-<div id='searchForm'>
-  <form name='videoSearchForm' ng-submit='search()' novalidate>
+
+<div id='searchContainer' class='container'>
+  Enter a URL to enable real-time commenting!
+  <form name='videoSearchForm' ng-submit='submitVideo()' novalidate>
     <!-- <label>Video Search</label> -->
 
-    <input name='videoSearch' type='url' ng-model='home.vidoeUrl' />
+    <input name='videoSearch' placeholder='Enter video url' type='url' ng-model='vidoeUrl' />
     <button ng-disabled='videoSearchForm.videoSearch.$invalid'>Submit</button>
 
     <p ng-show="videoSearchForm.videoSearch.$error.url">Not a valid video url</p>

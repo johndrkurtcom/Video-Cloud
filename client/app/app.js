@@ -27,7 +27,7 @@ angular.module('app', ['app.home', 'app.video', 'app.userName', 'ngRoute'])
     // of interceptors. Think of it like middleware for your ajax calls
     // $httpProvider.interceptors.push('AttachTokens');
 }) //factory.roomHelper()
-.run(function ($rootScope, $location) {
+.run(function ($rootScope, $location) { 
     var url = $location.url();
 
     // if(url==='/video'){
