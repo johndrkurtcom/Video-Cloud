@@ -9,7 +9,7 @@ angular.module('app', ['app.home', 'app.video', 'app.userName', 'ngRoute'])
       templateUrl: 'app/views/home.html',
       controller: 'homeController'
     })
-    .when('/video', {
+    .when('/video/:videoId*', {
       templateUrl: 'app/views/video.html',
       controller: 'videoController'
     })
@@ -28,7 +28,7 @@ angular.module('app', ['app.home', 'app.video', 'app.userName', 'ngRoute'])
     // $httpProvider.interceptors.push('AttachTokens');
 }) //factory.roomHelper()
 .run(function ($rootScope, $location) { 
-    var url = $location.url();
+    // var url = $location.url();
 
     // if(url==='/video'){
       

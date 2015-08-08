@@ -12,7 +12,6 @@ function onYouTubeIframeAPIReady() {
     height: '390',
     width: '640',
     playerVars: { 'controls': 1, 'start': 0 },
-    videoId: 'nS68JH9lFEs',
     events: {
       'onReady': onPlayerReady,
       'onStateChange': onPlayerStateChange
