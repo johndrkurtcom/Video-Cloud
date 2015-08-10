@@ -24,9 +24,10 @@ var dummyData = [
 
 angular.module('app.home', [])
 
-  .controller('homeController', function($scope, $path) {
-    $scope.home = {};
-    $scope.test = 'Home says: Hello world!';
+
+  .controller('homeController', function($scope) {
+    // $scope.home = {};
+    // $scope.test = 'Home says: Hello world!';
     
     $('#videoContainer').hide(); //test
     $scope.submitUrl = function(){
@@ -36,7 +37,7 @@ angular.module('app.home', [])
 
     }
   })
-  // I just went ahead on created my own controller because I'm sure what payton is doing
+  // I just went ahead on created my own controller here need to check with Payton
   .controller('movieController', function($scope, homeFactory){
     $scope.movie = homeFactory.movie;
     $scope.movies = dummyData;
