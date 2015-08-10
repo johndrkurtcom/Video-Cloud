@@ -43,7 +43,6 @@ angular.module('app.home', [])
     //request the relevant information from the server via socet io and append it to the page
     var socket = io.connect("http://127.0.0.1:3000/"); // dev: route must change for deployment
     //need to listen to the server for an emit event don't know what to call it yet so I have sc-init
-    //I might put the socket into the factory instead
     socket.on('sc-init', function(videos){
       console.log('Successful connection with the server', videos);
     });
