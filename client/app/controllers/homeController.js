@@ -25,7 +25,7 @@ var dummyData = [
 angular.module('app.home', [])
 
 
-  .controller('homeController', function($scope) {
+  .controller('homeController', function($scope,$path) {
     // $scope.home = {};
     // $scope.test = 'Home says: Hello world!';
     
