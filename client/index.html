@@ -9,13 +9,15 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
     <!--
-    -->
     <script src="http://www.youtube.com/player_api"></script>
+    -->
 
-    <script src="/socket.io/socket.io.js"></script>
     <script src="app/youtube.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 
-
+    <script>
+          var socket = io.connect("http://127.0.0.1:3000/"); // dev: route must change for deployment
+    </script>
   </head>
   
   <body>
@@ -30,7 +32,10 @@
     </div> <!-- navigation -->
     
     <div id = "videoContainer">
-      <div id='player'></div>
+      <div id="player"></div>
+
+      <!--
+      -->
     </div> <!-- videoContainer -->
     
     <div ng-view>    

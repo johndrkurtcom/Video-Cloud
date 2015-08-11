@@ -1,37 +1,38 @@
-  var player;
+var tag = document.createElement('script');
 
-  // var tag = document.createElement('script');
-  // tag.src = "https://www.youtube.com/iframe_api";
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-
-  function onYouTubePlayerAPIReady() {
-      player = new YT.Player('player', {
-        height: '500',
-        width: '640',
-        playerVars: { 'controls': 0, 'start': window.timeDiff },
-        videoId: 'nS68JH9lFEs',
-        events: {
-          'onReady': onPlayerReady,
-          'onStateChange': onPlayerStateChange
-        }
-      }); //player
-
-    window.player = player;
-  } //onYoutubePlayerAPIReady()
-  // autoplay video
-  function onPlayerReady(event) {
-    console.log("inside onPlayerReady");
+// 3. This function creates an <iframe> (and YouTube player)
+//    after the API code downloads.
+var player;
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('player', {
+    height: '390',
+    width: '640',
+    playerVars: { 'controls': 1, 'start': 0 },
+    videoId: 'nS68JH9lFEs',
+    events: {
+      'onReady': onPlayerReady,
+      'onStateChange': onPlayerStateChange
+    }
+  });
   
-    window.videoPlayer = event.target; 
-    // window.player = event.target
-  } // onPlayerReady()
+  window.player = player; 
+} //onYouTubeIframeAPIReady()
 
-  // when video ends
-  function onPlayerStateChange(event) {        
-  //     if(event.data === 0) {            
-  //         alert('done');
-  //     }
-  } // onPlayerStateChange()
-// setTimeout(function(){
+// 4. The API will call this function when the video player is ready.
+function onPlayerReady(event) {
+  // event.target.playVideo();
+}//onPlayerReady()
 
-// }, 1000)
+// 5. The API calls this function when the player's state changes.
+//    The function indicates that when playing a video (state=1),
+//    the player should play for six seconds and then stop.
+function onPlayerStateChange(event) {
+  
+}//onPlayerStateChange()
+function stopVideo() {
+  player.stopVideo();
+}//onPlayerStateChange()

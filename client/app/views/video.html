@@ -1,8 +1,11 @@
 
 
-<form>
-  <input ng-model='comment' ng-click='comment=""' placeholder='enter comment' class='text' type='text' name='comment' class='comment'><div id = 'player'>
+<form id ='commentContainer' class='container'>
+  <input ng-model='comment' ng-click='comment=""' placeholder='enter comment' class='text' type='text' name='comment' class='comment'>
 
-
-  <input type='submit' value='Enter' ng-click = "submitComment();">
+  <input type='submit' value='Enter' ng-click = 'submitComment();'>
 </form>
+
+<div id='scrollerContainer' class='container'>
+  
+</div> <!-- scrollerContainer -->
