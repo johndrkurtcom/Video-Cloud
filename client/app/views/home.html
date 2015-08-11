@@ -11,4 +11,13 @@
     <p ng-show="videoSearchForm.videoSearch.$error.url">Not a valid video url</p>
 
   </form>
+  <div ng-controller='movieController'>
+    <p>{{ movie }}</p>
+    <!-- for right now I am putting this into a bulleted list I need to get the real data, I am waiting on mattias at this point,
+    I will add some bootsrap classes and probably change this to a table instead of a list, not sure -->
+    <li class='animate-repeat' ng-repeat='movie in movies'>
+      Title:{{ movie.title }} Length:{{ movie.length }} Number of comments{{ movie.comments }}
+    </li>
+
+  </div>
 </div>
