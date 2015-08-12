@@ -2,6 +2,9 @@ angular.module('app', ['app.home', 'app.video', 'app.userName', 'ngRoute'])
 .config(function($routeProvider, $httpProvider) {
   $routeProvider
     .when('/', {
+      redirectTo: '/login'
+    })
+    .when('/login', {
       templateUrl: 'app/views/userNamePage.html',
       controller: 'UserNameController'
     })
@@ -12,6 +15,13 @@ angular.module('app', ['app.home', 'app.video', 'app.userName', 'ngRoute'])
     .when('/video/:videoId*', {
       templateUrl: 'app/views/video.html',
       controller: 'videoController'
+    })
+    .when('/video', {
+      templateUrl: 'app/views/video.html',
+      controller: 'videoController'
+    })
+    .when('/logout', {
+      redirectTo: '/login'
     })
     // .when('/signup', {
     //   templateUrl: 'app/auth/signup.html',

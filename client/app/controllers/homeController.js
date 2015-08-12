@@ -24,10 +24,17 @@ var dummyData = [
 
 angular.module('app.home', [])
   .controller('homeController', function($scope, $location) {
-    // $scope.home = {};
-    // $scope.test = 'Home says: Hello world!';
-    $('#videoContainer').hide(); //test
+    /*********LOGIN*********/
+    console.log("TEST ---> username=", $scope.username);
+    if(!$scope.username){
+      $location.path('/login');
+    } // if
+
     
+    /*********INIT*********/
+    $('#videoContainer').hide(); // hide video player
+    
+    /*********CONTROLLER*********/
     $scope.submitVideo = function(){
       var url = $scope.videoUrl;
       var videoId = url.split('=')[1];

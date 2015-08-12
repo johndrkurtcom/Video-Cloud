@@ -1,10 +1,12 @@
 angular.module('app.video', [])
-  .controller('videoController', function($scope, $window, $timeout, testData, scrollerHelper, $routeParams) {
-    //test data:
-    // $scope.comments = testData.comments;
-    // 2. This code loads the IFrame Player API code asynchronously.
-        
-    // console.log("Route test: ",$routeParams);
+  .controller('videoController', function($scope, $window, $timeout, testData, scrollerHelper, $routeParams, $location) {
+
+    /*********LOGIN*********/
+    console.log("TEST ---> username=", $scope.username);
+    if(!$scope.username){
+      $location.path('/login');
+    } // if
+
     /***********INIT**********/
     $('#videoContainer').show(); 
 
