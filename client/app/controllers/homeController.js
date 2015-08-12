@@ -37,9 +37,7 @@ angular.module('app.home', [])
       // request the vidoe and comments from the server
     } //submitVideo
 
-
-<<<<<<< HEAD
-    }
+  
   })
   // I just went ahead on created my own controller here need to check with Payton
   .controller('movieController', function($scope, homeFactory){
@@ -59,8 +57,3 @@ angular.module('app.home', [])
       movie: movie
     }
   });
-
-
-=======
-  });
->>>>>>> added custom routing for videos. Todo, check if videoId is valid, and save to database if it is

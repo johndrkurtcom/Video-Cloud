@@ -5,14 +5,13 @@ angular.module('app.video', [])
     // 2. This code loads the IFrame Player API code asynchronously.
         
     // console.log("Route test: ",$routeParams);
-    /*********INIT*********/
+    /***********INIT**********/
     $('#videoContainer').show(); 
 
     var videoId = $routeParams.videoId || 'nS68JH9lFEs';
     $scope.videoId = videoId;
     // var socket = io.connect("http://127.0.0.1:3000/"); // dev: route must change for deployment
 
-    
     // func: socket emits init event to tell server the video selected
     socket.emit('cs-init', {
       videoId: videoId
@@ -21,8 +20,11 @@ angular.module('app.video', [])
     // func: server responds to cs-init with sc-init containing video data
     socket.on('sc-init', function(videoData) {
       console.log("SocketIO is a success! data = ", videoData);
-      $scope.comments = videoData.video.comments;
-
+      if(!videoData.video){
+        $scope.comments = [];
+      }else{
+        $scope.comments = videoData.video.comments;
+      } //if
     });
 
     /*********CONTROLLERS*********/
@@ -57,6 +59,7 @@ angular.module('app.video', [])
 
     $timeout(function() {
       // func: test videoId on player first
+      console.log("TEST ----> videoId="+videoId);
       $window.player.loadVideoById(videoId);
 
 
@@ -85,7 +88,7 @@ angular.module('app.video', [])
       }); //addEvenListener
 
 
-    }, 1500); //$timeout
+    }, 2000); //$timeout
 
   }).factory('scrollerHelper', function($timeout){ //
     // func: create setTimeouts to display comments in the future

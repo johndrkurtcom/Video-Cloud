@@ -17,7 +17,7 @@ function onYouTubeIframeAPIReady() {
       'onStateChange': onPlayerStateChange
     }
   });
-  
+  console.log('TEST------> Inside onYouTubeIframeAPIReady()');
   window.player = player; 
 } //onYouTubeIframeAPIReady()
 
