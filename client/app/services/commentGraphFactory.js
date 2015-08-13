@@ -27,7 +27,7 @@ angular.module('app.services', [])
       .data(data)
       .enter().append('div')
       .style('height', function(d){return d*5+'px'})
-      .style('width', function(){return 400/(data.length)+'px'})
+      .style('width', function(){return 545/(data.length)+'px'})
   }
   return ({
     graph: graph
