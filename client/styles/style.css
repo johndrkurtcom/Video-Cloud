@@ -69,3 +69,12 @@
   width: 400px;
   text-align: center;
 }
+
+/*controllers styling for the timeGraph*/
+.chart div {
+  background-color: steelblue;
+  padding: 1px;
+  margin: 3px;
+  color: white;
+  display:inline-block;
+}
