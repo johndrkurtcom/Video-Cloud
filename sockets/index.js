@@ -24,16 +24,29 @@ module.exports = function(io) {
     socket.on('cs-init', function(data) {
       setVideoChannel(socket, data);
       Video.findOne({
-        videoId: data.videoId
-      })
-      .populate('comments') //populates comments ref with comment data
-      .exec(function(err, video) {
-        if (err) throw err;
-        // we emit a server-client event to the socket 
-        socket.emit('sc-init', {
-          video: video
+          videoId: data.videoId
         })
-      })
+        .populate('comments') //populates comments ref with comment data
+        .exec(function(err, video) {
+          if (err) throw err;
+          // we emit a server-client event to the socket 
+          socket.emit('sc-init', {
+            video: video
+          })
+        });
+    });
+
+    // listen to client event requesting a movie list
+    socket.on('cs-movielist', function() {
+      Video.find()
+        .populate('comments')
+        .exec(function(err, videos) {
+          if (err) throw err;
+          // emit event to socket & send all movie data
+          socket.emit('sc-movielist', {
+            videos: videos
+          })
+        });
     });
 
     // listen to new comments from socket

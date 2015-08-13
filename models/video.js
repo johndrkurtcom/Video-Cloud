@@ -5,6 +5,10 @@ var Schema = mongoose.Schema;
 var videoSchema = new Schema({
   // videoprovider: String,
   videoId: String,
+  videoTitle: {
+    type: String,
+    default: 'unknown title'
+  }
   // videourl: String,
   comments: [{
     type: Schema.Types.ObjectId,
