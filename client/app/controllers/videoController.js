@@ -1,25 +1,32 @@
 angular.module('app.video', [])
-  .controller('videoController', function($scope, $window, $timeout, testData, scrollerHelper) {
-    //test data:
-    // $scope.comments = testData.comments;
-    // 2. This code loads the IFrame Player API code asynchronously.
-        
+  .controller('videoController', function($scope, $window, $timeout, testData, scrollerHelper, $routeParams, $location) {
 
-    /*********INIT*********/
+    /*********LOGIN*********/
+    console.log("TEST ---> username=", $scope.username);
+    if(!$scope.username){
+      $location.path('/login');
+    } // if
+
+    /***********INIT**********/
     $('#videoContainer').show(); 
 
+    var videoId = $routeParams.videoId || 'nS68JH9lFEs';
+    $scope.videoId = videoId;
     // var socket = io.connect("http://127.0.0.1:3000/"); // dev: route must change for deployment
 
-    // socket emits init event to tell server the video selected
+    // func: socket emits init event to tell server the video selected
     socket.emit('cs-init', {
-      videoId: 'nS68JH9lFEs'
+      videoId: videoId
     }); //dev: videoId will be variable
 
-    // server responds to cs-init with sc-init containing video data
+    // func: server responds to cs-init with sc-init containing video data
     socket.on('sc-init', function(videoData) {
       console.log("SocketIO is a success! data = ", videoData);
-      $scope.comments = videoData.video.comments;
-
+      if(!videoData.video){
+        $scope.comments = [];
+      }else{
+        $scope.comments = videoData.video.comments;
+      } //if
     });
 
     /*********CONTROLLERS*********/
@@ -53,6 +60,11 @@ angular.module('app.video', [])
     //NOTE: delayed to wait for page load
 
     $timeout(function() {
+      // func: test videoId on player first
+      console.log("TEST ----> videoId="+videoId);
+      $window.player.loadVideoById(videoId);
+
+
       //func: detect state change of video
       $window.player.addEventListener('onStateChange', function(event){
         var e = event.data;
@@ -67,8 +79,10 @@ angular.module('app.video', [])
         }else if(e===2){ //paused: cancel all setTimouts(comments)
           console.log("TEST: VIDEO PAUSED");
           scrollerHelper.killPromises($scope.promises);
+
         }else if(e===3){ //buffering
           console.log("TEST: VIDEO BUFFERING");
+          console.log('video load test:'+$window.player.getDuration());
 
         }else if(e===5){ //video cued
 
@@ -76,7 +90,7 @@ angular.module('app.video', [])
       }); //addEvenListener
 
 
-    }, 1500); //$timeout
+    }, 2000); //$timeout
 
   }).factory('scrollerHelper', function($timeout){ //
     // func: create setTimeouts to display comments in the future
@@ -99,7 +113,6 @@ angular.module('app.video', [])
           promises.push(promise);
         } //if
       } //for(comments)
-
       return promises;
     } //makePromises()
 
