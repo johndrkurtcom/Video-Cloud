@@ -25,10 +25,10 @@ var dummyData = [
 angular.module('app.home', [])
   .controller('homeController', function($scope, $location) {
     /*********LOGIN*********/
-    console.log("TEST ---> username=", $scope.username);
-    if(!$scope.username){
-      $location.path('/login');
-    } // if
+    // console.log("TEST ---> username=", $scope.username);
+    // if(!$scope.username){
+    //   $location.path('/login');
+    // } // if
 
     
     /*********INIT*********/
