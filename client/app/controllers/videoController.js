@@ -1,5 +1,5 @@
 angular.module('app.video', [])
-  .controller('videoController', function($scope, $window, $timeout, testData, scrollerHelper, $routeParams, $location) {
+  .controller('videoController', function($scope, $window, $timeout, testData, scrollerHelper, $routeParams, $location, commentGraph) {
 
     /*********LOGIN*********/
     console.log("TEST ---> username=", $scope.username);
@@ -28,6 +28,10 @@ angular.module('app.video', [])
         $scope.comments = videoData.video.comments;
       } //if
     });
+
+    //comment graph setup
+    data = [2,4,6,10,4,3,2,4,1,11,50,23,37,52,90,84,52,75,54];
+    commentGraph.graph(data, 180);
 
     /*********CONTROLLERS*********/
     $scope.submitComment = function() {
