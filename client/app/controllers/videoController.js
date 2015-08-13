@@ -2,10 +2,7 @@ angular.module('app.video', [])
   .controller('videoController', function($scope, $window, $timeout, testData, scrollerHelper, $routeParams, $location, commentGraph) {
 
     /*********LOGIN*********/
-    console.log("TEST ---> username=", $scope.username);
-    if(!$scope.username){
-      $location.path('/login');
-    } // if
+    
 
     /***********INIT**********/
     $('#videoContainer').show(); 
@@ -35,12 +32,13 @@ angular.module('app.video', [])
 
     /*********CONTROLLERS*********/
     $scope.submitComment = function() {
-      console.log('submitComment');
       /*****TEST ****///func: get current video time
       var currentTime = $window.player.getCurrentTime();
       var comment = $scope.comment; 
-      var username = testData.username; 
+      var username = $scope.username; 
 
+      console.log('submitComment. Username='+username);
+      
       socket.emit('cs-comment', {
         username: 'Matthias',
         videoId: 'nS68JH9lFEs',

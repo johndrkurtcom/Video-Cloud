@@ -37,10 +37,29 @@ angular.module('app', ['app.home', 'app.video', 'app.userName', 'ngRoute', 'app.
     // of interceptors. Think of it like middleware for your ajax calls
     // $httpProvider.interceptors.push('AttachTokens');
 }) //factory.roomHelper()
-.run(function ($rootScope, $location) { 
-    // var url = $location.url();
+.run(function ($rootScope, $location, $window) { 
+  //func: reroute to login if username has not been set. 
+  $rootScope.$on('$routeChangeStart', function (evt, next, current) {
+    // console.log('TEST ----------> before the app runs. url = '+$location.url());
+    var url = $location.url();
 
-    // if(url==='/video'){
-      
-    // }
+    if(url!=='/login'){ //any route other than /login
+      if(!$rootScope.username){
+        $location.path('/login');  
+      } //if
+
+      if(url==='/video'){ //play video is going to /video
+        //func: check if player is defined first
+        if($window.player!==undefined){
+          $window.player.playVideo();
+        } //if
+      }else{ //anything other than 
+        //func: check if player is defined first
+        if($window.player!==undefined){
+          $window.player.pauseVideo();
+        } //if
+      } //if(url)
+    } //if
+
+  }); //on(routeChangeStart)
 });
