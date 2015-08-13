@@ -49,12 +49,13 @@ angular.module('app.home', [])
   // I just went ahead on created my own controller here need to check with Payton
   .controller('movieController', function($scope, homeFactory){
     $scope.movie = homeFactory.movie;
-    $scope.movies = dummyData;
+    // $scope.movies = dummyData;
     //request the relevant information from the server via socet io and append it to the page
-    var socket = io.connect("http://127.0.0.1:3000/"); // dev: route must change for deployment
-    //need to listen to the server for an emit event don't know what to call it yet so I have sc-init
-    socket.on('sc-init', function(videos){
-      console.log('Successful connection with the server', videos);
+    //emmiting cs-movieList event and then listening for sc-movieList from the server
+    socket.emit('cs-movieList');
+    socket.on('sc-movieList', function(data){
+      console.log(data);
+      $scope.data = data;
     });
   })
 
