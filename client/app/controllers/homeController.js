@@ -47,21 +47,27 @@ angular.module('app.home', [])
   
   })
   // I just went ahead on created my own controller here need to check with Payton
-  .controller('movieController', function($scope, homeFactory){
-    $scope.movie = homeFactory.movie;
+  .controller('movieListController', function($scope, $location){
     // $scope.movies = dummyData;
     //request the relevant information from the server via socet io and append it to the page
-    //emmiting cs-movieList event and then listening for sc-movieList from the server
-    socket.emit('cs-movieList');
-    socket.on('sc-movieList', function(data){
-      console.log(data);
-      $scope.data = data;
+    //emmiting cs-movielist event and then listening for sc-movielist from the server
+    socket.emit('cs-movielist');
+    socket.on('sc-movielist', function(data){
+      //save the data to a variable for ng-repeat
+      $scope.movies = data.videos;
     });
+    //make a function that transmits the movie id and routes user to the video page
+    //it takes in the videoId as it's only argument
+    $scope.select = function(id){
+      $location.path('/video/' + id);
+      console.log('Clicked on Movie', id);
+    };
   })
 
-  .factory('homeFactory',function(){
-    var movie = 'This is where the displayed movies will show';
-    return {
-      movie: movie
-    }
-  });
+//Unecessary factory for now
+  // .factory('homeFactory',function(){
+  //   var movie = 'This is where the displayed movies will show';
+  //   return {
+  //     movie: movie
+  //   }
+  // });
