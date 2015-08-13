@@ -13,12 +13,14 @@
   </form>
   <div class='container' ng-controller='movieListController'>
     <h4>Videos that have been commented on</h4>
-    <!-- for right now I am putting this into a bulleted list I need to get the real data, I am waiting on mattias at this point,
-    I will add some bootsrap classes and probably change this to a table instead of a list, not sure -->
-    <div class='animate-repeat container' ng-repeat='movie in movies' ng-click='select(movie.videoId)'>
-      <div class='col-md-4'>Title: {{ movie.videoTitle }}</div> 
-      <div class='col-md-4'>Length: {{  }}</div> 
-      <div class='col-md-4'>Number of comments: {{ movie.commentCount }}</div>
+    <div><input placeholder='search through existing videos' type="text" ng-model='searchText'></div>
+    <div class='col-md-4'>Title</div>
+    <div class='col-md-4'>Length</div>
+    <div class='col-md-4'>Number of Comments</div>
+    <div class='animate-repeat' ng-repeat='movie in movies | filter:searchText' ng-click='select(movie.videoId)'>
+      <div class='col-md-4'>{{ movie.videoTitle }}</div> 
+      <div class='col-md-4'>{{  }}</div> 
+      <div class='col-md-4'>{{ movie.commentCount }}</div>
     </div>
 
   </div>
