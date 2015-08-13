@@ -8,7 +8,7 @@ var videoSchema = new Schema({
   videoTitle: {
     type: String,
     default: 'unknown title'
-  }
+  },
   // videourl: String,
   comments: [{
     type: Schema.Types.ObjectId,
