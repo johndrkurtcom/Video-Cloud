@@ -1,7 +1,7 @@
 
 
 <div id='searchContainer' class='container'>
-  <h3>Enter a URL to enable real-time commenting!</h3>
+  <h4>Enter a URL to enable real-time commenting!</h4>
   <form name='videoSearchForm' ng-submit='submitVideo()' novalidate>
     <!-- <label>Video Search</label> -->
 
@@ -12,8 +12,8 @@
 
   </form>
   <div class='container' ng-controller='movieListController'>
-    <h4>Videos that have been commented on</h4>
-    <div><input placeholder='search through existing videos' type="text" ng-model='searchText'></div>
+    <h4>Or search through movies in our database</h4>
+    <div><input id='searchInput' placeholder='search through existing videos' type="text" ng-model='searchText'></div>
     <div class='col-md-4'>Title</div>
     <div class='col-md-4'>Length</div>
     <div class='col-md-4'>Number of Comments</div>

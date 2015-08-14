@@ -94,6 +94,7 @@
   z-index:500;
 }
 
+
 .commentHover{
   position:relative;
   display:block;
@@ -102,4 +103,11 @@
   color: white;
   text:white;
   font-size:10pt;
+
+/*****************
+  Home.html
+*****************/
+
+#searchInput {
+  margin-bottom: 50px;
 }
