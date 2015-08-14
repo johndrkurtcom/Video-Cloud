@@ -20,14 +20,14 @@ angular.module('app.video', [])
         $scope.comments = [];
       } else {
         $scope.comments = videoData.video.comments;
+        // $scope.videoData = videoData;
       } //if
+
+      // comment graph setup
+      commentGraph.graph($scope.comments);
+      commentGraph.move();
+
     });
-
-    //comment graph setup
-
-    data = [2,4,6,10,4,3,2,4,1,11,50,23,37,52,90,84,52,75,54];
-    commentGraph.graph(data, 600);
-    commentGraph.move();
 
     /*********CONTROLLERS*********/
     $scope.submitComment = function() {

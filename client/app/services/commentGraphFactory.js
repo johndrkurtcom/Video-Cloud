@@ -2,19 +2,29 @@ angular.module('app.services', [])
 
 .factory('commentGraph', function(){
 
-  var formatTime = function(timeStamps, movieLength){
+  var formatTime = function(comments){
+    //timelog array of array [text, text]
     var timeLog = [];
     var current = 0;
-    timeStamps = timeStamps.sort();
+    //needs to be adjusted later
+    var movieLength = 600;
+
 
     for(var i=0; i<movieLength; i+=5){
-      var count = 0;
-      while(timeStamps[current] < i+5){
-        count ++;
-        current ++;
+      var list = [];
+      if(current < comments.length){
+        while((comments[current].timestamp < i+5)){
+          list.push({
+            text: comments[current].text,
+            username: comments[current].username
+          })
+          current ++;
+          if(current === comments.length){
+            break;
+          }
+        }
       }
-      timeLog.push(count);
-      count = 0;
+      timeLog.push(list);
     }
     return timeLog;
   }
@@ -47,16 +57,23 @@ angular.module('app.services', [])
     });
   }
 
-  var graph = function(timeStamps, movieLength){
-    var data = formatTime(timeStamps, movieLength);
+  var graph = function(comments){
+
+    var data = formatTime(comments);
 
     d3.select('.chart')
       .selectAll('div')
       .data(data)
       .enter().append('div')
-      .style('height', function(d){return d*5+'px'})
+      .style('height', function(d){return d.length*5+'px'})
       .style('width', function(){return (615/(data.length))-(2)+'px'})
-      .on('mouseover', function(d){console.log(d)})
+      .on('mouseover', function(d){
+        var comments = [];
+        for(var i=0; i<d.length; i++){
+          comments.push(d[i].text);
+        }
+        console.log(comments);
+      })
   }
   return ({
     graph: graph,
