@@ -1,10 +1,11 @@
 // var mongoose = require('mongoose');
 var Video = require('../models/video.js');
 
-var findOrCreate = function(comment) {
-	var videoId = comment.videoId;
-	var videoTitle = comment.videoTitle;
-	console.log("Inside videoController ----> Comment=", comment);
+var findOrCreate = function(video) {
+	var videoId = video.videoId;
+	var videoTitle = video.videoTitle;
+	var duration = video.videoDuration;
+	console.log("Inside videoController ----> video=", video);
 	
 	Video.findOne({videoId:videoId}).exec(function(err, data){
 		if(data){ //func: video exists, don't do anything
@@ -14,7 +15,8 @@ var findOrCreate = function(comment) {
 			// console.log("Inside videoController ----> Video NOT found. data=", data);
 			new Video({
 				videoId:videoId,
-				videoTitle: videoTitle
+				videoTitle: videoTitle, 
+				duration: duration
 			}).save();
 		} //if(data)
 	});
