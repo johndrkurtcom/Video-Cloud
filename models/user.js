@@ -4,15 +4,17 @@ var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
   username: String,
-  // profile: {
-  //   provider: String,
-  //   id: String,
-  //   displayName: String,
-  //   emails: {
-  //     type: Array,
-  //     default: []
-  //   }
-  // },
+  facebook: {
+    id: String,
+    token: String,
+    name: String
+  },
+  twitter: {
+    id: String,
+    token: String,
+    displayName: String,
+    username: String
+  },
   created: {
     type: Date,
     default: Date.now
