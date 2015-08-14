@@ -17,13 +17,16 @@ var setVideoChannel = function(socket, data) {
   socket.join(channel);
   socket.lastChannel = channel;
 }
-var onAuthorizeSuccess = function() {
-  console.log('passportSocketIo auth success');
-  // todo! need to emit an event to the socket with user info.
+
+var onAuthorizeFail = function(data, message, error, accept) {
+  console.log('passportSocketIo auth failed: ', data, error);
+  if (error) throw new Error(message);
+  return accept(new Error(message));
 }
 
-var onAuthorizeFail = function() {
-  console.log('passportSocketIo auth failed');
+var onAuthorizeSuccess = function(data, accept) {
+  console.log('passportSocketIo auth success: ', data.user);
+  return accept();
 }
 
 module.exports = function(io, sessionStore) {
@@ -50,7 +53,8 @@ module.exports = function(io, sessionStore) {
           // we emit a server-client event to the socket 
           socket.emit('sc-init', {
             video: video,
-            user: socket.request.user
+            user: socket.request.user,
+            logged_in: socket.request.user.logged_in
           })
         });
     });
@@ -63,7 +67,9 @@ module.exports = function(io, sessionStore) {
           if (err) throw err;
           // emit event to socket & send all movie data
           socket.emit('sc-movielist', {
-            videos: videos
+            videos: videos,
+            user: socket.request.user,
+            logged_in: socket.request.user.logged_in
           })
         });
     });
@@ -78,13 +84,17 @@ module.exports = function(io, sessionStore) {
         if (err) {
           // if something went wrong, communicate the error to client
           socket.emit('sc-comment error', {
-            error: err
+            error: err,
+            user: socket.request.user,
+            logged_in: socket.request.user.logged_in
           });
         } else {
           // if comment successfully added to video
           // return entire video object to socket -- maybe redundant..
           socket.emit('sc-comment success', {
-            success: video
+            success: video,
+            user: socket.request.user,
+            logged_in: socket.request.user.logged_in
           });
           // send comment to all (!) connected clients in channel
           io.to(video.videoId).emit('sc-comment new', comment);

@@ -63,11 +63,4 @@ angular.module('app', ['app.home', 'app.video', 'app.userName', 'ngRoute', 'app.
       } //if
 
     }); //on(routeChangeStart)
-  })
-  .run(function($rootScope, $location) {
-    // var url = $location.url();
-
-    // if(url==='/video'){
-
-    // }
   });
