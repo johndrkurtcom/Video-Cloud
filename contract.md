@@ -1,5 +1,9 @@
 # Events emitted by client & processed by server
 
+_* Note: All server side events returning data to the client include properties: *_
+  * logged_in: Boolean
+  * user: object containing user info of loggedin user (per socket)
+
 ## source: videoController:
 
 ### cs-init 

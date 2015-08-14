@@ -2,22 +2,32 @@
 var mongoose = require('mongoose');
 var express = require('express');
 var session = require('express-session');
-var MongoStore = require('connect-mongo')(session);
+
+
+// Express middleware
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
+var path = require('path');
+
+// Express instance
 var app = express();
 var server = require('http').Server(app);
+
+// use mongo for session storage
+var MongoStore = require('connect-mongo')(session);
+
+// Setup Socket IO
 var io = require('socket.io')(server);
 var sockets = require('./sockets');
-var path = require('path');
-var routes = require('./routes');
-// load database info based on NODE_ENV
-var config = require('./config/config.js').get(process.env.NODE_ENV);
+
+// Setup PassportJS
 var passport = require('passport');
 require('./config/passport.js')(passport);
-// session storage
 
+// load configuration info based on NODE_ENV
+var config = require('./config/config.js').get(process.env.NODE_ENV);
 
+var routes = require('./routes');
 var port = process.env.PORT || 3000;
 
 //connect to the database
