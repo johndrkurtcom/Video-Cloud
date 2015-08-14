@@ -7,10 +7,12 @@ angular.module('app.services', [])
     var timeLog = [];
     var current = 0;
     //needs to be adjusted later
-    var movieLength = 600;
+    var movieLength = 7200;
+    var numBars = 150;
+    //length of movie clip / number of desired bars: upper limit 150
+    var increment = Math.floor(movieLength / numBars);
 
-
-    for(var i=0; i<movieLength; i+=5){
+    for(var i=0; i<movieLength; i+=increment){
       var list = [];
       if(current < comments.length){
         while((comments[current].timestamp < i+5)){
@@ -47,7 +49,7 @@ angular.module('app.services', [])
         .transition()
         .style('top', '430px')
         // .selectAll('div')
-        .style('opacity', '0.5');
+        .style('opacity', '0.75');
     }).on('mouseleave', function(){
       d3.select('.chart')
         .transition()
@@ -65,14 +67,24 @@ angular.module('app.services', [])
       .selectAll('div')
       .data(data)
       .enter().append('div')
-      .style('height', function(d){return d.length*5+'px'})
+      .style('height', function(d){return d.length*2+'px'})
       .style('width', function(){return (615/(data.length))-(2)+'px'})
-      .on('mouseover', function(d){
-        var comments = [];
-        for(var i=0; i<d.length; i++){
-          comments.push(d[i].text);
-        }
-        console.log(comments);
+      .on('mouseenter', function(d){
+        
+        d3.select('.chart')
+          .selectAll('span')
+          .data(d)
+          .enter().append('span')
+          .attr('class', 'commentHover')
+          .style('top', function(d, i){
+            return -60+(-i*40)+'px';
+          })
+          .text(function(d){return (d.username + ": " + d.text)})
+      })
+      .on('mouseleave', function(d){
+        d3.select('.chart')
+          .selectAll('.commentHover')
+          .remove()
       })
   }
   return ({

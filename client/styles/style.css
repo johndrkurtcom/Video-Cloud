@@ -93,3 +93,13 @@
   opacity:1;
   z-index:500;
 }
+
+.commentHover{
+  position:relative;
+  display:block;
+  background-color: steelblue;
+  border-radius: 2px;
+  color: white;
+  text:white;
+  font-size:10pt;
+}

@@ -20,7 +20,6 @@ angular.module('app.video', [])
         $scope.comments = [];
       } else {
         $scope.comments = videoData.video.comments;
-        // $scope.videoData = videoData;
       } //if
 
       // comment graph setup
