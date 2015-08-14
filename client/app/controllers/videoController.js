@@ -24,8 +24,10 @@ angular.module('app.video', [])
     });
 
     //comment graph setup
-    data = [2, 4, 6, 10, 4, 3, 2, 4, 1, 11, 50, 23, 37, 52, 90, 84, 52, 75, 54];
-    commentGraph.graph(data, 180);
+
+    data = [2,4,6,10,4,3,2,4,1,11,50,23,37,52,90,84,52,75,54];
+    commentGraph.graph(data, 600);
+    commentGraph.move();
 
     /*********CONTROLLERS*********/
     $scope.submitComment = function() {
