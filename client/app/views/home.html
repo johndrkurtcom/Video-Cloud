@@ -18,8 +18,11 @@
     <div class='col-md-4'>Length</div>
     <div class='col-md-4'>Number of Comments</div>
     <div class='animate-repeat' ng-repeat='movie in movies | filter:searchText' ng-click='select(movie.videoId)'>
+      <!-- title -->
       <div class='col-md-4'>{{ movie.videoTitle }}</div> 
+      <!-- length -->
       <div class='col-md-4'>{{  }}</div> 
+      <!-- comments -->
       <div class='col-md-4'>{{ movie.commentCount }}</div>
     </div>
 
