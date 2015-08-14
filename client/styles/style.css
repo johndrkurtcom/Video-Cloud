@@ -72,18 +72,34 @@
 
 
 /*controllers styling for the timeGraph*/
+.placeHolder{
+  height:30px;
+  widht:100px;
+}
 .chart{
   position:absolute;
-  top:430px;
+  top:520px;
   left:10px;
 }
+/*.chart:hover{
+  opacity:0.5;
+}*/
 .chart div {
-  /*position:absolute;*/
   background-color: steelblue;
   padding: 1px;
   margin: 1px;
   color: white;
   display:inline-block;
-  opacity:0.5;
+  opacity:1;
   z-index:500;
+}
+
+.commentHover{
+  position:relative;
+  display:block;
+  background-color: steelblue;
+  border-radius: 2px;
+  color: white;
+  text:white;
+  font-size:10pt;
 }
