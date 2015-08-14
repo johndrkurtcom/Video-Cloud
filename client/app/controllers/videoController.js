@@ -33,10 +33,9 @@ angular.module('app.video', [])
       // func: get current video time
       var comment = {
         username: $scope.username,
-        videoId: $scope.videoId, //test: 'nS68JH9lFEs'
+        videoId: videoId, 
         text: $scope.comment,
-        timestamp: $window.player.getCurrentTime(),
-        videoTitle: $scope.videoTitle
+        timestamp: $window.player.getCurrentTime()
       };
 
       // console.log('submitComment. comment=',comment);
@@ -73,13 +72,6 @@ angular.module('app.video', [])
             console.log("TEST --------------> loadVideoById() callback!");
           }); //load new video by video_id
 
-          // $timeout(function(){
-          //   //func: load player data again, after new videoId has been passed
-          //   var existingVideo = player.getVideoData(); //get video information {video_id, author, title}
-          //   console.log("timout, get videoData()=", existingVideo);
-
-          // }, 3000);
-
           //func: detect state change of video
           $window.player.addEventListener('onStateChange', function(event) {
             // console.log('TEST------> addEventListener');
@@ -93,16 +85,17 @@ angular.module('app.video', [])
               //NOTE: This is when the video data actually becomes available.  
               var currentTime = $window.player.getCurrentTime();
               $scope.promises = scrollerHelper.makePromises($scope.comments, currentTime);
+              
+              //*** Save Video ***//
+              var videoData = player.getVideoData(); //get video information {video_id, author, title}
 
-              var existingVideo = player.getVideoData(); //get video information {video_id, author, title}
+              var video = {
+                videoTitle: videoData.title, 
+                videoId: videoData.video_id,
+                videoDuration: player.getDuration()
+              };
 
-              $rootScope.videoTitle = existingVideo.title;
-              $rootScope.videoId = existingVideo.video_id;
-              $rootScope.videoAuthor = existingVideo.author;
-
-              /*****TESTS******/
-              console.log("timout, get videoData()=", existingVideo);
-              console.log('video load test:' + $window.player.getDuration());
+              socket.emit('cs-videoLoad', video); //dev: videoId will be variable
 
             } else if (e === 2) { //paused: cancel all setTimouts(comments)
               console.log("TEST: VIDEO PAUSED");
