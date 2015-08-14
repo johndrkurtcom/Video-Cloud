@@ -52,9 +52,6 @@ module.exports = function(io) {
 
     // listen to new comments from socket
     socket.on('cs-comment', function(comment) {
-      //func: create video first if not in database
-      videoController.findOrCreate(comment);
-
       // add comment to video 
       commentController.addComment(comment, function(err, video) {
         if (err) {
@@ -73,6 +70,13 @@ module.exports = function(io) {
         }
       })
     });
+
+    //func: save new video
+    socket.on('cs-videoLoad', function(video){
+      //func: create video first if not in database
+      videoController.findOrCreate(video);
+    }); //cs-videoLoad
+
 
     socket.on('disconnect', function() {
       io.emit('user disconnected');
