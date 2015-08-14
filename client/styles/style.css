@@ -26,7 +26,7 @@
 }
 
 .navigation li a:hover {
-  background-color: #ddd;
+  background-color: #4682B6;
 }
 
 .navigation li a.selected {
@@ -105,9 +105,31 @@
   font-size:10pt;
 
 /*****************
-  Home.html
+      HOME
 *****************/
 
 #searchInput {
   margin-bottom: 50px;
+}
+
+#list-table {
+  margin-bottom: 50px;
+}
+
+#movie-list {
+  height: 50px;
+  background-color: #98A8B6;
+  padding-top: 20px;
+}
+
+
+/*****************
+      INDEX
+*****************/
+
+#main-nav {
+  background-color: #3174AE;
+}
+#main-nav a {
+  color: white;
 }
