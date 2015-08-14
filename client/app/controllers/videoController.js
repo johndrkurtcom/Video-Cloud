@@ -1,11 +1,8 @@
 angular.module('app.video', [])
   .controller('videoController', function($scope, $rootScope, $http, $window, $timeout, testData, scrollerHelper, $routeParams, $location, commentGraph) {
 
-    /*********LOGIN*********/
-    
-
     /***********INIT**********/
-    $('#videoContainer').show(); 
+    $('#videoContainer').show();
 
     var videoId = $routeParams.videoId || 'nS68JH9lFEs';
     $scope.videoId = videoId;
@@ -19,15 +16,15 @@ angular.module('app.video', [])
     // func: server responds to cs-init with sc-init containing video data
     socket.on('sc-init', function(videoData) {
       console.log("SocketIO is a success! data = ", videoData);
-      if(!videoData.video){
+      if (!videoData.video) {
         $scope.comments = [];
-      }else{
+      } else {
         $scope.comments = videoData.video.comments;
       } //if
     });
 
     //comment graph setup
-    data = [2,4,6,10,4,3,2,4,1,11,50,23,37,52,90,84,52,75,54];
+    data = [2, 4, 6, 10, 4, 3, 2, 4, 1, 11, 50, 23, 37, 52, 90, 84, 52, 75, 54];
     commentGraph.graph(data, 180);
 
     /*********CONTROLLERS*********/
@@ -37,16 +34,17 @@ angular.module('app.video', [])
         username: $scope.username,
         videoId: $scope.videoId, //test: 'nS68JH9lFEs'
         text: $scope.comment,
-        timestamp: $window.player.getCurrentTime(), 
+        timestamp: $window.player.getCurrentTime(),
         videoTitle: $scope.videoTitle
       };
 
       // console.log('submitComment. comment=',comment);
-      
+
       socket.emit('cs-comment', comment); //dev: videoId will be variable
     }; //submitComment()
 
     /*********SOCKET LISTENERS*********/
+
 
     // if server saves a submitted comment correctly, server broadcasts the new comment to entire namespace
     socket.on('sc-comment new', function(comment) {
@@ -65,36 +63,36 @@ angular.module('app.video', [])
     $timeout(function() {
       // func: test videoId on player first
       // console.log("TEST ----> videoId="+videoId);
-        var player = $window.player; 
-      if(player !== undefined){
+      var player = $window.player;
+      if (player !== undefined) {
         var existingVideo = player.getVideoData(); //get video information {video_id, author, title}
-        
-        if(existingVideo.video_id !== videoId){ //new video being loaded
-          player.loadVideoById(videoId, function(){
+
+        if (existingVideo.video_id !== videoId) { //new video being loaded
+          player.loadVideoById(videoId, function() {
             console.log("TEST --------------> loadVideoById() callback!");
           }); //load new video by video_id
-          
+
           // $timeout(function(){
           //   //func: load player data again, after new videoId has been passed
           //   var existingVideo = player.getVideoData(); //get video information {video_id, author, title}
           //   console.log("timout, get videoData()=", existingVideo);
-            
+
           // }, 3000);
 
           //func: detect state change of video
-          $window.player.addEventListener('onStateChange', function(event){
+          $window.player.addEventListener('onStateChange', function(event) {
             // console.log('TEST------> addEventListener');
             var e = event.data;
-            if(e===-1){ //unstarted
+            if (e === -1) { //unstarted
 
-            }else if(e===0){ //ended
+            } else if (e === 0) { //ended
               // console.log("TEST: VIDEO ENDED");
-            }else if(e===1){ //playing: re-establish setTimouts(comments)
+            } else if (e === 1) { //playing: re-establish setTimouts(comments)
               console.log("TEST: VIDEO PLAYING");
               //NOTE: This is when the video data actually becomes available.  
               var currentTime = $window.player.getCurrentTime();
               $scope.promises = scrollerHelper.makePromises($scope.comments, currentTime);
-              
+
               var existingVideo = player.getVideoData(); //get video information {video_id, author, title}
 
               $rootScope.videoTitle = existingVideo.title;
@@ -103,77 +101,79 @@ angular.module('app.video', [])
 
               /*****TESTS******/
               console.log("timout, get videoData()=", existingVideo);
-              console.log('video load test:'+$window.player.getDuration());
+              console.log('video load test:' + $window.player.getDuration());
 
-            }else if(e===2){ //paused: cancel all setTimouts(comments)
+            } else if (e === 2) { //paused: cancel all setTimouts(comments)
               console.log("TEST: VIDEO PAUSED");
               scrollerHelper.killPromises($scope.promises);
 
-            }else if(e===3){ //buffering
+            } else if (e === 3) { //buffering
               // console.log("TEST: VIDEO BUFFERING");
 
-            }else if(e===5){ //video cued
+            } else if (e === 5) { //video cued
 
             } //if(e)
           }); //addEvenListener
 
-        }else{ // play existing video
+        } else { // play existing video
           player.playVideo();
-          
+
         } //if(existingVideoId !== videoId)
       } //if(player)
     }, 0); //$timeout
 
-  }).factory('scrollerHelper', function($timeout){ //
+
+  }).factory('scrollerHelper', function($timeout) { //
     // func: create setTimeouts to display comments in the future
-    var makePromises = function(comments, currentTime){ 
-      var promises = []; //array which holds the handles for setTimeouts 
-      
-      for(var i=0; i<comments.length; i++){
-        var comment = comments[i];
-        var timestamp = comment.timestamp; //relative time position of comment
-        var delay = timestamp-currentTime; //time between comment time and current time in video
+    var makePromises = function(comments, currentTime) {
+        var promises = []; //array which holds the handles for setTimeouts 
 
-        //func: play video only if the timestamp occurs after the current position in the video
-        if(delay>0){
-          var promise = $timeout(function(comment){ //decorator function creates custom closure for text variable
-            return function(){ //display comment!
-              displayComment(comment);
-            }
-          }(comment), delay*1000);
+        for (var i = 0; i < comments.length; i++) {
+          var comment = comments[i];
+          var timestamp = comment.timestamp; //relative time position of comment
+          var delay = timestamp - currentTime; //time between comment time and current time in video
 
-          promises.push(promise);
-        } //if
-      } //for(comments)
-      return promises;
-    } //makePromises()
+          //func: play video only if the timestamp occurs after the current position in the video
+          if (delay > 0) {
+            var promise = $timeout(function(comment) { //decorator function creates custom closure for text variable
+              return function() { //display comment!
+                displayComment(comment);
+              }
+            }(comment), delay * 1000);
+
+            promises.push(promise);
+          } //if
+        } //for(comments)
+        return promises;
+      } //makePromises()
 
     // func: cancels setTimeouts which have been previously set. 
-    var killPromises = function(promises){
-      // console.log('inside killPromises. promises=', promises);
-      $("#scrollerContainer").html('');
-      for(var i=0; i<promises.length; i++){
-        $timeout.cancel(promises[i]); //cancel all promises
-      } //for(promises)
-    } //killPromises()
+    var killPromises = function(promises) {
+        // console.log('inside killPromises. promises=', promises);
+        $("#scrollerContainer").html('');
+        for (var i = 0; i < promises.length; i++) {
+          $timeout.cancel(promises[i]); //cancel all promises
+        } //for(promises)
+      } //killPromises()
 
-    var displayComment = function(comment){
-      var username = comment.username || "Anonymouse";
-      var content = username+": "+comment.text; 
-      $("#scrollerContainer").append("<div class='textBubble'>"+content+"</div>");;
-    } //displayComment
+    var displayComment = function(comment) {
+        var username = comment.username || "Anonymouse";
+        var content = username + ": " + comment.text;
+        $("#scrollerContainer").append("<div class='textBubble'>" + content + "</div>");;
+      } //displayComment
+
 
     // var clearContent = function()
 
     return {
       makePromises: makePromises,
-      killPromises: killPromises, 
+      killPromises: killPromises,
       displayComment: displayComment
     };
-  }).factory('testData', function(){
+  }).factory('testData', function() {
     return {
       username: 'Payton',
-      videoId: 'nS68JH9lFEs', 
+      videoId: 'nS68JH9lFEs',
       comments: [{
           person: {
             displayname: 'Name 1'
@@ -214,7 +214,7 @@ angular.module('app.video', [])
           text: 'Lipsum 5',
           votes: 26,
           timestamp: 16
-      }] //comments
+        }] //comments
 
     }; //return 
-}); //controller
+  }); //controller
