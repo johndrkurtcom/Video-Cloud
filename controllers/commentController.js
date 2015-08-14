@@ -5,7 +5,8 @@ var Video = require('../models').Video;
 
 
 // this function adds new comments 
-exports.add = function(data, callback) {
+
+var addComment = function(data, callback) {
   var comment = {
     username: data.username,
     text: data.text,
@@ -36,8 +37,10 @@ exports.add = function(data, callback) {
       }
     });
 
-  })
+  }) //comment.create()
+} //addComment
 
-}
+module.exports = {
+  addComment: addComment
+};
 
-//
