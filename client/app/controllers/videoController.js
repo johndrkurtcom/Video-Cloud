@@ -1,5 +1,5 @@
 angular.module('app.video', [])
-  .controller('videoController', function($scope, $window, $timeout, testData, scrollerHelper, $routeParams, $location, commentGraph) {
+  .controller('videoController', function($scope, $rootScope, $http, $window, $timeout, testData, scrollerHelper, $routeParams, $location, commentGraph) {
 
     /*********LOGIN*********/
     
@@ -32,20 +32,21 @@ angular.module('app.video', [])
 
     /*********CONTROLLERS*********/
     $scope.submitComment = function() {
-      /*****TEST ****///func: get current video time
-      var currentTime = $window.player.getCurrentTime();
-      var comment = $scope.comment; 
-      var username = $scope.username; 
+      // func: get current video time
+      var comment = {
+        username: $scope.username,
+        videoId: $scope.videoId, //test: 'nS68JH9lFEs'
+        text: $scope.comment,
+        timestamp: $window.player.getCurrentTime(), 
+        videoTitle: $scope.videoTitle
+      };
 
-      console.log('submitComment. Username='+username);
+      // console.log('submitComment. comment=',comment);
       
-      socket.emit('cs-comment', {
-        username: 'Matthias',
-        videoId: 'nS68JH9lFEs',
-        text: comment,
-        timestamp: currentTime
-      }); //dev: videoId will be variable
-    }; //submitComment
+      socket.emit('cs-comment', comment); //dev: videoId will be variable
+    }; //submitComment()
+
+    /*********SOCKET LISTENERS*********/
 
     // if server saves a submitted comment correctly, server broadcasts the new comment to entire namespace
     socket.on('sc-comment new', function(comment) {
@@ -63,36 +64,65 @@ angular.module('app.video', [])
 
     $timeout(function() {
       // func: test videoId on player first
-      console.log("TEST ----> videoId="+videoId);
-      $window.player.loadVideoById(videoId);
+      // console.log("TEST ----> videoId="+videoId);
+        var player = $window.player; 
+      if(player !== undefined){
+        var existingVideo = player.getVideoData(); //get video information {video_id, author, title}
+        
+        if(existingVideo.video_id !== videoId){ //new video being loaded
+          player.loadVideoById(videoId, function(){
+            console.log("TEST --------------> loadVideoById() callback!");
+          }); //load new video by video_id
+          
+          // $timeout(function(){
+          //   //func: load player data again, after new videoId has been passed
+          //   var existingVideo = player.getVideoData(); //get video information {video_id, author, title}
+          //   console.log("timout, get videoData()=", existingVideo);
+            
+          // }, 3000);
 
+          //func: detect state change of video
+          $window.player.addEventListener('onStateChange', function(event){
+            // console.log('TEST------> addEventListener');
+            var e = event.data;
+            if(e===-1){ //unstarted
 
-      //func: detect state change of video
-      $window.player.addEventListener('onStateChange', function(event){
-        var e = event.data;
-        if(e===-1){ //unstarted
+            }else if(e===0){ //ended
+              // console.log("TEST: VIDEO ENDED");
+            }else if(e===1){ //playing: re-establish setTimouts(comments)
+              console.log("TEST: VIDEO PLAYING");
+              //NOTE: This is when the video data actually becomes available.  
+              var currentTime = $window.player.getCurrentTime();
+              $scope.promises = scrollerHelper.makePromises($scope.comments, currentTime);
+              
+              var existingVideo = player.getVideoData(); //get video information {video_id, author, title}
 
-        }else if(e===0){ //ended
-          console.log("TEST: VIDEO ENDED");
-        }else if(e===1){ //playing: re-establish setTimouts(comments)
-          console.log("TEST: VIDEO PLAYING");
-          var currentTime = $window.player.getCurrentTime();
-          $scope.promises = scrollerHelper.makePromises($scope.comments, currentTime);
-        }else if(e===2){ //paused: cancel all setTimouts(comments)
-          console.log("TEST: VIDEO PAUSED");
-          scrollerHelper.killPromises($scope.promises);
+              $rootScope.videoTitle = existingVideo.title;
+              $rootScope.videoId = existingVideo.video_id;
+              $rootScope.videoAuthor = existingVideo.author;
 
-        }else if(e===3){ //buffering
-          console.log("TEST: VIDEO BUFFERING");
-          console.log('video load test:'+$window.player.getDuration());
+              /*****TESTS******/
+              console.log("timout, get videoData()=", existingVideo);
+              console.log('video load test:'+$window.player.getDuration());
 
-        }else if(e===5){ //video cued
+            }else if(e===2){ //paused: cancel all setTimouts(comments)
+              console.log("TEST: VIDEO PAUSED");
+              scrollerHelper.killPromises($scope.promises);
 
-        } //if(e)
-      }); //addEvenListener
+            }else if(e===3){ //buffering
+              // console.log("TEST: VIDEO BUFFERING");
 
+            }else if(e===5){ //video cued
 
-    }, 2000); //$timeout
+            } //if(e)
+          }); //addEvenListener
+
+        }else{ // play existing video
+          player.playVideo();
+          
+        } //if(existingVideoId !== videoId)
+      } //if(player)
+    }, 0); //$timeout
 
   }).factory('scrollerHelper', function($timeout){ //
     // func: create setTimeouts to display comments in the future
@@ -120,7 +150,7 @@ angular.module('app.video', [])
 
     // func: cancels setTimeouts which have been previously set. 
     var killPromises = function(promises){
-      console.log('inside killPromises. promises=', promises);
+      // console.log('inside killPromises. promises=', promises);
       $("#scrollerContainer").html('');
       for(var i=0; i<promises.length; i++){
         $timeout.cancel(promises[i]); //cancel all promises

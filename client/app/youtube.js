@@ -8,6 +8,7 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 //    after the API code downloads.
 var player;
 function onYouTubeIframeAPIReady() {
+  console.log("onYouTubeIframeAPIReady() ------->");
   player = new YT.Player('player', {
     height: '390',
     width: '640',
@@ -17,20 +18,19 @@ function onYouTubeIframeAPIReady() {
       'onStateChange': onPlayerStateChange
     }
   });
-  console.log('TEST------> Inside onYouTubeIframeAPIReady()');
   window.player = player; 
 } //onYouTubeIframeAPIReady()
 
 // 4. The API will call this function when the video player is ready.
 function onPlayerReady(event) {
-  // event.target.playVideo();
+
 }//onPlayerReady()
 
 // 5. The API calls this function when the player's state changes.
 //    The function indicates that when playing a video (state=1),
 //    the player should play for six seconds and then stop.
 function onPlayerStateChange(event) {
-  
+
 }//onPlayerStateChange()
 function stopVideo() {
   player.stopVideo();

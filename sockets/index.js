@@ -1,7 +1,8 @@
 var Video = require('../models').Video;
 // var Comment = require('../comment').Comment;
 
-var addComment = require('../controllers/commentController.js').add;
+var commentController = require('../controllers/commentController.js');
+var videoController = require('../controllers/videoController.js');
 
 var setVideoChannel = function(socket, data) {
   // data contains video id info which represents the namespace the socket needs to join
@@ -51,8 +52,11 @@ module.exports = function(io) {
 
     // listen to new comments from socket
     socket.on('cs-comment', function(comment) {
+      //func: create video first if not in database
+      videoController.findOrCreate(comment);
+
       // add comment to video 
-      addComment(comment, function(err, video) {
+      commentController.addComment(comment, function(err, video) {
         if (err) {
           // if something went wrong, communicate the error to client
           socket.emit('sc-comment error', {
