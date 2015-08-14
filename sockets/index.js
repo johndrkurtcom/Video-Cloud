@@ -40,7 +40,7 @@ module.exports = function(io) {
     // listen to client event requesting a movie list
     socket.on('cs-movielist', function() {
       Video.find()
-        .populate('comments')
+        .populate('comments') 
         .exec(function(err, videos) {
           if (err) throw err;
           // emit event to socket & send all movie data

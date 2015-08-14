@@ -7,11 +7,11 @@ var findOrCreate = function(comment) {
 	console.log("Inside videoController ----> Comment=", comment);
 	
 	Video.findOne({videoId:videoId}).exec(function(err, data){
-		if(data){
-			console.log("Inside videoController ----> Video found. data=", data);
+		if(data){ //func: video exists, don't do anything
+			// console.log("Inside videoController ----> Video found. data=", data);
 
 		}else{ //create new video
-			console.log("Inside videoController ----> Video NOT found. data=", data);
+			// console.log("Inside videoController ----> Video NOT found. data=", data);
 			new Video({
 				videoId:videoId,
 				videoTitle: videoTitle
