@@ -35,7 +35,7 @@ angular.module('app.home', [])
         //save the data to a variable for ng-repeat
         $scope.$apply(function() { //re-renders page when data comes in
           $rootScope.movies = data.videos; //this once 
-          // console.log(data);
+          console.log(data);
         }); //apply
       }); //socket.on(sc-movielist)
     } //if(!movieList)
