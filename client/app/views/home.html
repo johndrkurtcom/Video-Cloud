@@ -6,14 +6,14 @@
     <!-- <label>Video Search</label> -->
 
     <input name='videoSearch' placeholder='Enter video url' type='url' ng-model='videoUrl' />
-    <button ng-disabled='videoSearchForm.videoSearch.$invalid' class="btn btn-xs btn-primary">Submit</button>
+    <button ng-disabled='videoSearchForm.videoSearch.$invalid' class="btn btn-xs submit-button">Submit</button>
 
     <p ng-show="videoSearchForm.videoSearch.$error.url">Not a valid video url</p>
 
   </form>
   <div class='' ng-controller='movieListController'>
     <h4>Or search through movies in our database</h4>
-    <div><input id='searchInput' placeholder='search through existing videos' type="text" ng-model='searchText'></div>
+    <div><input id='search-input' placeholder='search through existing videos' type="text" ng-model='searchText'></div>
     <div id='list-table'>  
       <div class='col-md-4'>Title</div>
       <div class='col-md-4'>Length</div>

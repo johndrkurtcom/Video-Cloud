@@ -49,7 +49,7 @@ angular.module('app.home', [])
 
   })
   // I just went ahead on created my own controller here need to check with Payton
-  .controller('movieListController', function($scope, $location, $rootScope) {
+  .controller('movieListController', function($scope, $location, $rootScope, commentGraph) {
     // $scope.movies = dummyData;
     //request the relevant information from the server via socet io and append it to the page
     //emmiting cs-movielist event and then listening for sc-movielist from the server

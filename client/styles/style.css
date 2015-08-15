@@ -1,3 +1,49 @@
+/*****************
+      HOME
+*****************/
+
+#search-input {
+  margin-bottom: 50px;
+}
+
+#list-table {
+  margin-bottom: 50px;
+}
+
+#movie-list {
+  height: 75px;
+  background-color: #98A8B6;
+  padding-top: 20px;
+}
+
+#movie-list:hover {
+  background-color: #578FC3;
+  cursor: default;
+}
+
+.submit-button {
+  background-color: #578FC3;
+}
+
+
+/*****************
+      INDEX
+*****************/
+
+#main-nav {
+  background-color: #578FC3;
+}
+#main-nav a {
+  color: white;
+}
+
+#title {
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  text-align: left;
+}
+
 .navigation {
   width: 100%;
   height: 40px;
@@ -101,35 +147,6 @@
   background-color: steelblue;
   border-radius: 2px;
   color: white;
-  text:white;
+  /*text:white;*/
   font-size:10pt;
 
-/*****************
-      HOME
-*****************/
-
-#searchInput {
-  margin-bottom: 50px;
-}
-
-#list-table {
-  margin-bottom: 50px;
-}
-
-#movie-list {
-  height: 50px;
-  background-color: #98A8B6;
-  padding-top: 20px;
-}
-
-
-/*****************
-      INDEX
-*****************/
-
-#main-nav {
-  background-color: #3174AE;
-}
-#main-nav a {
-  color: white;
-}
