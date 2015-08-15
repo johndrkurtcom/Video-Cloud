@@ -18,7 +18,7 @@ var dummyData = [{
 }];
 
 angular.module('app.home', [])
-  .controller('homeController', function($scope, $location) {
+  .controller('homeController', function($scope, $location, $window) {
     /*********LOGIN*********/
     // console.log("TEST ---> username=", $scope.username);
     // if(!$scope.username){
@@ -28,7 +28,7 @@ angular.module('app.home', [])
 
     /*********LOGIN*********/
     console.log("TEST ---> username=", $scope.username);
-    if (!$scope.username) {
+    if (!$window.user.username) {
       $location.path('/login');
     } // if
 

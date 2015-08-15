@@ -1,5 +1,5 @@
 angular.module('app.video', [])
-  .controller('videoController', function($scope, $rootScope, $http, $window, $timeout, testData, scrollerHelper, $routeParams, $location, commentGraph) {
+  .controller('videoController', function($scope, $rootScope, $http, $window, $timeout, testData, commentService, $routeParams, $location, commentGraph) {
 
     /***********INIT**********/
     $('#videoContainer').show();
@@ -32,7 +32,7 @@ angular.module('app.video', [])
     $scope.submitComment = function() {
       // func: get current video time
       var comment = {
-        username: $scope.username,
+        username: $window.user.username,
         videoId: videoId, 
         text: $scope.comment,
         timestamp: $window.player.getCurrentTime()
@@ -41,6 +41,8 @@ angular.module('app.video', [])
       // console.log('submitComment. comment=',comment);
 
       socket.emit('cs-comment', comment); //dev: videoId will be variable
+      $scope.comment = ''; //reset comment input
+
     }; //submitComment()
 
     /*********SOCKET LISTENERS*********/
@@ -49,7 +51,8 @@ angular.module('app.video', [])
     // if server saves a submitted comment correctly, server broadcasts the new comment to entire namespace
     socket.on('sc-comment new', function(comment) {
       // todo: add new comment to scrolling output?
-      console.log('new comment received', comment);
+      // console.log('new comment received', comment);
+      commentService.displayComment(comment);
     }); //sc-comment
 
     // error handling in case the submitted comment could not be handled by server
@@ -84,7 +87,7 @@ angular.module('app.video', [])
               console.log("TEST: VIDEO PLAYING");
               //NOTE: This is when the video data actually becomes available.  
               var currentTime = $window.player.getCurrentTime();
-              $scope.promises = scrollerHelper.makePromises($scope.comments, currentTime);
+              $scope.promises = commentService.makePromises($scope.comments, currentTime);
               
               //*** Save Video ***//
               var videoData = player.getVideoData(); //get video information {video_id, author, title}
@@ -99,7 +102,7 @@ angular.module('app.video', [])
 
             } else if (e === 2) { //paused: cancel all setTimouts(comments)
               console.log("TEST: VIDEO PAUSED");
-              scrollerHelper.killPromises($scope.promises);
+              commentService.killPromises($scope.promises);
 
             } else if (e === 3) { //buffering
               // console.log("TEST: VIDEO BUFFERING");
@@ -117,11 +120,11 @@ angular.module('app.video', [])
     }, 0); //$timeout
 
 
-  }).factory('scrollerHelper', function($timeout) { //
+  }).factory('commentService', function($timeout, $window) { //
     // func: create setTimeouts to display comments in the future
     var makePromises = function(comments, currentTime) {
         var promises = []; //array which holds the handles for setTimeouts 
-
+        // console.log("Inside makePromises(). comments=", comments);
         for (var i = 0; i < comments.length; i++) {
           var comment = comments[i];
           var timestamp = comment.timestamp; //relative time position of comment
@@ -144,7 +147,7 @@ angular.module('app.video', [])
     // func: cancels setTimeouts which have been previously set. 
     var killPromises = function(promises) {
         // console.log('inside killPromises. promises=', promises);
-        $("#scrollerContainer").html('');
+        // $("#commentContainer").html('');
         for (var i = 0; i < promises.length; i++) {
           $timeout.cancel(promises[i]); //cancel all promises
         } //for(promises)
@@ -152,10 +155,28 @@ angular.module('app.video', [])
 
     var displayComment = function(comment) {
         var username = comment.username || "Anonymouse";
-        var content = username + ": " + comment.text;
-        $("#scrollerContainer").append("<div class='textBubble'>" + content + "</div>");;
+        var timestamp = toHMS(Math.round(comment.timestamp)); //func: beautify time
+        var content = "("+timestamp+") "+ username + ": " + comment.text;
+        var $comment = $("<div class='textBubble'>" + content + "</div>")
+        if(username===$window.user.username){ //message belongs to current user
+          $comment.addClass('belongsToUser');
+        } //if
+
+        $("#commentContainer").prepend($comment);
       } //displayComment
 
+
+    var toHMS = function (seconds) {
+      var hours   = Math.floor(seconds / 3600);
+      var minutes = Math.floor((seconds - (hours * 3600)) / 60);
+      var seconds = seconds - (hours * 3600) - (minutes * 60);
+
+      if (hours   < 10) {hours   = "0"+hours;}
+      if (minutes < 10) {minutes = "0"+minutes;}
+      if (seconds < 10) {seconds = "0"+seconds;}
+      var time    = hours+':'+minutes+':'+seconds;
+      return time;
+    } //toHMS()
 
     // var clearContent = function()
 

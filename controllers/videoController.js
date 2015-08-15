@@ -5,7 +5,7 @@ var findOrCreate = function(video) {
 	var videoId = video.videoId;
 	var videoTitle = video.videoTitle;
 	var duration = video.videoDuration;
-	console.log("Inside videoController ----> video=", video);
+	// console.log("Inside videoController ----> video=", video);
 	
 	Video.findOne({videoId:videoId}).exec(function(err, data){
 		if(data){ //func: video exists, don't do anything
