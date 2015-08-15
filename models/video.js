@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var findOrCreate = require('mongoose-findorcreate');
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
 var Schema = mongoose.Schema;
 
 var videoSchema = new Schema({
@@ -21,6 +22,7 @@ var videoSchema = new Schema({
   }
 });
 
+videoSchema.plugin(deepPopulate);
 videoSchema.plugin(findOrCreate);
 
 module.exports = mongoose.model('Video', videoSchema);

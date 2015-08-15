@@ -17,6 +17,7 @@ _* Note: All server side events returning data to the client include properties:
 ### cs-comment 
 _data object transmitted to server:_
   * username: String,
+  * userId: ObjectID,
   * videoId: String,
   * text: String,
   * timestamp: Number

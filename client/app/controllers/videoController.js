@@ -21,6 +21,8 @@ angular.module('app.video', [])
       } else {
         $scope.comments = videoData.video.comments;
       } //if
+      // save the logged in user to the window object. see contract.md to see details.
+      $window.user = videoData.user;
 
       // comment graph setup
       commentGraph.graph($scope.comments);
@@ -32,8 +34,9 @@ angular.module('app.video', [])
     $scope.submitComment = function() {
       // func: get current video time
       var comment = {
+        userId: $window.user._id,
         username: $window.user.username,
-        videoId: videoId, 
+        videoId: videoId,
         text: $scope.comment,
         timestamp: $window.player.getCurrentTime()
       };
@@ -88,12 +91,12 @@ angular.module('app.video', [])
               //NOTE: This is when the video data actually becomes available.  
               var currentTime = $window.player.getCurrentTime();
               $scope.promises = commentService.makePromises($scope.comments, currentTime);
-              
+
               //*** Save Video ***//
               var videoData = player.getVideoData(); //get video information {video_id, author, title}
 
               var video = {
-                videoTitle: videoData.title, 
+                videoTitle: videoData.title,
                 videoId: videoData.video_id,
                 videoDuration: player.getDuration()
               };
@@ -156,9 +159,9 @@ angular.module('app.video', [])
     var displayComment = function(comment) {
         var username = comment.username || "Anonymouse";
         var timestamp = toHMS(Math.round(comment.timestamp)); //func: beautify time
-        var content = "("+timestamp+") "+ username + ": " + comment.text;
+        var content = "(" + timestamp + ") " + username + ": " + comment.text;
         var $comment = $("<div class='textBubble'>" + content + "</div>")
-        if(username===$window.user.username){ //message belongs to current user
+        if (username === $window.user.username) { //message belongs to current user
           $comment.addClass('belongsToUser');
         } //if
 
@@ -166,17 +169,23 @@ angular.module('app.video', [])
       } //displayComment
 
 
-    var toHMS = function (seconds) {
-      var hours   = Math.floor(seconds / 3600);
-      var minutes = Math.floor((seconds - (hours * 3600)) / 60);
-      var seconds = seconds - (hours * 3600) - (minutes * 60);
+    var toHMS = function(seconds) {
+        var hours = Math.floor(seconds / 3600);
+        var minutes = Math.floor((seconds - (hours * 3600)) / 60);
+        var seconds = seconds - (hours * 3600) - (minutes * 60);
 
-      if (hours   < 10) {hours   = "0"+hours;}
-      if (minutes < 10) {minutes = "0"+minutes;}
-      if (seconds < 10) {seconds = "0"+seconds;}
-      var time    = hours+':'+minutes+':'+seconds;
-      return time;
-    } //toHMS()
+        if (hours < 10) {
+          hours = "0" + hours;
+        }
+        if (minutes < 10) {
+          minutes = "0" + minutes;
+        }
+        if (seconds < 10) {
+          seconds = "0" + seconds;
+        }
+        var time = hours + ':' + minutes + ':' + seconds;
+        return time;
+      } //toHMS()
 
     // var clearContent = function()
 
