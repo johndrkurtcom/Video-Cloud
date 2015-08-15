@@ -28,6 +28,7 @@
     "grunt-contrib-jshint": "^0.11.2",
     "jwt-simple": "^0.3.0",
     "mongoose": "^4.1.1",
+    "mongoose-deep-populate": "^2.0.0",
     "mongoose-findorcreate": "^0.1.2",
     "morgan": "^1.6.1",
     "passport": "^0.2.2",

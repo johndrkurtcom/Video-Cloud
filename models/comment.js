@@ -3,10 +3,10 @@ var findOrCreate = require('mongoose-findorcreate');
 var Schema = mongoose.Schema;
 
 var commentSchema = new Schema({
-  // person: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'Person'
-  // },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
   // video: {
   //   type: Schema.Types.ObjectId,
   //   ref: 'Video'

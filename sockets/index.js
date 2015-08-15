@@ -47,7 +47,8 @@ module.exports = function(io, sessionStore) {
       Video.findOne({
           videoId: data.videoId
         })
-        .populate('comments') //populates comments ref with comment data
+        .deepPopulate('comments.user') // nested population comments and user in comments
+        // .populate('comments') //populates comments ref with comment data
         .exec(function(err, video) {
           if (err) throw err;
           // we emit a server-client event to the socket 
@@ -62,7 +63,8 @@ module.exports = function(io, sessionStore) {
     // listen to client event requesting a movie list
     socket.on('cs-movielist', function() {
       Video.find()
-        .populate('comments')
+        .deepPopulate('comments.user') // nested population comments and user in comments
+        // .populate('comments')
         .exec(function(err, videos) {
           if (err) throw err;
           // emit event to socket & send all movie data
@@ -100,7 +102,7 @@ module.exports = function(io, sessionStore) {
     });
 
     //func: save new video
-    socket.on('cs-videoLoad', function(video){
+    socket.on('cs-videoLoad', function(video) {
       //func: create video first if not in database
       videoController.findOrCreate(video);
     }); //cs-videoLoad
