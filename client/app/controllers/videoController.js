@@ -50,78 +50,93 @@ angular.module('app.video', [])
 
     /*********SOCKET LISTENERS*********/
 
+    if($window.commentInit===undefined){
+      // if server saves a submitted comment correctly, server broadcasts the new comment to entire namespace
+      socket.on('sc-comment new', function(comment) {
+        // todo: add new comment to scrolling output?
+        // console.log('new comment received', comment);
+        console.log("TEST ---> new comment");
+        commentService.displayComment(comment);
+      }); //sc-comment
 
-    // if server saves a submitted comment correctly, server broadcasts the new comment to entire namespace
-    socket.on('sc-comment new', function(comment) {
-      // todo: add new comment to scrolling output?
-      // console.log('new comment received', comment);
-      commentService.displayComment(comment);
-    }); //sc-comment
-
-    // error handling in case the submitted comment could not be handled by server
-    socket.on('sc-comment error', function(error) {
-      console.log('something went wrong, the comment could not be saved', error);
-    }); //sc-comment
+      // error handling in case the submitted comment could not be handled by server
+      socket.on('sc-comment error', function(error) {
+        console.log('something went wrong, the comment could not be saved', error);
+      }); //sc-comment
+      $window.commentInit = true; 
+    } //if(!commentInit)
 
     /*********VIDEO CONTROLS*********/
     //NOTE: delayed to wait for page load
 
-    $timeout(function() {
-      // func: test videoId on player first
-      // console.log("TEST ----> videoId="+videoId);
-      var player = $window.player;
-      if (player !== undefined) {
-        var existingVideo = player.getVideoData(); //get video information {video_id, author, title}
+    
 
-        if (existingVideo.video_id !== videoId) { //new video being loaded
-          player.loadVideoById(videoId, function() {
-            console.log("TEST --------------> loadVideoById() callback!");
-          }); //load new video by video_id
+    // $timeout(function() {
+    //   // func: test videoId on player first
+    //   // console.log("TEST ----> videoId="+videoId);
+    // }, 0); //$timeout
+    // if (player !== undefined) {
+    // } //if(player)
+    
+    var player = $window.player;
+    var existingVideo = player.getVideoData(); //get video information {video_id, author, title}
 
-          //func: detect state change of video
-          $window.player.addEventListener('onStateChange', function(event) {
-            // console.log('TEST------> addEventListener');
-            var e = event.data;
-            if (e === -1) { //unstarted
+    if (existingVideo.video_id !== videoId) { //new video being loaded
+      player.loadVideoById(videoId, function() {
+        console.log("TEST --------------> loadVideoById() callback!");
+      }); //load new video by video_id
 
-            } else if (e === 0) { //ended
-              // console.log("TEST: VIDEO ENDED");
-            } else if (e === 1) { //playing: re-establish setTimouts(comments)
-              console.log("TEST: VIDEO PLAYING");
-              //NOTE: This is when the video data actually becomes available.  
-              var currentTime = $window.player.getCurrentTime();
-              $scope.promises = commentService.makePromises($scope.comments, currentTime);
+      
 
-              //*** Save Video ***//
-              var videoData = player.getVideoData(); //get video information {video_id, author, title}
+    } else { // play existing video
+      player.playVideo();
 
-              var video = {
-                videoTitle: videoData.title,
-                videoId: videoData.video_id,
-                videoDuration: player.getDuration()
-              };
+    } //if(existingVideoId !== videoId)
 
-              socket.emit('cs-videoLoad', video); //dev: videoId will be variable
+    //func: detect state change of video
+    // -> 1st load new video: emit cs-videoLoad via SocketIO
+    // -> Pause and play at new location: clear commentScroller
+    if($window.videoInit === undefined){ //even listeners only add once
+      $window.player.addEventListener('onStateChange', function(event) {
+        var e = event.data;
+        if (e === -1) { //unstarted
+        } else if (e === 0) { //ended
+        } else if (e === 1) { //playing: re-establish setTimouts(comments)
+          console.log("TEST: VIDEO PLAYING");
+          //NOTE: This is when the video data actually becomes available.  
+          var currentTime = $window.player.getCurrentTime();
+          $scope.promises = commentService.makePromises($scope.comments, currentTime);
 
-            } else if (e === 2) { //paused: cancel all setTimouts(comments)
-              console.log("TEST: VIDEO PAUSED");
-              commentService.killPromises($scope.promises);
+          //*** Save Video ***//
+          var videoData = player.getVideoData(); //get video information {video_id, author, title}
+          $window.video=$window.video||{};
+          //func: emit videoLoad event if id has changed. 
+          if($window.video.videoId !== videoData.video_id){ 
+            var video = {
+              videoTitle: videoData.title,
+              videoId: videoData.video_id,
+              videoDuration: player.getDuration()
+            };
 
-            } else if (e === 3) { //buffering
-              // console.log("TEST: VIDEO BUFFERING");
+            $window.video = video; //reset window.video object
+            socket.emit('cs-videoLoad', video); //dev: videoId will be variable
+          }else{ //video has been loaded before
+            //func: clear commentContainer  
+            $("#commentContainer").html('');
 
-            } else if (e === 5) { //video cued
+          } //if (video being played first time)
 
-            } //if(e)
-          }); //addEvenListener
+        } else if (e === 2) { //paused: cancel all setTimouts(comments)
+          console.log("TEST: VIDEO PAUSED");
+          commentService.killPromises($scope.promises);
+        } else if (e === 3) { //buffering
+          // console.log("TEST: VIDEO BUFFERING");
+        } else if (e === 5) { //video cued
+        } //if(e)
+      }); //addEvenListener
 
-        } else { // play existing video
-          player.playVideo();
-
-        } //if(existingVideoId !== videoId)
-      } //if(player)
-    }, 0); //$timeout
-
+      $window.videoInit = true;
+    } //if(!window.videoInit)
 
   }).factory('commentService', function($timeout, $window) { //
     // func: create setTimeouts to display comments in the future
