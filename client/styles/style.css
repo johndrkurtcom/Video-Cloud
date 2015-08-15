@@ -139,8 +139,10 @@
 }
 .chart{
   position:absolute;
+  width:100%;
   top:535px;
-  left:12px;
+  padding: 0px 6% 0px 6%;
+  /*left:12px;*/
 }
 
 .chart div {

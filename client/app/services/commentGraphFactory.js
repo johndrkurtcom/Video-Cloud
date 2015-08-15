@@ -8,7 +8,7 @@ angular.module('app.services', [])
     var current = 0;
     //needs to be adjusted later
     var movieLength = 7200;
-    var numBars = 150;
+    var numBars = 30;
     //length of movie clip / number of desired bars: upper limit 150
     var increment = Math.floor(movieLength / numBars);
 
@@ -41,7 +41,12 @@ angular.module('app.services', [])
   }
 
   var moveGraph = function(){
-    var videoplayer = d3.select('#player')
+    var videoplayer = d3.select('#player');
+    var specs = d3.select('#player').node().getBoundingClientRect();
+    var videoPlayerHeight = specs.bottom;
+    var diff = window.scrollY;
+
+
     d3.select('.chart').on('mouseenter', function(d){
       d3.select('.chart')
         .transition()  
@@ -57,7 +62,8 @@ angular.module('app.services', [])
             .node()
             .getBoundingClientRect()
             .height
-          return 460 - chart + 'px';
+          console.log(window.scrollY);
+          return ((videoPlayerHeight+diff) - 50) - chart + 'px';
         })
         .style('opacity', '0.75');
     }).on('mouseleave', function(){
@@ -68,22 +74,42 @@ angular.module('app.services', [])
             .node()
             .getBoundingClientRect()
             .height
-          return '555' - chart + 'px'
+          return videoPlayerHeight + diff + chart + 'px'
         })
         .style('opacity', '1');
     });
   }
 
+  var getVideoWith = function(){
+    var specs = d3.select('#player').node().getBoundingClientRect();
+    var videoPlayerWidth = specs.width * .88;
+    console.log(specs, '==========================');
+    return videoPlayerWidth;
+  }
+
+  var resize = function(comments){
+    var commentWidth = getVideoWith();
+    var data = formatTime(comments);
+    
+      d3.select('.chart')
+        .selectAll('div')
+        .style('width', function(){
+          return (commentWidth/(data.length))+'px';
+        });
+  }
+
   var graph = function(comments){
 
     var data = formatTime(comments);
+    var videoPlayerWidth = getVideoWith();
 
+    
     d3.select('.chart')
       .selectAll('div')
       .data(data)
       .enter().append('div')
       .style('height', function(d){return d.length*2+'px'})
-      .style('width', function(){return (615/(data.length))-(2)+'px'})
+      .style('width', function(comments){return resize(comments)})
       .on('mouseenter', function(d){
         
         d3.select('.chart')
@@ -105,6 +131,7 @@ angular.module('app.services', [])
   return ({
     graphSetup: graphSetup,
     graph: graph,
+    resize: resize,
     move: moveGraph
   })
 })
