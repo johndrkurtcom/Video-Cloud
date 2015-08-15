@@ -43,7 +43,7 @@ angular.module('app.services', [])
   var getVideoSpecs = function(){
     var diff = window.scrollY;
     var specs = d3.select('#player').node().getBoundingClientRect();
-    var videoPlayerWidth = specs.width * .88;
+    var videoPlayerWidth = specs.width * .89;
     var videoPlayerBottom = specs.bottom + diff;
     return [videoPlayerWidth, videoPlayerBottom];
   }
@@ -113,7 +113,9 @@ angular.module('app.services', [])
       .data(data)
       .enter().append('div')
       .style('height', function(d){return d.length*2+'px'})
-      .style('width', function(comments){return resize(comments)})
+      .style('width', function(comments){
+        return (videoPlayerWidth/(data.length))+'px' 
+      })
       .on('mouseenter', function(d){
         d3.select('.chart')
           .selectAll('span')
