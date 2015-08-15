@@ -40,12 +40,18 @@ angular.module('app.services', [])
 
   }
 
+  var getVideoSpecs = function(){
+    var diff = window.scrollY;
+    var specs = d3.select('#player').node().getBoundingClientRect();
+    var videoPlayerWidth = specs.width * .88;
+    var videoPlayerBottom = specs.bottom + diff;
+    return [videoPlayerWidth, videoPlayerBottom];
+  }
+
   var moveGraph = function(){
     var videoplayer = d3.select('#player');
-    var specs = d3.select('#player').node().getBoundingClientRect();
-    var videoPlayerHeight = specs.bottom;
-    var diff = window.scrollY;
-
+    var specs = getVideoSpecs();
+    var videoPlayerBottom = specs[1];
 
     d3.select('.chart').on('mouseenter', function(d){
       d3.select('.chart')
@@ -62,8 +68,7 @@ angular.module('app.services', [])
             .node()
             .getBoundingClientRect()
             .height
-          console.log(window.scrollY);
-          return ((videoPlayerHeight+diff) - 50) - chart + 'px';
+          return (videoPlayerBottom - 50) - chart + 'px';
         })
         .style('opacity', '0.75');
     }).on('mouseleave', function(){
@@ -74,21 +79,15 @@ angular.module('app.services', [])
             .node()
             .getBoundingClientRect()
             .height
-          return videoPlayerHeight + diff + chart + 'px'
+          return videoPlayerBottom + 30 + 'px'
         })
         .style('opacity', '1');
     });
   }
 
-  var getVideoWith = function(){
-    var specs = d3.select('#player').node().getBoundingClientRect();
-    var videoPlayerWidth = specs.width * .88;
-    console.log(specs, '==========================');
-    return videoPlayerWidth;
-  }
 
   var resize = function(comments){
-    var commentWidth = getVideoWith();
+    var commentWidth = getVideoSpecs()[0];
     var data = formatTime(comments);
     
       d3.select('.chart')
@@ -101,17 +100,21 @@ angular.module('app.services', [])
   var graph = function(comments){
 
     var data = formatTime(comments);
-    var videoPlayerWidth = getVideoWith();
 
+    var specs = getVideoSpecs();
+    var videoPlayerWidth = specs[0];
+    var videoPlayerBottom = specs[1];
     
     d3.select('.chart')
+      .style('top', function(){
+        return videoPlayerBottom + 30 + 'px';
+      })
       .selectAll('div')
       .data(data)
       .enter().append('div')
       .style('height', function(d){return d.length*2+'px'})
       .style('width', function(comments){return resize(comments)})
       .on('mouseenter', function(d){
-        
         d3.select('.chart')
           .selectAll('span')
           .data(d)
