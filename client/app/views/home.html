@@ -1,26 +1,33 @@
 
 
 <div id='searchContainer' class='container'>
-  <h3>Enter a URL to enable real-time commenting!</h3>
+  <h4>Enter a URL to enable real-time commenting!</h4>
   <form name='videoSearchForm' ng-submit='submitVideo()' novalidate>
     <!-- <label>Video Search</label> -->
 
     <input name='videoSearch' placeholder='Enter video url' type='url' ng-model='videoUrl' />
-    <button ng-disabled='videoSearchForm.videoSearch.$invalid'>Submit</button>
+    <button ng-disabled='videoSearchForm.videoSearch.$invalid' class="btn btn-xs submit-button">Submit</button>
 
     <p ng-show="videoSearchForm.videoSearch.$error.url">Not a valid video url</p>
 
   </form>
-  <div class='container' ng-controller='movieListController'>
-    <h4>Videos that have been commented on</h4>
-    <div><input placeholder='search through existing videos' type="text" ng-model='searchText'></div>
-    <div class='col-md-4'>Title</div>
-    <div class='col-md-4'>Length</div>
-    <div class='col-md-4'>Number of Comments</div>
+  <div class='' ng-controller='movieListController'>
+    <h4>Or search through movies in our database</h4>
+    <div><input id='search-input' placeholder='search through existing videos' type="text" ng-model='searchText'></div>
+    <div id='list-table'>  
+      <div class='col-md-4'>Title</div>
+      <div class='col-md-4'>Length</div>
+      <div class='col-md-4'>Number of Comments</div>
+    </div>
     <div class='animate-repeat' ng-repeat='movie in movies | filter:searchText' ng-click='select(movie.videoId)'>
-      <div class='col-md-4'>{{ movie.videoTitle }}</div> 
-      <div class='col-md-4'>{{  }}</div> 
-      <div class='col-md-4'>{{ movie.commentCount }}</div>
+      <div id='movie-list'>  
+        <!-- title -->
+        <div class='col-md-4'>{{ movie.videoTitle }}</div> 
+        <!-- length -->
+        <div class='col-md-4'>{{  }}</div> 
+        <!-- comments -->
+        <div class='col-md-4'>{{ movie.comments.length }}</div>
+      </div>
     </div>
 
   </div>
