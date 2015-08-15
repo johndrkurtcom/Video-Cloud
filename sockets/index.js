@@ -95,8 +95,10 @@ module.exports = function(io, sessionStore) {
             user: socket.request.user,
             logged_in: socket.request.user.logged_in
           });
-          // send comment to all (!) connected clients in channel
-          io.to(video.videoId).emit('sc-comment new', comment);
+          
+          socket.emit('sc-comment new', comment);
+          // // send comment to all (!) connected clients in channel
+          // io.to(video.videoId).emit('sc-comment new', comment);
         }
       })
     });
