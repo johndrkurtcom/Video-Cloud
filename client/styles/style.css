@@ -139,12 +139,12 @@
 }
 .chart{
   position:absolute;
-  top:520px;
-  left:10px;
+  width:100%;
+  padding: 0px 0px 0px 6%;
+  /*top:535px;*/
+  /*left:12px;*/
 }
-/*.chart:hover{
-  opacity:0.5;
-}*/
+
 .chart div {
   background-color: steelblue;
   padding: 1px;

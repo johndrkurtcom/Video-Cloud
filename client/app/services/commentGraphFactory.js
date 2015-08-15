@@ -8,7 +8,7 @@ angular.module('app.services', [])
     var current = 0;
     //needs to be adjusted later
     var movieLength = 7200;
-    var numBars = 150;
+    var numBars = 30;
     //length of movie clip / number of desired bars: upper limit 150
     var increment = Math.floor(movieLength / numBars);
 
@@ -31,46 +31,92 @@ angular.module('app.services', [])
     return timeLog;
   }
 
+  var graphSetup = function(id){
+    var id = '#'+id;
+    d3.select(id)
+      .append('div')
+      .attr('class', 'chart')
+      .style('position', 'relative')
+
+  }
+
+  var getVideoSpecs = function(){
+    var diff = window.scrollY;
+    var specs = d3.select('#player').node().getBoundingClientRect();
+    var videoPlayerWidth = specs.width * .89;
+    var videoPlayerBottom = specs.bottom + diff;
+    return [videoPlayerWidth, videoPlayerBottom];
+  }
+
   var moveGraph = function(){
-    var videoplayer = d3.select('#player')
+    var videoplayer = d3.select('#player');
+    var specs = getVideoSpecs();
+    var videoPlayerBottom = specs[1];
+
     d3.select('.chart').on('mouseenter', function(d){
       d3.select('.chart')
         .transition()  
-        // .selectAll('div')
-        // .style('opacity', '0.5')
     }).on('mouseleave', function(){
       d3.select('.chart')
         .transition()
-        // .selectAll('div')
-        // .style('opacity', '0')
     })
     videoplayer.on('mouseenter', function(){
       d3.select('.chart')
         .transition()
-        .style('top', '430px')
-        // .selectAll('div')
+        .style('top', function(d){
+          var chart = d3.select('.chart')
+            .node()
+            .getBoundingClientRect()
+            .height
+          return (videoPlayerBottom - 50) - chart + 'px';
+        })
         .style('opacity', '0.75');
     }).on('mouseleave', function(){
       d3.select('.chart')
         .transition()
-        .style('top', '520px')
-        // .selectAll('div')
+        .style('top', function(){
+          var chart = d3.select('.chart')
+            .node()
+            .getBoundingClientRect()
+            .height
+          return videoPlayerBottom + 30 + 'px'
+        })
         .style('opacity', '1');
     });
+  }
+
+
+  var resize = function(comments){
+    var commentWidth = getVideoSpecs()[0];
+    var data = formatTime(comments);
+    
+      d3.select('.chart')
+        .selectAll('div')
+        .style('width', function(){
+          return (commentWidth/(data.length))+'px';
+        });
   }
 
   var graph = function(comments){
 
     var data = formatTime(comments);
 
+    var specs = getVideoSpecs();
+    var videoPlayerWidth = specs[0];
+    var videoPlayerBottom = specs[1];
+    
     d3.select('.chart')
+      .style('top', function(){
+        return videoPlayerBottom + 30 + 'px';
+      })
       .selectAll('div')
       .data(data)
       .enter().append('div')
       .style('height', function(d){return d.length*2+'px'})
-      .style('width', function(){return (615/(data.length))-(2)+'px'})
+      .style('width', function(comments){
+        return (videoPlayerWidth/(data.length))+'px' 
+      })
       .on('mouseenter', function(d){
-        
         d3.select('.chart')
           .selectAll('span')
           .data(d)
@@ -88,7 +134,9 @@ angular.module('app.services', [])
       })
   }
   return ({
+    graphSetup: graphSetup,
     graph: graph,
+    resize: resize,
     move: moveGraph
   })
 })

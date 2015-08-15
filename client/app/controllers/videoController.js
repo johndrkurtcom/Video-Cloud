@@ -26,6 +26,7 @@ angular.module('app.video', [])
 
       // comment graph setup
       commentGraph.graph($scope.comments);
+      $(window).on('resize', commentGraph.resize.bind(null, $scope.comments));
       commentGraph.move();
 
     });
