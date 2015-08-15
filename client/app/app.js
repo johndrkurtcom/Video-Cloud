@@ -41,11 +41,12 @@ angular.module('app', ['app.home', 'app.video', 'app.userName', 'ngRoute', 'app.
   .run(function($rootScope, $location, $window) {
     //func: reroute to login if username has not been set. 
     $rootScope.$on('$routeChangeStart', function(evt, next, current) {
-      // console.log('TEST ----------> before the app runs. url = '+$location.url());
       var url = $location.url();
+      $window.user = $window.user || {}; //init
+      console.log('TEST ----------> before the app runs. username = '+$window.user.username);
 
       if (url !== '/login') { //any route other than /login
-        if (!$rootScope.username) {
+        if (!$window.user.username) {
           $location.path('/login');
         } //if
 

@@ -2,13 +2,11 @@
 <div class='chart'></div>
 <div class='placeHolder'></div>
 
-<br />
-<form id ='commentContainer' class='container'>
-  <input ng-model='comment' ng-click='comment=""' placeholder='enter comment' class='text' type='text' name='comment' class='comment'>
-
-  <input type='submit' value='Enter' ng-click = 'submitComment();'>
+<form id ='commentForm' class='container'>
+  <input ng-model='comment' ng-click='comment=""' placeholder='enter comment' class='text' type='text' name='comment' class='text'>
+  <input type='submit' class='button' value='Enter' ng-click = 'submitComment();'>
 </form>
 
-<div id='scrollerContainer' class='container'>
+<div id='commentContainer' class='container'>
   
-</div> <!-- scrollerContainer -->
+</div> <!-- commentContainter -->
