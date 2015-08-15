@@ -139,12 +139,10 @@
 }
 .chart{
   position:absolute;
-  top:520px;
-  left:10px;
+  top:535px;
+  left:12px;
 }
-/*.chart:hover{
-  opacity:0.5;
-}*/
+
 .chart div {
   background-color: steelblue;
   padding: 1px;

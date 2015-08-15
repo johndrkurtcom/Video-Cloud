@@ -31,30 +31,45 @@ angular.module('app.services', [])
     return timeLog;
   }
 
+  var graphSetup = function(id){
+    var id = '#'+id;
+    d3.select(id)
+      .append('div')
+      .attr('class', 'chart')
+      .style('position', 'relative')
+
+  }
+
   var moveGraph = function(){
     var videoplayer = d3.select('#player')
     d3.select('.chart').on('mouseenter', function(d){
       d3.select('.chart')
         .transition()  
-        // .selectAll('div')
-        // .style('opacity', '0.5')
     }).on('mouseleave', function(){
       d3.select('.chart')
         .transition()
-        // .selectAll('div')
-        // .style('opacity', '0')
     })
     videoplayer.on('mouseenter', function(){
       d3.select('.chart')
         .transition()
-        .style('top', '430px')
-        // .selectAll('div')
+        .style('top', function(d){
+          var chart = d3.select('.chart')
+            .node()
+            .getBoundingClientRect()
+            .height
+          return 460 - chart + 'px';
+        })
         .style('opacity', '0.75');
     }).on('mouseleave', function(){
       d3.select('.chart')
         .transition()
-        .style('top', '520px')
-        // .selectAll('div')
+        .style('top', function(){
+          var chart = d3.select('.chart')
+            .node()
+            .getBoundingClientRect()
+            .height
+          return '555' - chart + 'px'
+        })
         .style('opacity', '1');
     });
   }
@@ -88,6 +103,7 @@ angular.module('app.services', [])
       })
   }
   return ({
+    graphSetup: graphSetup,
     graph: graph,
     move: moveGraph
   })
