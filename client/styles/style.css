@@ -35,15 +35,28 @@
 #main-nav {
   background-color: #578FC3;
 }
+
 #main-nav a {
   color: white;
 }
 
 #title {
-  margin-left: 0;
-  margin-right: 0;
   width: 100%;
-  text-align: left;
+  text-align: center;
+  padding: 5px 0px;
+}
+
+#title a{
+  font-weight: bold;
+}
+
+/*
+#title a:focus{
+  text-decoration:none;
+}
+*/
+#title a:hover{
+  text-decoration:none;
 }
 
 .navigation {

@@ -35,7 +35,7 @@ angular.module('app.home', [])
         //save the data to a variable for ng-repeat
         $scope.$apply(function() { //re-renders page when data comes in
           $rootScope.movies = data.videos; //this once 
-          console.log(data);
+          // console.log(data);
         }); //apply
       }); //socket.on(sc-movielist)
     } //if(!movieList)
@@ -53,7 +53,7 @@ angular.module('app.home', [])
         return;
       };
       var length = (movie.duration / 60).toString().split('.');
-      console.log('THIS IS LENGTH', length);
+      // console.log('THIS IS LENGTH', length);
       var hours = 0;
       var minutes = parseInt(length[0]);
       var seconds = movie.duration % 60;

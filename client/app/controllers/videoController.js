@@ -3,6 +3,7 @@ angular.module('app.video', [])
 
     /***********INIT**********/
     $('#videoContainer').show();
+    $location.hash('title');
 
     var videoId = $routeParams.videoId || 'nS68JH9lFEs';
     $scope.videoId = videoId;
@@ -66,8 +67,6 @@ angular.module('app.video', [])
 
     /*********VIDEO CONTROLS*********/
     //NOTE: delayed to wait for page load
-
-    
 
     // $timeout(function() {
     //   // func: test videoId on player first
