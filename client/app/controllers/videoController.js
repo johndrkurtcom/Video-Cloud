@@ -186,22 +186,22 @@ angular.module('app.video', [])
 
 
     var toHMS = function(seconds) {
-        var hours = Math.floor(seconds / 3600);
-        var minutes = Math.floor((seconds - (hours * 3600)) / 60);
-        var seconds = seconds - (hours * 3600) - (minutes * 60);
+      var hours = Math.floor(seconds / 3600);
+      var minutes = Math.floor((seconds - (hours * 3600)) / 60);
+      var seconds = seconds - (hours * 3600) - (minutes * 60);
 
-        if (hours < 10) {
-          hours = "0" + hours;
-        }
-        if (minutes < 10) {
-          minutes = "0" + minutes;
-        }
-        if (seconds < 10) {
-          seconds = "0" + seconds;
-        }
-        var time = hours + ':' + minutes + ':' + seconds;
-        return time;
-      } //toHMS()
+      if (hours < 10) {
+        hours = "0" + hours;
+      }
+      if (minutes < 10) {
+        minutes = "0" + minutes;
+      }
+      if (seconds < 10) {
+        seconds = "0" + seconds;
+      }
+      var time = hours + ':' + minutes + ':' + seconds;
+      return time;
+    } //toHMS()
 
     // var clearContent = function()
 
@@ -210,51 +210,4 @@ angular.module('app.video', [])
       killPromises: killPromises,
       displayComment: displayComment
     };
-  }).factory('testData', function() {
-    return {
-      username: 'Payton',
-      videoId: 'nS68JH9lFEs',
-      comments: [{
-          person: {
-            displayname: 'Name 1'
-          },
-          video: {},
-          text: 'Lipsum 1',
-          votes: 3,
-          timestamp: 4
-        }, {
-          person: {
-            displayname: 'Name 2'
-          },
-          video: {},
-          text: 'Lipsum 2',
-          votes: 0,
-          timestamp: 7
-        }, {
-          person: {
-            displayname: 'Name 3'
-          },
-          video: {},
-          text: 'Lipsum 3',
-          votes: 18,
-          timestamp: 10
-        }, {
-          person: {
-            displayname: 'Name 4'
-          },
-          video: {},
-          text: 'Lipsum 4',
-          votes: -3,
-          timestamp: 13
-        }, {
-          person: {
-            displayname: 'Name 5'
-          },
-          video: {},
-          text: 'Lipsum 5',
-          votes: 26,
-          timestamp: 16
-        }] //comments
-
-    }; //return 
-  }); //controller
+  });
