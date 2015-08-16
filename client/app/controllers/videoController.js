@@ -1,5 +1,5 @@
 angular.module('app.video', [])
-  .controller('videoController', function($scope, $rootScope, $http, $window, $timeout, testData, commentService, $routeParams, $location, commentGraph) {
+  .controller('videoController', function($scope, $rootScope, $http, $window, $timeout, commentService, $routeParams, $location, commentGraph) {
 
     /***********INIT**********/
     $('#videoContainer').show();
@@ -9,26 +9,23 @@ angular.module('app.video', [])
     // var socket = io.connect("http://127.0.0.1:3000/"); // dev: route must change for deployment
 
     // func: socket emits init event to tell server the video selected
-    socket.emit('cs-init', {
+    socket.emit('cs-init-video', {
       videoId: videoId
     }); //dev: videoId will be variable
 
-    // func: server responds to cs-init with sc-init containing video data
-    socket.on('sc-init', function(videoData) {
+    // func: server responds to cs-init-video with sc-init-video containing video data
+    socket.on('sc-init-video', function(videoData) {
       console.log("SocketIO is a success! data = ", videoData);
       if (!videoData.video) {
         $scope.comments = [];
       } else {
         $scope.comments = videoData.video.comments;
       } //if
-      // save the logged in user to the window object. see contract.md to see details.
-      $window.user = videoData.user;
 
       // comment graph setup
       commentGraph.graph($scope.comments);
       $(window).on('resize', commentGraph.resize.bind(null, $scope.comments));
       commentGraph.move();
-
     });
 
     /*********CONTROLLERS*********/
