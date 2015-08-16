@@ -45,6 +45,30 @@ angular.module('app.home', [])
       $location.path('/video/' + id);
       console.log('Clicked on Movie', id);
     };
+
+    $scope.getLength = function(movie){
+      console.log('HERE---->',movie);
+      if(movie.duration === undefined){return 'Length not provided'};
+      var length = (movie.duration / 60).toString().split('.');
+      console.log('THIS IS LENGTH', length);
+      var hours = 0;
+      var minutes = parseInt(length[0]);
+      var seconds = movie.duration % 60;
+      if(minutes > 59){
+        hours = Math.floor(minutes / 60);
+        minutes = minutes % 60;
+      }
+      if(minutes < 10){
+        minutes = '0' + minutes.toString();
+      }
+      if(seconds < 10){
+        seconds = '0' + seconds.toString();
+      }
+
+      return hours.toString() + ':' + minutes.toString() + ':' + seconds.toString();
+
+    };
+
   })
 
 //Unecessary factory for now
