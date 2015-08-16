@@ -100,11 +100,17 @@ angular.module('app.video', [])
         } else if (e === 0) { //ended
         } else if (e === 1) { //playing: re-establish setTimouts(comments)
           console.log("TEST: VIDEO PLAYING");
+        
+          $("#commentContainer").html(''); //reset commentContainer
+
           //NOTE: This is when the video data actually becomes available.  
           var currentTime = $window.player.getCurrentTime();
           $scope.promises = commentService.makePromises($scope.comments, currentTime);
 
-          //*** Save Video ***//
+          /*** Show prev. comments ***/
+          // console.log();
+
+          /*** Save Video ***/
           var videoData = player.getVideoData(); //get video information {video_id, author, title}
           $window.video=$window.video||{};
           //func: emit videoLoad event if id has changed. 
@@ -119,7 +125,7 @@ angular.module('app.video', [])
             socket.emit('cs-videoLoad', video); //dev: videoId will be variable
           }else{ //video has been loaded before
             //func: clear commentContainer  
-            $("#commentContainer").html('');
+            // $("#commentContainer").html('');
 
           } //if (video being played first time)
 
@@ -138,6 +144,13 @@ angular.module('app.video', [])
   }).factory('commentService', function($timeout, $window) { //
     // func: create setTimeouts to display comments in the future
     var makePromises = function(comments, currentTime) {
+        // order comments based on chronological order
+        comments.sort(function(a,b){
+          return a.timestamp-b.timestamp; 
+        }); //comments.sort
+
+        console.log("TEST inside makePromises(). sorted comments = ", comments);
+
         var promises = []; //array which holds the handles for setTimeouts 
         // console.log("Inside makePromises(). comments=", comments);
         for (var i = 0; i < comments.length; i++) {
@@ -145,8 +158,10 @@ angular.module('app.video', [])
           var timestamp = comment.timestamp; //relative time position of comment
           var delay = timestamp - currentTime; //time between comment time and current time in video
 
-          //func: play video only if the timestamp occurs after the current position in the video
-          if (delay > 0) {
+          if (delay <= 0) { //post comment right away if in the past (or present)
+            displayComment(comment);
+            
+          }else { //post comment with delay if in the future
             var promise = $timeout(function(comment) { //decorator function creates custom closure for text variable
               return function() { //display comment!
                 displayComment(comment);
