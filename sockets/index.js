@@ -41,8 +41,8 @@ module.exports = function(io, sessionStore) {
 
   io.on('connection', function(socket) {
     // listen to init event from client
-    socket.on('cs-init', function(data) {
-      console.log('cs-init');
+    socket.on('cs-init-video', function(data) {
+      console.log('cs-init-video');
       setVideoChannel(socket, data);
       Video.findOne({
           videoId: data.videoId
@@ -52,13 +52,22 @@ module.exports = function(io, sessionStore) {
         .exec(function(err, video) {
           if (err) throw err;
           // we emit a server-client event to the socket 
-          socket.emit('sc-init', {
+          socket.emit('sc-init-video', {
             video: video,
             user: socket.request.user,
             logged_in: socket.request.user.logged_in
-          })
-        });
-    });
+          }); 
+        }); //findOne()
+    }); // cs-init-video
+
+    socket.on('cs-init-user', function(data) {
+      console.log('cs-init-user. user = ', socket.request.user);
+
+      socket.emit('sc-init-user', {
+        user: socket.request.user,
+        logged_in: socket.request.user.logged_in
+      }); //sc-init-user 
+    }); // cs-init-user
 
     // listen to client event requesting a movie list
     socket.on('cs-movielist', function() {
@@ -95,7 +104,7 @@ module.exports = function(io, sessionStore) {
             user: socket.request.user,
             logged_in: socket.request.user.logged_in
           });
-          
+
           socket.emit('sc-comment new', comment);
           // // send comment to all (!) connected clients in channel
           // io.to(video.videoId).emit('sc-comment new', comment);

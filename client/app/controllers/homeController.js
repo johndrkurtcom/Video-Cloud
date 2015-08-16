@@ -1,37 +1,11 @@
-//create some fake data to test
-var dummyData = [{
-  title: 'Some movie here',
-  length: 56,
-  comments: 12
-}, {
-  title: 'Another movie',
-  length: 112,
-  comments: 1
-}, {
-  title: 'The best movie',
-  length: 200,
-  comments: 212
-}, {
-  title: 'The worst movie',
-  length: 136,
-  comments: 412
-}];
-
 angular.module('app.home', [])
   .controller('homeController', function($scope, $location, $window) {
-    /*********LOGIN*********/
-    // console.log("TEST ---> username=", $scope.username);
-    // if(!$scope.username){
-    //   $location.path('/login');
-    // } // if
-
 
     /*********LOGIN*********/
-    console.log("TEST ---> username=", $scope.username);
+    console.log("TEST ---> username=", $window.user.username);
     if (!$window.user.username) {
       $location.path('/login');
     } // if
-
 
     /*********INIT*********/
     $('#videoContainer').hide(); // hide video player
@@ -50,7 +24,6 @@ angular.module('app.home', [])
   })
   // I just went ahead on created my own controller here need to check with Payton
   .controller('movieListController', function($scope, $location, $rootScope, commentGraph) {
-    // $scope.movies = dummyData;
     //request the relevant information from the server via socet io and append it to the page
     //emmiting cs-movielist event and then listening for sc-movielist from the server
 
