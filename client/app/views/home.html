@@ -24,7 +24,7 @@
         <!-- title -->
         <div class='col-md-4'>{{ movie.videoTitle }}</div> 
         <!-- length -->
-        <div class='col-md-4' ng-init='$index'>{{ getLength(movies[$index]) }}</div> 
+        <div class='col-md-4' ng-init='getLength(movies[$index])'>{{ movie.formatedLength }}</div> 
         <!-- comments -->
         <div class='col-md-4'>{{ movie.comments.length }}</div>
       </div>

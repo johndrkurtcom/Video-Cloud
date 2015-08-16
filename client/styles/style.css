@@ -14,12 +14,14 @@
   height: 75px;
   background-color: #98A8B6;
   padding-top: 20px;
+  border-bottom: 1px solid black;
 }
 
 #movie-list:hover {
   background-color: #578FC3;
   cursor: default;
 }
+
 
 .submit-button {
   background-color: #578FC3;

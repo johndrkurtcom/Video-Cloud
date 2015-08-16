@@ -45,10 +45,13 @@ angular.module('app.home', [])
       $location.path('/video/' + id);
       console.log('Clicked on Movie', id);
     };
-
+    //get the length in human readable format while inside ng-repeat
     $scope.getLength = function(movie){
       console.log('HERE---->',movie);
-      if(movie.duration === undefined){return 'Length not provided'};
+      if(movie.duration === undefined){
+        movie.formatedLength = 'Length not provided';
+        return;
+      };
       var length = (movie.duration / 60).toString().split('.');
       console.log('THIS IS LENGTH', length);
       var hours = 0;
@@ -64,8 +67,9 @@ angular.module('app.home', [])
       if(seconds < 10){
         seconds = '0' + seconds.toString();
       }
+      movie.formatedLength = hours.toString() + ':' + minutes.toString() + ':' + seconds.toString();
 
-      return hours.toString() + ':' + minutes.toString() + ':' + seconds.toString();
+      // return hours.toString() + ':' + minutes.toString() + ':' + seconds.toString();
 
     };
 
