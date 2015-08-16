@@ -79,7 +79,7 @@ angular.module('app.services', [])
             .node()
             .getBoundingClientRect()
             .height
-          return videoPlayerBottom + 30 + 'px'
+          return videoPlayerBottom + 50 - chart + 'px'
         })
         .style('opacity', '1');
     });
@@ -107,7 +107,11 @@ angular.module('app.services', [])
     
     d3.select('.chart')
       .style('top', function(){
-        return videoPlayerBottom + 30 + 'px';
+        var chart = d3.select('.chart')
+            .node()
+            .getBoundingClientRect()
+            .height
+          return videoPlayerBottom + 50 - chart + 'px'
       })
       .selectAll('div')
       .data(data)
