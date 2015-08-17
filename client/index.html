@@ -26,6 +26,7 @@
     </script>
     
     <script src="app/controllers/videoController.js"></script>
+    <script src="app/controllers/navController.js"></script>
     <script src="app/controllers/userNameController.js"></script>
     <script src="app/controllers/homeController.js"></script>
     <script src="app/services/commentGraphFactory.js"></script>
@@ -36,7 +37,7 @@
 
 
 
- <nav class="navbar navbar-inverse navbar-fixed-top">
+ <nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="navController">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -53,8 +54,8 @@
           <li><a href='#/video' class='create'>Video</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="/auth/twitter">Sign in with Twitter</a></li>
-          <li><a href='/logout'>Logout</a></li>
+          <li><a ng-show="!loggedin" href="/auth/twitter">Sign in with Twitter</a></li>
+          <li><a ng-show="loggedin" href='/logout'>Logout</a></li>
         </ul>
     
         </div><!--/.navbar-collapse -->
