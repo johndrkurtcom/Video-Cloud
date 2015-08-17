@@ -1,6 +1,6 @@
 
 
-<div id='searchContainer' class='container' ng-controller='movieListController'>
+<div id='searchContainer' class='container' >
   <div class='row'>
 
     <div class='col-md-6'>
@@ -13,8 +13,8 @@
       </form>
     </div>
 
-
-      <div class='col-md-6'>
+    <span ng-controller='movieListController'>
+      <div class='col-md-6' >
         <h4>Or search through movies in our database</h4>
         <form>
           <input class="form-control" id='search-input' placeholder='search through existing videos' type="text" ng-model='searchText'>
@@ -37,6 +37,7 @@
           <div class='col-xs-12 col-sm-3 col-md-4 movie-center'>{{ movie.comments.length }}</div>
         </div>
       </div>
+    </span>
 
 
   </div>
