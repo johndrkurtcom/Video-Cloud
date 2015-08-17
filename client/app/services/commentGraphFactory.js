@@ -10,7 +10,14 @@ angular.module('app.services', [])
 
     //needs to be adjusted later
     var movieLength = videoData.duration;
-    var numBars = 30;
+    var numBars = 1;
+    if(movieLength < 300){
+      numBars = 50;
+    }else if(movieLength >= 300 && movieLength < 600){
+      numBars = 100;
+    }else {
+      numBars = 150;
+    }
     //length of movie clip / number of desired bars: upper limit 150
     var increment = Math.floor(movieLength / numBars);
 
@@ -31,6 +38,15 @@ angular.module('app.services', [])
       timeLog.push(list);
     }
     return timeLog;
+  }
+
+  var clicked = function(videoData, callback){
+    var chartBars = d3.select('.chart').selectAll('div');
+    var len = Math.floor(videoData.duration/chartBars[0].length);
+    chartBars
+      .on('click', function(d, i){
+        callback(i*len);
+      })
   }
 
   var graphSetup = function(id){
@@ -80,7 +96,6 @@ angular.module('app.services', [])
     });
   }
 
-
   var resize = function(comments){
     var commentWidth = getVideoSpecs()[0];
     var data = formatTime(comments);
@@ -122,9 +137,9 @@ angular.module('app.services', [])
       .selectAll('div')
       .data(data)
       .enter().append('div')
-      .style('height', function(d){return d.length*2+'px'})
-      .style('width', function(comments){
-        return (videoPlayerWidth/(data.length))+'px' 
+      .style('height', function(d){return d.length*4+'px'})
+      .style('width', function(){
+        return (videoPlayerWidth/(data.length))-2+'px' 
       })
       .on('mouseenter', function(d){
         d3.select('.chart')
@@ -145,6 +160,7 @@ angular.module('app.services', [])
   }
   return ({
     graphSetup: graphSetup,
+    clicked: clicked,
     graph: graph,
     resize: resize,
     hide: hideGraph

@@ -17,7 +17,7 @@ angular.module('app.video', [])
 
     // func: server responds to cs-init-video with sc-init-video containing video data
     socket.on('sc-init-video', function(videoData) {
-      // console.log("SocketIO is a success! data = ", videoData);
+      console.log("SocketIO is a success! data = ", videoData);
       if (!videoData.video) {
         $scope.comments = [];
       } else {
@@ -25,9 +25,10 @@ angular.module('app.video', [])
       } //if
 
       // comment graph setup
-      commentGraph.graph($scope.comments);
+      commentGraph.graph(videoData.video);
       $(window).on('resize', commentGraph.resize.bind(null, $scope.comments));
-      commentGraph.move();
+      // commentGraph.hide();
+      commentGraph.clicked(videoData.video, function(item){console.log(item)});
     });
 
     /*********LOGIN*********/
