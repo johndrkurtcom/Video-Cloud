@@ -19,13 +19,13 @@ var setVideoChannel = function(socket, data) {
 }
 
 var onAuthorizeFail = function(data, message, error, accept) {
-  console.log('passportSocketIo auth failed: ', data, error);
+  // console.log('passportSocketIo auth failed: ', data, error);
   if (error) throw new Error(message);
   return accept(new Error(message));
 }
 
 var onAuthorizeSuccess = function(data, accept) {
-  console.log('passportSocketIo auth success: ', data.user);
+  // console.log('passportSocketIo auth success: ', data.user);
   return accept();
 }
 
@@ -42,7 +42,7 @@ module.exports = function(io, sessionStore) {
   io.on('connection', function(socket) {
     // listen to init event from client
     socket.on('cs-init-video', function(data) {
-      console.log('cs-init-video');
+      // console.log('cs-init-video');
       setVideoChannel(socket, data);
       Video.findOne({
           videoId: data.videoId
@@ -56,12 +56,12 @@ module.exports = function(io, sessionStore) {
             video: video,
             user: socket.request.user,
             logged_in: socket.request.user.logged_in
-          }); 
+          });
         }); //findOne()
     }); // cs-init-video
 
     socket.on('cs-init-user', function(data) {
-      console.log('cs-init-user. user = ', socket.request.user);
+      // console.log('cs-init-user. user = ', socket.request.user);
 
       socket.emit('sc-init-user', {
         user: socket.request.user,
