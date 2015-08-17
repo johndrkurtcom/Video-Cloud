@@ -30,22 +30,45 @@ angular.module('app.video', [])
       // commentGraph.move();
     });
 
+    /*********LOGIN*********/
+    // // func: server responds to cs-init-video with sc-init-user containing video data
+    if($window.user===undefined){ //only check the first time. 
+      socket.emit('cs-init-user', {});
+
+      socket.on('sc-init-user', function(userData) {
+        console.log("TEST ---> sc-init-user. User = ", userData);
+        // save the logged in user to the window object. see contract.md to see details.
+        $window.user = userData.user;
+
+        // if(userData.logged_in){ //redirect if logged_in
+        //   console.log("Logged in!!!");
+          
+        //   $rootScope.$apply(function(){ //forcing a re-render
+        //     $location.path('/home');
+        //   }); //rootScope.apply()
+        // } //if(logged_in)
+      }); //sc-init-user
+    } //if
+    
     /*********CONTROLLERS*********/
     $scope.submitComment = function() {
-      // func: get current video time
-      var comment = {
-        userId: $window.user._id,
-        username: $window.user.username,
-        videoId: videoId,
-        text: $scope.comment,
-        timestamp: $window.player.getCurrentTime()
-      };
+      if($window.user.logged_in){
+        // func: get current video time
+        var comment = {
+          userId: $window.user._id,
+          username: $window.user.username,
+          videoId: videoId,
+          text: $scope.comment,
+          timestamp: $window.player.getCurrentTime()
+        };
 
-      // console.log('submitComment. comment=',comment);
+        // console.log('submitComment. comment=',comment);
 
-      socket.emit('cs-comment', comment); //dev: videoId will be variable
-      $scope.comment = ''; //reset comment input
-
+        socket.emit('cs-comment', comment); //dev: videoId will be variable
+        $scope.comment = ''; //reset comment input
+      }else{
+        alert("You must login before submitting a comment. Thanks!");
+      } //if(logged_in)
     }; //submitComment()
 
     /*********SOCKET LISTENERS*********/

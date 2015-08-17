@@ -2,12 +2,12 @@ angular.module('app', ['app.home', 'app.nav', 'app.video', 'app.userName', 'ngRo
   .config(function($routeProvider, $httpProvider) {
     $routeProvider
       .when('/', {
-        redirectTo: '/login'
+        redirectTo: '/home'
       })
-      .when('/login', {
-        templateUrl: 'app/views/userNamePage.html',
-        controller: 'UserNameController'
-      })
+      // .when('/login', {
+      //   templateUrl: 'app/views/userNamePage.html',
+      //   controller: 'UserNameController'
+      // })
       .when('/home', {
         templateUrl: 'app/views/home.html',
         controller: 'homeController'
@@ -19,10 +19,10 @@ angular.module('app', ['app.home', 'app.nav', 'app.video', 'app.userName', 'ngRo
       .when('/video', {
         templateUrl: 'app/views/video.html',
         controller: 'videoController'
-      })
-      .when('/logout', {
-        redirectTo: '/login'
-      })
+      });
+      // .when('/logout', {
+      //   redirectTo: '/login'
+      // })
       // .when('/signup', {
       //   templateUrl: 'app/auth/signup.html',
       //   controller: 'AuthController'
@@ -45,23 +45,17 @@ angular.module('app', ['app.home', 'app.nav', 'app.video', 'app.userName', 'ngRo
       $window.user = $window.user || {}; //init
       // console.log('TEST ----------> before the app runs. username = '+$window.user.username); //test
 
-      if (url !== '/login') { //any route other than /login
-        if (!$window.user.username) {
-          $location.path('/login');
-        } //if
-
-        if (url === '/video') { //play video is going to /video
-          //func: check if player is defined first
-          if ($window.player !== undefined) {
-            $window.player.playVideo();
-          } //if
-        } else { //anything other than 
-          //func: check if player is defined first
-          if ($window.player !== undefined && typeof $window.player.pauseVideo === 'function') {
-            $window.player.pauseVideo();
-          } //if
-        } //if(url)
+    if (url === '/video') { //play video is going to /video
+      //func: check if player is defined first
+      if ($window.player !== undefined) {
+        $window.player.playVideo();
       } //if
+    } else { //anything other than 
+      //func: check if player is defined first
+      if ($window.player !== undefined && typeof $window.player.pauseVideo === 'function') {
+        $window.player.pauseVideo();
+      } //if
+    } //if(url)
 
     }); //on(routeChangeStart)
   });
