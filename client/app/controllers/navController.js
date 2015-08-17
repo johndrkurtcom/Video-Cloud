@@ -4,8 +4,6 @@ angular.module('app.nav', [])
     socket.emit('cs-init-user');
 
     socket.on('sc-init-user', function(data) {
-      console.log('socket fired');
-
       if (data.logged_in) {
         $window.user = data.user;
         $window.user.logged_in = data.logged_in;

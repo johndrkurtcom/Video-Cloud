@@ -42,7 +42,7 @@ module.exports = function(io, sessionStore) {
   io.on('connection', function(socket) {
     // listen to init event from client
     socket.on('cs-init-video', function(data) {
-      // console.log('cs-init-video');
+      console.log('cs-init-video');
       setVideoChannel(socket, data);
       Video.findOne({
           videoId: data.videoId
@@ -61,7 +61,7 @@ module.exports = function(io, sessionStore) {
     }); // cs-init-video
 
     socket.on('cs-init-user', function(data) {
-      // console.log('cs-init-user. user = ', socket.request.user);
+      console.log('cs-init-user. user = ', socket.request.user);
 
       socket.emit('sc-init-user', {
         user: socket.request.user,
@@ -71,10 +71,13 @@ module.exports = function(io, sessionStore) {
 
     // listen to client event requesting a movie list
     socket.on('cs-movielist', function() {
+      console.log('TEST--> inside cs-movielist');
+      
       Video.find()
         .deepPopulate('comments.user') // nested population comments and user in comments
         // .populate('comments')
         .exec(function(err, videos) {
+          // console.log('TEST--> inside cs-movielist');
           if (err) throw err;
           // emit event to socket & send all movie data
           socket.emit('sc-movielist', {

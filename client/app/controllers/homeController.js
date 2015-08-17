@@ -20,7 +20,6 @@ angular.module('app.home', [])
         // request the vidoe and comments from the server
       } //submitVideo
 
-
   })
   // I just went ahead on created my own controller here need to check with Payton
   .controller('movieListController', function($scope, $location, $rootScope, commentGraph) {
@@ -29,13 +28,15 @@ angular.module('app.home', [])
 
     //func: only fetch movies once (on page load)
     if ($scope.movies === undefined) {
-      // console.log('fetching movies'); //test
+      console.log('fetching movies'); //test
       socket.emit('cs-movielist');
       socket.on('sc-movielist', function(data) {
+        console.log("TEST inside sc-movielist", data);
+        
         //save the data to a variable for ng-repeat
         $scope.$apply(function() { //re-renders page when data comes in
           $rootScope.movies = data.videos; //this once 
-          // console.log(data);
+          console.log("TEST inside sc-movielist", data);
         }); //apply
       }); //socket.on(sc-movielist)
     } //if(!movieList)
