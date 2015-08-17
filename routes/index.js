@@ -11,7 +11,7 @@ module.exports = function(app, passport) {
   app.get('/auth/facebook/callback',
     passport.authenticate('facebook', {
       successRedirect: '/',
-      failureRedirect: '/login'
+      failureRedirect: '/'
     }));
 
   app.get('/auth/twitter',
@@ -21,7 +21,7 @@ module.exports = function(app, passport) {
   app.get('/auth/twitter/callback',
     passport.authenticate('twitter', {
         successRedirect: '/',
-        failureRedirect: '/login'
+        failureRedirect: '/'
       }
       //   function(err, user) {
       //   console.log('Twitter authentication callback, source: routes/index.js');
