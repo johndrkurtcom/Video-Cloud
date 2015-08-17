@@ -1,19 +1,19 @@
 var config = {
   production: {
     session: {
-      key: '',
-      secret: ''
+      key: 'the.express.session.id',
+      secret: 'somethings.secret'
     },
-    database: '',
+    database: 'mongodb://videocloud:videocloud@apollo.modulusmongo.net:27017/sOqis8yb',
     facebook: {
-      appid: '',
-      appsecret: '',
-      callback: ''
+      appid: '1611479335776079',
+      appsecret: '84624dbd29babb9aaf75144f446fb0c5',
+      callback: 'http://videocloud.mod.bz/auth/facebook/callback'
     },
     twitter: {
-      consumerKey: '',
-      consumerSecret: '',
-      callbackURL: ''
+      consumerKey: '5vzU2rbD7Io0ip16uhU7oGcZO',
+      consumerSecret: 'JBM8Nra6LshzjWyezdxrgl4umaraMZUZBRfIwrtnz30TCJYA5x',
+      callbackURL: 'http://videocloud.mod.bz/auth/twitter/callback'
     }
   },
   default: {
