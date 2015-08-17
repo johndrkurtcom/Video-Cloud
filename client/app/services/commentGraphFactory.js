@@ -2,12 +2,14 @@ angular.module('app.services', [])
 
 .factory('commentGraph', function(){
 
-  var formatTime = function(comments){
+  var formatTime = function(videoData){
     //timelog array of array [text, text]
+    var comments = videoData.comments;
     var timeLog = [];
     var current = 0;
+
     //needs to be adjusted later
-    var movieLength = 7200;
+    var movieLength = videoData.duration;
     var numBars = 30;
     //length of movie clip / number of desired bars: upper limit 150
     var increment = Math.floor(movieLength / numBars);
@@ -48,40 +50,33 @@ angular.module('app.services', [])
     return [videoPlayerWidth, videoPlayerBottom];
   }
 
-  var moveGraph = function(){
+  var hideGraph = function(){
     var videoplayer = d3.select('#player');
     var specs = getVideoSpecs();
     var videoPlayerBottom = specs[1];
 
     d3.select('.chart').on('mouseenter', function(d){
       d3.select('.chart')
-        .transition()  
+        .selectAll('div')
+        .transition()
+        .style('visibility', 'visible')
     }).on('mouseleave', function(){
       d3.select('.chart')
+        .selectAll('div')  
         .transition()
+        .style('visibility', 'hidden')
     })
     videoplayer.on('mouseenter', function(){
+      console.log('here')
       d3.select('.chart')
+        .selectAll('div')
         .transition()
-        .style('top', function(d){
-          var chart = d3.select('.chart')
-            .node()
-            .getBoundingClientRect()
-            .height
-          return (videoPlayerBottom - 50) - chart + 'px';
-        })
-        .style('opacity', '0.75');
+        .style('visibility', 'visible')
     }).on('mouseleave', function(){
       d3.select('.chart')
+        .selectAll('div')
         .transition()
-        .style('top', function(){
-          var chart = d3.select('.chart')
-            .node()
-            .getBoundingClientRect()
-            .height
-          return videoPlayerBottom + 50 - chart + 'px'
-        })
-        .style('opacity', '1');
+        .style('visibility', 'hidden')
     });
   }
 
@@ -90,16 +85,27 @@ angular.module('app.services', [])
     var commentWidth = getVideoSpecs()[0];
     var data = formatTime(comments);
     
-      d3.select('.chart')
-        .selectAll('div')
-        .style('width', function(){
-          return (commentWidth/(data.length))+'px';
-        });
+    var specs = getVideoSpecs();
+    var videoPlayerWidth = specs[0];
+    var videoPlayerBottom = specs[1];
+
+    d3.select('.chart')
+      .style('top', function(){
+        var chart = d3.select('.chart')
+            .node()
+            .getBoundingClientRect()
+            .height
+          return videoPlayerBottom - chart + 'px'
+      })
+      .selectAll('div')
+      .style('width', function(){
+        return (commentWidth/(data.length))+'px';
+      });
   }
 
-  var graph = function(comments){
+  var graph = function(videoData){
 
-    var data = formatTime(comments);
+    var data = formatTime(videoData);
 
     var specs = getVideoSpecs();
     var videoPlayerWidth = specs[0];
@@ -111,7 +117,7 @@ angular.module('app.services', [])
             .node()
             .getBoundingClientRect()
             .height
-          return videoPlayerBottom + 50 - chart + 'px'
+          return videoPlayerBottom - chart + 'px'
       })
       .selectAll('div')
       .data(data)
@@ -141,6 +147,6 @@ angular.module('app.services', [])
     graphSetup: graphSetup,
     graph: graph,
     resize: resize,
-    move: moveGraph
+    hide: hideGraph
   })
 })
