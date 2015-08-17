@@ -1,12 +1,16 @@
+<div class="row">
+  <div class='chart'></div>
+  <!-- <div class='placeHolder'></div> -->
 
-<div class='chart'></div>
-<!--<div class='placeHolder'></div>-->
-
-<form id ='commentForm' class='container'>
-  <input ng-model='comment' ng-click='comment=""' placeholder='enter comment' class='text' type='text' name='comment' class='text'>
-  <input type='submit' class='button' value='Enter' ng-click = 'submitComment();'>
+  <form id ='commentForm' class="form-inline">
+  <div class="form-group">
+    <label class="sr-only" for="commentInput">Enter Comment</label>
+    <input ng-model='comment' ng-click='comment=""' placeholder='enter comment' class='text form-control' type='text' name='comment' id="commentInput">
+  </div>
+  <button type="submit" class="btn btn-default" ng-click = 'submitComment();'>Add</button>
 </form>
 
-<div id='commentContainer' class='container'>
-  
-</div> <!-- commentContainter -->
+  <div id='commentContainer' class='container'>
+    
+  </div> <!-- commentContainter -->
+</div>
