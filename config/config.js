@@ -1,19 +1,19 @@
 var config = {
   production: {
     session: {
-      key: '',
-      secret: ''
+      key: 'the.express.session.id',
+      secret: 'somethings.secret'
     },
-    database: '',
+    database: 'mongodb://videocloud.mod.bz/videocloud',
     facebook: {
       appid: '',
       appsecret: '',
-      callback: ''
+      callback: 'http://videocloud.mod.bz/auth/facebook/callback'
     },
     twitter: {
-      consumerKey: '',
-      consumerSecret: '',
-      callbackURL: ''
+      consumerKey: '5vzU2rbD7Io0ip16uhU7oGcZO',
+      consumerSecret: 'JBM8Nra6LshzjWyezdxrgl4umaraMZUZBRfIwrtnz30TCJYA5x',
+      callbackURL: 'http://videocloud.mod.bz/auth/twitter/callback'
     }
   },
   default: {

@@ -15,7 +15,10 @@
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
-          var socket = io.connect("http://127.0.0.1:3000/"); // dev: route must change for deployment
+          // PRODUCTION
+          var socket = io.connect("http://videocloud.mod.bz/"); 
+          // DEVLOPMENT
+          // var socket = io.connect("http://127.0.0.1:3000/"); 
     </script>
     
     <script src="app/controllers/videoController.js"></script>
