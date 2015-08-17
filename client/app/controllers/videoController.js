@@ -24,9 +24,9 @@ angular.module('app.video', [])
       } //if
 
       // comment graph setup
-      commentGraph.graph($scope.comments);
-      $(window).on('resize', commentGraph.resize.bind(null, $scope.comments));
-      commentGraph.move();
+      // commentGraph.graph($scope.comments);
+      // $(window).on('resize', commentGraph.resize.bind(null, $scope.comments));
+      // commentGraph.move();
     });
 
     /*********CONTROLLERS*********/
@@ -48,13 +48,14 @@ angular.module('app.video', [])
     }; //submitComment()
 
     /*********SOCKET LISTENERS*********/
-
-    if($window.commentInit===undefined){
+    // NOTE: the following listeners should only be instantiated once, hence the use of the 
+    //      commentInit variable. 
+    if($window.commentInit===undefined){ 
       // if server saves a submitted comment correctly, server broadcasts the new comment to entire namespace
       socket.on('sc-comment new', function(comment) {
         // todo: add new comment to scrolling output?
-        // console.log('new comment received', comment);
         console.log("TEST ---> new comment");
+        $scope.comments.push(comment);
         commentService.displayComment(comment);
       }); //sc-comment
 
