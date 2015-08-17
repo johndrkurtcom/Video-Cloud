@@ -4,10 +4,10 @@ var config = {
       key: 'the.express.session.id',
       secret: 'somethings.secret'
     },
-    database: 'mongodb://videocloud.mod.bz/videocloud',
+    database: 'mongodb://videocloud:videocloud@apollo.modulusmongo.net:27017/sOqis8yb',
     facebook: {
-      appid: '',
-      appsecret: '',
+      appid: '1611479335776079',
+      appsecret: '84624dbd29babb9aaf75144f446fb0c5',
       callback: 'http://videocloud.mod.bz/auth/facebook/callback'
     },
     twitter: {
