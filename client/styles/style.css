@@ -113,26 +113,21 @@
 }
 
 #commentContainer{
-  /*margin: 15px;*/
-  /*float: left;*/
   width: 100%;
-  height: 300px;
+  min-height: 150px;
+  overflow:auto;
   background-color:black;
   opacity: 0.8;
-  
   text-align:center;
   color:white;
-
-  /*display: inline-block;*/
 }
+
 #commentContainer .belongsToUser{
   color: red;
-
 }
 
 .textBubble{
   color: green;
-  /*position:absolute;*/
 
 }
 
