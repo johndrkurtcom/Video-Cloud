@@ -108,10 +108,15 @@
   /*float: left;*/
   width: 85%;
   /*display: inline-block;*/
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.comment-form-container {
+  width:50%;
 }
 #commentForm .text{
 
-  width:50%;
+  width:100%;
   text-align: center;
 
 }
@@ -152,9 +157,11 @@
   width:100px;
 }*/
 .chart{
-  position:absolute;
+  /*position:absolute;*/
   width:90%;
   padding: 0px 0px 0px 6%;
+  margin-top: 10px;
+  margin-bottom: 10px;
   /*top:535px;*/
   /*left:12px;*/
 }
