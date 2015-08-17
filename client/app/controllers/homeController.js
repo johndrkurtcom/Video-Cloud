@@ -2,7 +2,7 @@ angular.module('app.home', [])
   .controller('homeController', function($scope, $location, $window) {
 
     /*********LOGIN*********/
-    console.log("TEST ---> username=", $window.user.username);
+    // console.log("TEST ---> username=", $window.user.username); //test
     if (!$window.user.username) {
       $location.path('/login');
     } // if
@@ -29,13 +29,13 @@ angular.module('app.home', [])
 
     //func: only fetch movies once (on page load)
     if ($scope.movies === undefined) {
-      console.log('fetching movies');
+      // console.log('fetching movies'); //test
       socket.emit('cs-movielist');
       socket.on('sc-movielist', function(data) {
         //save the data to a variable for ng-repeat
         $scope.$apply(function() { //re-renders page when data comes in
           $rootScope.movies = data.videos; //this once 
-          console.log(data);
+          // console.log(data);
         }); //apply
       }); //socket.on(sc-movielist)
     } //if(!movieList)
@@ -47,13 +47,13 @@ angular.module('app.home', [])
     };
     //get the length in human readable format while inside ng-repeat
     $scope.getLength = function(movie){
-      console.log('HERE---->',movie);
+      // console.log('HERE---->',movie);
       if(movie.duration === undefined){
         movie.formatedLength = 'Length not provided';
         return;
       };
       var length = (movie.duration / 60).toString().split('.');
-      console.log('THIS IS LENGTH', length);
+      // console.log('THIS IS LENGTH', length);
       var hours = 0;
       var minutes = parseInt(length[0]);
       var seconds = movie.duration % 60;

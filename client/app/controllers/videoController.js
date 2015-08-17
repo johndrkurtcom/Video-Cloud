@@ -3,6 +3,8 @@ angular.module('app.video', [])
 
     /***********INIT**********/
     $('#videoContainer').show();
+    // $location.hash('title'); //cannot use because it causes controller code to execute twice
+    $window.scrollTo(0,0); //scroll to top of page
 
     var videoId = $routeParams.videoId || 'nS68JH9lFEs';
     $scope.videoId = videoId;
@@ -15,7 +17,7 @@ angular.module('app.video', [])
 
     // func: server responds to cs-init-video with sc-init-video containing video data
     socket.on('sc-init-video', function(videoData) {
-      console.log("SocketIO is a success! data = ", videoData);
+      // console.log("SocketIO is a success! data = ", videoData);
       if (!videoData.video) {
         $scope.comments = [];
       } else {
@@ -23,9 +25,9 @@ angular.module('app.video', [])
       } //if
 
       // comment graph setup
-      commentGraph.graph($scope.comments);
-      $(window).on('resize', commentGraph.resize.bind(null, $scope.comments));
-      commentGraph.move();
+      // commentGraph.graph($scope.comments);
+      // $(window).on('resize', commentGraph.resize.bind(null, $scope.comments));
+      // commentGraph.move();
     });
 
     /*********CONTROLLERS*********/
@@ -47,13 +49,14 @@ angular.module('app.video', [])
     }; //submitComment()
 
     /*********SOCKET LISTENERS*********/
-
-    if($window.commentInit===undefined){
+    // NOTE: the following listeners should only be instantiated once, hence the use of the 
+    //      commentInit variable. 
+    if($window.commentInit===undefined){ 
       // if server saves a submitted comment correctly, server broadcasts the new comment to entire namespace
       socket.on('sc-comment new', function(comment) {
         // todo: add new comment to scrolling output?
-        // console.log('new comment received', comment);
         console.log("TEST ---> new comment");
+        $scope.comments.push(comment);
         commentService.displayComment(comment);
       }); //sc-comment
 
@@ -67,78 +70,86 @@ angular.module('app.video', [])
     /*********VIDEO CONTROLS*********/
     //NOTE: delayed to wait for page load
 
-    
-
-    // $timeout(function() {
-    //   // func: test videoId on player first
-    //   // console.log("TEST ----> videoId="+videoId);
-    // }, 0); //$timeout
+    // func: test videoId on player first
     // if (player !== undefined) {
     // } //if(player)
     
-    var player = $window.player;
-    var existingVideo = player.getVideoData(); //get video information {video_id, author, title}
-
-    if (existingVideo.video_id !== videoId) { //new video being loaded
-      player.loadVideoById(videoId, function() {
-        console.log("TEST --------------> loadVideoById() callback!");
-      }); //load new video by video_id
-
+    $timeout(function() {
+      console.log("TEST1 ----> run once");
+      var player = $window.player;
+      var existingVideo = player.getVideoData(); //get video information {video_id, author, title}
+      console.log("TEST1 --------------> existingVideo=", existingVideo);
       
+      //note: only load video if it is new
+      if (existingVideo.video_id !== videoId) { //new video being loaded
+        console.log("TEST1 -----> loadVideoById()");
+        player.loadVideoById(videoId); //load new video by video_id
+      } else { // play existing video
+        console.log("TEST1 -----> playVideo()");
+        player.playVideo();
 
-    } else { // play existing video
-      player.playVideo();
+      } //if(existingVideoId !== videoId)
 
-    } //if(existingVideoId !== videoId)
+      //func: detect state change of video
+      // -> 1st load new video: emit cs-videoLoad via SocketIO
+      // -> Pause and play at new location: clear commentScroller
+      if($window.videoInit === undefined){ //even listeners only add once
+        $window.player.addEventListener('onStateChange', function(event) {
+          var e = event.data;
+          if (e === -1) { //unstarted
+          } else if (e === 0) { //ended
+          } else if (e === 1) { //playing: re-establish setTimouts(comments)
+            console.log("TEST: VIDEO PLAYING");
+          
+            $("#commentContainer").html(''); //reset commentContainer
 
-    //func: detect state change of video
-    // -> 1st load new video: emit cs-videoLoad via SocketIO
-    // -> Pause and play at new location: clear commentScroller
-    if($window.videoInit === undefined){ //even listeners only add once
-      $window.player.addEventListener('onStateChange', function(event) {
-        var e = event.data;
-        if (e === -1) { //unstarted
-        } else if (e === 0) { //ended
-        } else if (e === 1) { //playing: re-establish setTimouts(comments)
-          console.log("TEST: VIDEO PLAYING");
-          //NOTE: This is when the video data actually becomes available.  
-          var currentTime = $window.player.getCurrentTime();
-          $scope.promises = commentService.makePromises($scope.comments, currentTime);
+            //NOTE: This is when the video data actually becomes available.  
+            var currentTime = $window.player.getCurrentTime();
+            $scope.promises = commentService.makePromises($scope.comments, currentTime);
 
-          //*** Save Video ***//
-          var videoData = player.getVideoData(); //get video information {video_id, author, title}
-          $window.video=$window.video||{};
-          //func: emit videoLoad event if id has changed. 
-          if($window.video.videoId !== videoData.video_id){ 
-            var video = {
-              videoTitle: videoData.title,
-              videoId: videoData.video_id,
-              videoDuration: player.getDuration()
-            };
+            /*** Show prev. comments ***/
+            // console.log();
 
-            $window.video = video; //reset window.video object
-            socket.emit('cs-videoLoad', video); //dev: videoId will be variable
-          }else{ //video has been loaded before
-            //func: clear commentContainer  
-            $("#commentContainer").html('');
+            /*** Save Video ***/
+            var videoData = player.getVideoData(); //get video information {video_id, author, title}
+            $window.video=$window.video||{};
+            //func: emit videoLoad event if id has changed. 
+            if($window.video.videoId !== videoData.video_id){ 
+              var video = {
+                videoTitle: videoData.title,
+                videoId: videoData.video_id,
+                videoDuration: player.getDuration()
+              };
 
-          } //if (video being played first time)
+              $window.video = video; //reset window.video object
+              socket.emit('cs-videoLoad', video); //dev: videoId will be variable
+            }else{ //video has been loaded before
+              //func: clear commentContainer  
+              // $("#commentContainer").html('');
 
-        } else if (e === 2) { //paused: cancel all setTimouts(comments)
-          console.log("TEST: VIDEO PAUSED");
-          commentService.killPromises($scope.promises);
-        } else if (e === 3) { //buffering
-          // console.log("TEST: VIDEO BUFFERING");
-        } else if (e === 5) { //video cued
-        } //if(e)
-      }); //addEvenListener
+            } //if (video being played first time)
 
-      $window.videoInit = true;
-    } //if(!window.videoInit)
+          } else if (e === 2) { //paused: cancel all setTimouts(comments)
+            console.log("TEST: VIDEO PAUSED");
+            commentService.killPromises($scope.promises);
+          } else if (e === 3) { //buffering
+            // console.log("TEST: VIDEO BUFFERING");
+          } else if (e === 5) { //video cued
+          } //if(e)
+        }); //addEvenListener
+
+        $window.videoInit = true;
+      } //if(!window.videoInit)
+    }, 0); //$timeout: 
 
   }).factory('commentService', function($timeout, $window) { //
     // func: create setTimeouts to display comments in the future
     var makePromises = function(comments, currentTime) {
+        // order comments based on chronological order
+        comments.sort(function(a,b){
+          return a.timestamp-b.timestamp; 
+        }); //comments.sort
+
         var promises = []; //array which holds the handles for setTimeouts 
         // console.log("Inside makePromises(). comments=", comments);
         for (var i = 0; i < comments.length; i++) {
@@ -146,8 +157,10 @@ angular.module('app.video', [])
           var timestamp = comment.timestamp; //relative time position of comment
           var delay = timestamp - currentTime; //time between comment time and current time in video
 
-          //func: play video only if the timestamp occurs after the current position in the video
-          if (delay > 0) {
+          if (delay <= 0) { //post comment right away if in the past (or present)
+            displayComment(comment);
+            
+          }else { //post comment with delay if in the future
             var promise = $timeout(function(comment) { //decorator function creates custom closure for text variable
               return function() { //display comment!
                 displayComment(comment);

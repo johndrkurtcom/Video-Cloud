@@ -43,7 +43,7 @@ angular.module('app', ['app.home', 'app.video', 'app.userName', 'ngRoute', 'app.
     $rootScope.$on('$routeChangeStart', function(evt, next, current) {
       var url = $location.url();
       $window.user = $window.user || {}; //init
-      console.log('TEST ----------> before the app runs. username = '+$window.user.username);
+      // console.log('TEST ----------> before the app runs. username = '+$window.user.username); //test
 
       if (url !== '/login') { //any route other than /login
         if (!$window.user.username) {
@@ -57,7 +57,7 @@ angular.module('app', ['app.home', 'app.video', 'app.userName', 'ngRoute', 'app.
           } //if
         } else { //anything other than 
           //func: check if player is defined first
-          if ($window.player !== undefined) {
+          if ($window.player !== undefined && typeof $window.player.pauseVideo === 'function') {
             $window.player.pauseVideo();
           } //if
         } //if(url)
