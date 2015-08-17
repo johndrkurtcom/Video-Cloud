@@ -2,6 +2,10 @@
       HOME
 *****************/
 
+.btn-primary {
+  background-color: #578FC3; 
+}
+
 #list-table {
   margin-bottom: 50px;
   margin-top: 100px;
