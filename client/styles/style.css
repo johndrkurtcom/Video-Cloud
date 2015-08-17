@@ -157,20 +157,13 @@
   width:100px;
 }*/
 .chart{
-<<<<<<< HEAD
-  /*position:absolute;*/
-  width:90%;
-  padding: 0px 0px 0px 6%;
-  margin-top: 10px;
-  margin-bottom: 10px;
-=======
+
   position:relative;
   width:90%;
   padding: 0px;
   margin:0 auto;
   text-align: center;
   top: -45px;
->>>>>>> (commentGraph) added styling to graph and positioning
   /*top:535px;*/
   /*left:12px;*/
 }
