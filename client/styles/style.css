@@ -157,24 +157,33 @@
   width:100px;
 }*/
 .chart{
+<<<<<<< HEAD
   /*position:absolute;*/
   width:90%;
   padding: 0px 0px 0px 6%;
   margin-top: 10px;
   margin-bottom: 10px;
+=======
+  position:relative;
+  width:90%;
+  padding: 0px;
+  margin:0 auto;
+  text-align: center;
+  top: -45px;
+>>>>>>> (commentGraph) added styling to graph and positioning
   /*top:535px;*/
   /*left:12px;*/
 }
 
 .chart div {
   background-color: steelblue;
-  padding: 1px;
+  padding: 3px;
   margin: 1px;
   color: white;
   display:inline-block;
 
   /*opacity:1;*/
-  /*z-index:500;*/
+  z-index:103;
 }
 
 

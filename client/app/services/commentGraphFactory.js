@@ -14,9 +14,9 @@ angular.module('app.services', [])
     if(movieLength < 300){
       numBars = 50;
     }else if(movieLength >= 300 && movieLength < 600){
-      numBars = 100;
+      numBars = 75;
     }else {
-      numBars = 150;
+      numBars = 100;
     }
     //length of movie clip / number of desired bars: upper limit 150
     var increment = Math.floor(movieLength / numBars);
@@ -55,13 +55,12 @@ angular.module('app.services', [])
       .append('div')
       .attr('class', 'chart')
       .style('position', 'relative')
-
   }
 
   var getVideoSpecs = function(){
     var diff = window.scrollY;
     var specs = d3.select('#player').node().getBoundingClientRect();
-    var videoPlayerWidth = specs.width * .89;
+    var videoPlayerWidth = specs.width;
     var videoPlayerBottom = specs.bottom + diff;
     return [videoPlayerWidth, videoPlayerBottom];
   }
@@ -96,25 +95,25 @@ angular.module('app.services', [])
     });
   }
 
-  var resize = function(comments){
+  var resize = function(videoData){
     var commentWidth = getVideoSpecs()[0];
-    var data = formatTime(comments);
+    var data = formatTime(videoData);
     
     var specs = getVideoSpecs();
     var videoPlayerWidth = specs[0];
     var videoPlayerBottom = specs[1];
 
     d3.select('.chart')
-      .style('top', function(){
-        var chart = d3.select('.chart')
-            .node()
-            .getBoundingClientRect()
-            .height
-          return videoPlayerBottom - chart + 'px'
-      })
+      // .style('top', function(){
+      //   var chart = d3.select('.chart')
+      //       .node()
+      //       .getBoundingClientRect()
+      //       .height
+      //     return videoPlayerBottom - chart + 'px'
+      // })
       .selectAll('div')
       .style('width', function(){
-        return (commentWidth/(data.length))+'px';
+        return (commentWidth/(data.length))-2+'px';
       });
   }
 
@@ -127,13 +126,14 @@ angular.module('app.services', [])
     var videoPlayerBottom = specs[1];
     
     d3.select('.chart')
-      .style('top', function(){
-        var chart = d3.select('.chart')
-            .node()
-            .getBoundingClientRect()
-            .height
-          return videoPlayerBottom - chart + 'px'
-      })
+      // .style('top', function(){
+        // var chart = d3.select('.chart')
+        //     .node()
+        //     .getBoundingClientRect()
+        //     .height
+        // console.log(videoPlayerBottom, chart);
+        // return - videoPlayerBottom + chart + 'px';
+      // })
       .selectAll('div')
       .data(data)
       .enter().append('div')
