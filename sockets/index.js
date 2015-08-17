@@ -20,8 +20,8 @@ var setVideoChannel = function(socket, data) {
 
 var onAuthorizeFail = function(data, message, error, accept) {
   // console.log('passportSocketIo auth failed: ', data, error);
-  if (error) throw new Error(message);
-  return accept(new Error(message));
+  // if (error) throw new Error(message);
+  return accept();
 }
 
 var onAuthorizeSuccess = function(data, accept) {
@@ -87,29 +87,36 @@ module.exports = function(io, sessionStore) {
 
     // listen to new comments from socket
     socket.on('cs-comment', function(comment) {
-      // add comment to video 
-      commentController.addComment(comment, function(err, video) {
-        if (err) {
-          // if something went wrong, communicate the error to client
-          socket.emit('sc-comment error', {
-            error: err,
-            user: socket.request.user,
-            logged_in: socket.request.user.logged_in
-          });
-        } else {
-          // if comment successfully added to video
-          // return entire video object to socket -- maybe redundant..
-          socket.emit('sc-comment success', {
-            success: video,
-            user: socket.request.user,
-            logged_in: socket.request.user.logged_in
-          });
 
-          socket.emit('sc-comment new', comment);
-          // // send comment to all (!) connected clients in channel
-          // io.to(video.videoId).emit('sc-comment new', comment);
-        }
-      })
+      if (socket.request.user.logged_in) {
+        // user authorized
+        console.log('auth ok');
+        // add comment to video 
+        commentController.addComment(comment, function(err, video) {
+          if (err) {
+            // if something went wrong, communicate the error to client
+            socket.emit('sc-comment error', {
+              error: err,
+              user: socket.request.user,
+              logged_in: socket.request.user.logged_in
+            });
+          } else {
+            // if comment successfully added to video
+            // return entire video object to socket -- maybe redundant..
+            socket.emit('sc-comment success', {
+              success: video,
+              user: socket.request.user,
+              logged_in: socket.request.user.logged_in
+            });
+
+            socket.emit('sc-comment new', comment);
+            // // send comment to all (!) connected clients in channel
+            // io.to(video.videoId).emit('sc-comment new', comment);
+          }
+        })
+      } else {
+        console.log('auth failed');
+      }
     });
 
     //func: save new video
