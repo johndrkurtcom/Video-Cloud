@@ -26,7 +26,7 @@ angular.module('app.video', [])
 
       // comment graph setup
       commentGraph.graph(videoData.video);
-      $(window).on('resize', commentGraph.resize.bind(null, $scope.comments));
+      $(window).on('resize', commentGraph.resize.bind(null, videoData.video));
       // commentGraph.hide();
       commentGraph.clicked(videoData.video, function(item){
         // console.log('time='+item);

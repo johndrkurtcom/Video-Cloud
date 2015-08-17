@@ -8,7 +8,7 @@
       <form name='videoSearchForm' ng-submit='submitVideo()' novalidate class='form-inline'>
         <!-- <label>Video Search</label> -->
         <input class="form-control" name='videoSearch' placeholder='Enter video url' type='url' ng-model='videoUrl' />
-        <button ng-disabled='videoSearchForm.videoSearch.$invalid' class="btn btn-xs btn-primary">Submit</button>
+        <button ng-disabled='videoSearchForm.videoSearch.$invalid' class="btn btn-default btn-primary">Submit</button>
         <p ng-show="videoSearchForm.videoSearch.$error.url">Not a valid video url</p>
       </form>
     </div>
