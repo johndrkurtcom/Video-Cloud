@@ -161,11 +161,16 @@
   margin: 1px;
   color: white;
   display:inline-block;
+
   /*opacity:1;*/
   /*z-index:500;*/
 }
 
 
+.chart div:hover {
+  background-color: yellow;
+  cursor:pointer;
+}
 .commentHover{
   position:relative;
   display:block;
@@ -174,4 +179,4 @@
   color: white;
   /*text:white;*/
   font-size:10pt;
-
+}

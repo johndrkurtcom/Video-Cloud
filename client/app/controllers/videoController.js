@@ -28,7 +28,10 @@ angular.module('app.video', [])
       commentGraph.graph(videoData.video);
       $(window).on('resize', commentGraph.resize.bind(null, $scope.comments));
       // commentGraph.hide();
-      commentGraph.clicked(videoData.video, function(item){console.log(item)});
+      commentGraph.clicked(videoData.video, function(item){
+        // console.log('time='+item);
+        $window.player.seekTo(item);
+      });
     });
 
     /*********LOGIN*********/
