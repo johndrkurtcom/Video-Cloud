@@ -1,32 +1,36 @@
 
 
 <div id='searchContainer' class='container'>
-  <h4>Enter a URL to enable real-time commenting!</h4>
-  <form name='videoSearchForm' ng-submit='submitVideo()' novalidate>
-    <!-- <label>Video Search</label> -->
-
-    <input class="form-control" name='videoSearch' placeholder='Enter video url' type='url' ng-model='videoUrl' />
-    <button ng-disabled='videoSearchForm.videoSearch.$invalid' class="btn btn-xs btn-primary">Submit</button>
-
-    <p ng-show="videoSearchForm.videoSearch.$error.url">Not a valid video url</p>
-
-  </form>
-  <div class='' ng-controller='movieListController'>
-    <h4>Or search through movies in our database</h4>
-    <div><input class="form-control" id='search-input' placeholder='search through existing videos' type="text" ng-model='searchText'></div>
-    <div id='list-table'>  
-      <div class='col-md-4'>Title</div>
-      <div class='col-md-4'>Length</div>
-      <div class='col-md-4'>Number of Comments</div>
+  <div class='row'>
+    <div class='col-md-6'>
+      <h4>Enter a URL to enable real-time commenting!</h4>
+      <form name='videoSearchForm' ng-submit='submitVideo()' novalidate class='form-inline'>
+        <!-- <label>Video Search</label> -->
+        <input class="form-control" name='videoSearch' placeholder='Enter video url' type='url' ng-model='videoUrl' />
+        <button ng-disabled='videoSearchForm.videoSearch.$invalid' class="btn btn-xs btn-primary">Submit</button>
+        <p ng-show="videoSearchForm.videoSearch.$error.url">Not a valid video url</p>
+      </form>
+    </div>
+    <div class='col-md-6' ng-controller='movieListController'>
+      <h4>Or search through movies in our database</h4>
+      <form>
+        <input class="form-control" id='search-input' placeholder='search through existing videos' type="text" ng-model='searchText'>
+      </form>
+    </div>
+  </div>
+    <div id='list-table' class='row'>  
+      <div class='col-xs-12 col-sm-6 col-md-4 movie-center'>Title</div>
+      <div class='col-xs-12 col-sm-3 col-md-4 movie-center'>Length</div>
+      <div class='col-xs-12 col-sm-3 col-md-4 movie-center'>Number of Comments</div>
     </div>
     <div class='animate-repeat' ng-repeat='movie in movies | filter:searchText' ng-click='select(movie.videoId)'>
-      <div id='movie-list'>  
+      <div id='movie-list' class='row'>  
         <!-- title -->
-        <div class='col-md-4'>{{ movie.videoTitle }}</div> 
+        <div class='col-xs-12 col-sm-6 col-md-4 movie-center'>{{ movie.videoTitle }}</div> 
         <!-- length -->
-        <div class='col-md-4' ng-init='getLength(movies[$index])'>{{ movie.formatedLength }}</div> 
+        <div class='col-xs-12 col-sm-3 col-md-4 movie-center' ng-init='getLength(movies[$index])'>{{ movie.formatedLength }}</div> 
         <!-- comments -->
-        <div class='col-md-4'>{{ movie.comments.length }}</div>
+        <div class='col-xs-12 col-sm-3 col-md-4 movie-center'>{{ movie.comments.length }}</div>
       </div>
     </div>
 

@@ -2,19 +2,16 @@
       HOME
 *****************/
 
-#search-input {
-  margin-bottom: 50px;
-}
-
 #list-table {
   margin-bottom: 50px;
+  margin-top: 50px;
 }
 
 #movie-list {
   height: 75px;
   background-color: #98A8B6;
   padding-top: 20px;
-  border-bottom: 1px solid black;
+  margin-bottom: 2px;
 }
 
 #movie-list:hover {
@@ -27,6 +24,9 @@
   background-color: #578FC3;
 }
 
+.movie-center {
+  text-align: center;
+}
 
 /*****************
       INDEX
