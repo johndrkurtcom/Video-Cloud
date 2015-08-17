@@ -3,9 +3,9 @@ angular.module('app.home', [])
 
     /*********LOGIN*********/
     // console.log("TEST ---> username=", $window.user.username); //test
-    if (!$window.user.username) {
-      $location.path('/login');
-    } // if
+    // if (!$window.user.username) {
+    //   $location.path('/login');
+    // } // if
 
     /*********INIT*********/
     $('#videoContainer').hide(); // hide video player
