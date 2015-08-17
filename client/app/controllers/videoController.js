@@ -4,7 +4,7 @@ angular.module('app.video', [])
     /***********INIT**********/
     $('#videoContainer').show();
     // $location.hash('title'); //cannot use because it causes controller code to execute twice
-    $window.scrollTo(0,0); //scroll to top of page
+    $window.scrollTo(0, 0); //scroll to top of page
 
     var videoId = $routeParams.videoId || 'nS68JH9lFEs';
     $scope.videoId = videoId;
@@ -32,7 +32,7 @@ angular.module('app.video', [])
 
     /*********LOGIN*********/
     // // func: server responds to cs-init-video with sc-init-user containing video data
-    if($window.user===undefined){ //only check the first time. 
+    if ($window.user === undefined) { //only check the first time. 
       socket.emit('cs-init-user', {});
 
       socket.on('sc-init-user', function(userData) {
@@ -42,17 +42,17 @@ angular.module('app.video', [])
 
         // if(userData.logged_in){ //redirect if logged_in
         //   console.log("Logged in!!!");
-          
+
         //   $rootScope.$apply(function(){ //forcing a re-render
         //     $location.path('/home');
         //   }); //rootScope.apply()
         // } //if(logged_in)
       }); //sc-init-user
     } //if
-    
+
     /*********CONTROLLERS*********/
     $scope.submitComment = function() {
-      if($window.user.logged_in){
+      if ($window.user.logged_in) {
         // func: get current video time
         var comment = {
           userId: $window.user._id,
@@ -66,7 +66,7 @@ angular.module('app.video', [])
 
         socket.emit('cs-comment', comment); //dev: videoId will be variable
         $scope.comment = ''; //reset comment input
-      }else{
+      } else {
         alert("You must login before submitting a comment. Thanks!");
       } //if(logged_in)
     }; //submitComment()
@@ -74,7 +74,7 @@ angular.module('app.video', [])
     /*********SOCKET LISTENERS*********/
     // NOTE: the following listeners should only be instantiated once, hence the use of the 
     //      commentInit variable. 
-    if($window.commentInit===undefined){ 
+    if ($window.commentInit === undefined) {
       // if server saves a submitted comment correctly, server broadcasts the new comment to entire namespace
       socket.on('sc-comment new', function(comment) {
         // todo: add new comment to scrolling output?
@@ -87,7 +87,7 @@ angular.module('app.video', [])
       socket.on('sc-comment error', function(error) {
         console.log('something went wrong, the comment could not be saved', error);
       }); //sc-comment
-      $window.commentInit = true; 
+      $window.commentInit = true;
     } //if(!commentInit)
 
     /*********VIDEO CONTROLS*********/
@@ -96,13 +96,13 @@ angular.module('app.video', [])
     // func: test videoId on player first
     // if (player !== undefined) {
     // } //if(player)
-    
+
     $timeout(function() {
       console.log("TEST1 ----> run once");
       var player = $window.player;
       var existingVideo = player.getVideoData(); //get video information {video_id, author, title}
       console.log("TEST1 --------------> existingVideo=", existingVideo);
-      
+
       //note: only load video if it is new
       if (existingVideo.video_id !== videoId) { //new video being loaded
         console.log("TEST1 -----> loadVideoById()");
@@ -116,14 +116,14 @@ angular.module('app.video', [])
       //func: detect state change of video
       // -> 1st load new video: emit cs-videoLoad via SocketIO
       // -> Pause and play at new location: clear commentScroller
-      if($window.videoInit === undefined){ //even listeners only add once
+      if ($window.videoInit === undefined) { //even listeners only add once
         $window.player.addEventListener('onStateChange', function(event) {
           var e = event.data;
           if (e === -1) { //unstarted
           } else if (e === 0) { //ended
           } else if (e === 1) { //playing: re-establish setTimouts(comments)
             console.log("TEST: VIDEO PLAYING");
-          
+
             $("#commentContainer").html(''); //reset commentContainer
 
             //NOTE: This is when the video data actually becomes available.  
@@ -135,9 +135,9 @@ angular.module('app.video', [])
 
             /*** Save Video ***/
             var videoData = player.getVideoData(); //get video information {video_id, author, title}
-            $window.video=$window.video||{};
+            $window.video = $window.video || {};
             //func: emit videoLoad event if id has changed. 
-            if($window.video.videoId !== videoData.video_id){ 
+            if ($window.video.videoId !== videoData.video_id) {
               var video = {
                 videoTitle: videoData.title,
                 videoId: videoData.video_id,
@@ -146,7 +146,7 @@ angular.module('app.video', [])
 
               $window.video = video; //reset window.video object
               socket.emit('cs-videoLoad', video); //dev: videoId will be variable
-            }else{ //video has been loaded before
+            } else { //video has been loaded before
               //func: clear commentContainer  
               // $("#commentContainer").html('');
 
@@ -169,8 +169,8 @@ angular.module('app.video', [])
     // func: create setTimeouts to display comments in the future
     var makePromises = function(comments, currentTime) {
         // order comments based on chronological order
-        comments.sort(function(a,b){
-          return a.timestamp-b.timestamp; 
+        comments.sort(function(a, b) {
+          return a.timestamp - b.timestamp;
         }); //comments.sort
 
         var promises = []; //array which holds the handles for setTimeouts 
@@ -182,8 +182,8 @@ angular.module('app.video', [])
 
           if (delay <= 0) { //post comment right away if in the past (or present)
             displayComment(comment);
-            
-          }else { //post comment with delay if in the future
+
+          } else { //post comment with delay if in the future
             var promise = $timeout(function(comment) { //decorator function creates custom closure for text variable
               return function() { //display comment!
                 displayComment(comment);
@@ -219,22 +219,22 @@ angular.module('app.video', [])
 
 
     var toHMS = function(seconds) {
-      var hours = Math.floor(seconds / 3600);
-      var minutes = Math.floor((seconds - (hours * 3600)) / 60);
-      var seconds = seconds - (hours * 3600) - (minutes * 60);
+        var hours = Math.floor(seconds / 3600);
+        var minutes = Math.floor((seconds - (hours * 3600)) / 60);
+        var seconds = seconds - (hours * 3600) - (minutes * 60);
 
-      if (hours < 10) {
-        hours = "0" + hours;
-      }
-      if (minutes < 10) {
-        minutes = "0" + minutes;
-      }
-      if (seconds < 10) {
-        seconds = "0" + seconds;
-      }
-      var time = hours + ':' + minutes + ':' + seconds;
-      return time;
-    } //toHMS()
+        if (hours < 10) {
+          hours = "0" + hours;
+        }
+        if (minutes < 10) {
+          minutes = "0" + minutes;
+        }
+        if (seconds < 10) {
+          seconds = "0" + seconds;
+        }
+        var time = hours + ':' + minutes + ':' + seconds;
+        return time;
+      } //toHMS()
 
     // var clearContent = function()
 
