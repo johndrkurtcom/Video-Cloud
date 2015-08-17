@@ -1,9 +1,10 @@
 var passport = require('passport');
-var jwt = require('jwt-simple');
+// var jwt = require('jwt-simple');
 var isLoggedIn = require('../middleware').isLoggedIn;
 
 
 module.exports = function(app, passport) {
+  // FB login not active yet due to weird callback url issue
   app.get('/auth/facebook',
     passport.authenticate('facebook'),
     function(req, res) {});
@@ -20,19 +21,9 @@ module.exports = function(app, passport) {
 
   app.get('/auth/twitter/callback',
     passport.authenticate('twitter', {
-        successRedirect: '/',
-        failureRedirect: '/'
-      }
-      //   function(err, user) {
-      //   console.log('Twitter authentication callback, source: routes/index.js');
-      //   console.log('User: ', user);
-      //   var token = jwt.encode(user, 'secret');
-      //   // issue: there is no res here
-      //   // res.json({
-      //   //   token: token
-      //   // });
-      // }
-    ),
+      successRedirect: '/',
+      failureRedirect: '/'
+    }),
     function(req, res, next) {
       console.log('Request:', req);
     });

@@ -3,22 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <title>Video Cloud</title>
-    <link rel="stylesheet" type="text/css" href="styles/style.css" />
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <!-- Optional theme -->
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
-    <!--
-    <script src="http://www.youtube.com/player_api"></script>
-    -->
+
+    <script src="/lib/d3/d3.min.js"></script>
     <script src="/lib/angular/angular.js"></script>
     <script src="/lib/jquery/dist/jquery.min.js"></script>
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <script src="/lib/angular-route/angular-route.js"></script>
-    <script src="app/youtube.js"></script>
+    <script src="/app/youtube.js"></script>
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
@@ -31,13 +24,18 @@
     <script src="app/controllers/homeController.js"></script>
     <script src="app/services/commentGraphFactory.js"></script>
     <script src="app/app.js"></script>
+ 
+
+    <link rel="stylesheet" type="text/css" href="styles/style.css" />
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css">
+ 
   </head>
   
   <body>
 
 
 
- <nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="navController">
+    <nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="navController">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -62,22 +60,7 @@
       </div>
     </nav>
 
-
-    <div class="jumbotron">
-      <div class="container">
-        <!-- <h1>Hello, world!</h1>
-        <p>bla bla bla</p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Get started &raquo;</a></p> -->
-      </div>
-    </div>
-
-    <div class="container">
-      <div class="row">
-
-      </div>
-    </div> <!-- /container -->
-
-    <div class="container">
+    <div class="container" style="margin-top:60px;">
       <div id = "videoContainer">
         <div id="player"></div>
         <!--
