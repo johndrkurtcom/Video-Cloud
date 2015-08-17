@@ -180,13 +180,12 @@
   z-index:103;
 }
 
-
 .chart div:hover {
   background-color: yellow;
   cursor:pointer;
 }
 .commentHover{
-  position:relative;
+  position:absolute;
   display:block;
   background-color: steelblue;
   border-radius: 2px;

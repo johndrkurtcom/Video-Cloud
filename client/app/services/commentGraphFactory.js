@@ -49,6 +49,12 @@ angular.module('app.services', [])
       })
   }
 
+  var timer = function(videoData, callback){
+    var chartBars = d3.select('.chart').selectAll('div');
+    var len = Math.floor(videoData.duration/chartBars[0].length);
+    
+  }
+
   var graphSetup = function(id){
     var id = '#'+id;
     d3.select(id)
@@ -148,7 +154,7 @@ angular.module('app.services', [])
           .enter().append('span')
           .attr('class', 'commentHover')
           .style('top', function(d, i){
-            return -60+(-i*40)+'px';
+            return -20+(-i*20)+'px';
           })
           .text(function(d){return (d.username + ": " + d.text)})
       })
