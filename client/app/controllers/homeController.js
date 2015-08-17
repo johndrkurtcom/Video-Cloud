@@ -21,7 +21,6 @@ angular.module('app.home', [])
       } //submitVideo
 
   })
-  // I just went ahead on created my own controller here need to check with Payton
   .controller('movieListController', function($scope, $location, $rootScope, commentGraph) {
     //request the relevant information from the server via socet io and append it to the page
     //emmiting cs-movielist event and then listening for sc-movielist from the server
@@ -32,7 +31,7 @@ angular.module('app.home', [])
       socket.emit('cs-movielist');
       socket.on('sc-movielist', function(data) {
         console.log("TEST inside sc-movielist", data);
-        
+
         //save the data to a variable for ng-repeat
         $scope.$apply(function() { //re-renders page when data comes in
           $rootScope.movies = data.videos; //this once 
@@ -47,9 +46,9 @@ angular.module('app.home', [])
       console.log('Clicked on Movie', id);
     };
     //get the length in human readable format while inside ng-repeat
-    $scope.getLength = function(movie){
+    $scope.getLength = function(movie) {
       // console.log('HERE---->',movie);
-      if(movie.duration === undefined){
+      if (movie.duration === undefined) {
         movie.formatedLength = 'Length not provided';
         return;
       };
@@ -58,14 +57,14 @@ angular.module('app.home', [])
       var hours = 0;
       var minutes = parseInt(length[0]);
       var seconds = movie.duration % 60;
-      if(minutes > 59){
+      if (minutes > 59) {
         hours = Math.floor(minutes / 60);
         minutes = minutes % 60;
       }
-      if(minutes < 10){
+      if (minutes < 10) {
         minutes = '0' + minutes.toString();
       }
-      if(seconds < 10){
+      if (seconds < 10) {
         seconds = '0' + seconds.toString();
       }
       movie.formatedLength = hours.toString() + ':' + minutes.toString() + ':' + seconds.toString();
