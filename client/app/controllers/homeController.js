@@ -9,6 +9,7 @@ angular.module('app.home', [])
 
     /*********INIT*********/
     $('#videoContainer').hide(); // hide video player
+    $window.homepageLoaded = true; 
 
     /*********CONTROLLER*********/
     $scope.submitVideo = function() {
