@@ -50,7 +50,8 @@
         <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
           <li><a href='#/home' class='index'>Home</a></li>
-          <li><a href='#/video' class='create'>Video</a></li>
+          <li><a style="cursor:pointer" ng-click='loadVideo()' class='create'>Video</a></li>
+          <!-- <li><a href='#/video' class='create'>Video</a></li> -->
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a ng-show="!loggedin" href="/auth/twitter">Sign in with Twitter</a></li>
