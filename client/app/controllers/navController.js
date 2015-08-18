@@ -13,4 +13,14 @@ angular.module('app.nav', [])
         $scope.loggedin = false;
       }
     });
-  })
+
+    $scope.loadVideo = function(){
+      console.log("TEST inside loadVideo");
+
+      var videoData = $window.player.getVideoData();  
+      if(videoData !== undefined){
+        $location.path('/video/' + videoData.video_id);
+      } //if
+
+    } //loadVideo()
+  }); //navController

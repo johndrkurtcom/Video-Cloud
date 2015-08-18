@@ -91,6 +91,26 @@ angular.module('app.video', [])
       socket.on('sc-comment error', function(error) {
         console.log('something went wrong, the comment could not be saved', error);
       }); //sc-comment
+
+      // func: server responds to cs-init-video with sc-init-video containing video data
+      socket.on('sc-init-video', function(videoData) {
+        console.log("SocketIO is a success! data = ", videoData);
+        if (!videoData.video) {
+          $scope.comments = [];
+        } else {
+          $scope.comments = videoData.video.comments;
+        } //if
+
+        // comment graph setup
+        commentGraph.graph(videoData.video);
+        $(window).on('resize', commentGraph.resize.bind(null, $scope.comments));
+        // commentGraph.hide();
+        commentGraph.clicked(videoData.video, function(item){
+          // console.log('time='+item);
+          $window.player.seekTo(item);
+        });
+      });
+      
       $window.commentInit = true;
     } //if(!commentInit)
 
