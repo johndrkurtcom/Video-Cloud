@@ -15,25 +15,6 @@ angular.module('app.video', [])
       videoId: videoId
     }); //dev: videoId will be variable
 
-    // func: server responds to cs-init-video with sc-init-video containing video data
-    socket.on('sc-init-video', function(videoData) {
-      console.log("SocketIO is a success! data = ", videoData);
-      if (!videoData.video) {
-        $scope.comments = [];
-      } else {
-        $scope.comments = videoData.video.comments;
-      } //if
-
-      // comment graph setup
-      commentGraph.graph(videoData.video);
-      $(window).on('resize', commentGraph.resize.bind(null, videoData.video));
-      // commentGraph.hide();
-      commentGraph.clicked(videoData.video, function(item){
-        // console.log('time='+item);
-        $window.player.seekTo(item);
-      });
-    });
-
     /*********LOGIN*********/
     // // func: server responds to cs-init-video with sc-init-user containing video data
     if ($window.user === undefined) { //only check the first time. 
@@ -120,7 +101,6 @@ angular.module('app.video', [])
     // func: test videoId on player first
     // if (player !== undefined) {
     // } //if(player)
-
     $timeout(function() {
       console.log("TEST1 ----> run once");
       var player = $window.player;
