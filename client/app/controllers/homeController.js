@@ -9,6 +9,7 @@ angular.module('app.home', [])
 
     /*********INIT*********/
     $('#videoContainer').hide(); // hide video player
+    $window.homepageLoaded = true; 
 
     /*********CONTROLLER*********/
     $scope.submitVideo = function() {
@@ -25,20 +26,22 @@ angular.module('app.home', [])
     //request the relevant information from the server via socet io and append it to the page
     //emmiting cs-movielist event and then listening for sc-movielist from the server
 
-    //func: only fetch movies once (on page load)
-    if ($scope.movies === undefined) {
-      console.log('fetching movies'); //test
-      socket.emit('cs-movielist');
-      socket.on('sc-movielist', function(data) {
-        console.log("TEST inside sc-movielist", data);
 
-        //save the data to a variable for ng-repeat
-        $scope.$apply(function() { //re-renders page when data comes in
-          $rootScope.movies = data.videos; //this once 
-          console.log("TEST inside sc-movielist", data);
-        }); //apply
-      }); //socket.on(sc-movielist)
-    } //if(!movieList)
+    // if ($scope.movies === undefined) { } //deprecated
+    /**** Load movieList ****/// each time homepage is loaded
+    console.log('fetching movies'); //test
+    socket.emit('cs-movielist');
+    socket.on('sc-movielist', function(data) {
+      console.log("TEST inside sc-movielist", data);
+
+      //save the data to a variable for ng-repeat
+      $scope.$apply(function() { //re-renders page when data comes in
+        $rootScope.movies = data.videos; //this once 
+        console.log("TEST inside sc-movielist", data);
+      }); //apply
+    }); //socket.on(sc-movielist)
+
+
     //make a function that transmits the movie id and routes user to the video page
     //it takes in the videoId as it's only argument
     $scope.select = function(id) {
