@@ -49,10 +49,30 @@ angular.module('app.services', [])
       })
   }
 
-  var timer = function(videoData, callback){
-    var chartBars = d3.select('.chart').selectAll('div');
-    var len = Math.floor(videoData.duration/chartBars[0].length);
-    
+  var timer = function(videoData){
+    var obj = {};
+
+    chartBars = d3.select('.chart').selectAll('div');
+    obj.current = 0;
+    obj.len = Math.floor(videoData.duration/chartBars[0].length)*10;
+    obj.timer = setInterval(function(){
+      var chartBars = d3.select('.chart').selectAll('div');
+        chartBars
+          .style('background-color', function(d, i){
+            if(i < obj.current){
+              return 'yellow';
+            }else{
+              return 'steelblue';
+            }
+          })
+        obj.current++;
+      }, obj.len);
+
+    obj.stop = function(){
+      clearInterval(this.timer);
+    }
+
+    return obj;
   }
 
   var graphSetup = function(id){
@@ -167,6 +187,7 @@ angular.module('app.services', [])
   return ({
     graphSetup: graphSetup,
     clicked: clicked,
+    timer: timer,
     graph: graph,
     resize: resize,
     hide: hideGraph
